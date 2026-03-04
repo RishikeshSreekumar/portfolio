@@ -1,0 +1,59 @@
+---
+import { personal, stats } from '../data/portfolio';
+---
+
+<section id="about" class="mb-12">
+  <hr class="section-divider" />
+  
+  <div class="mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> cat about.md</span>
+  </div>
+  
+  <div class="command-block">
+    <div style="color: var(--terminal-yellow); margin-bottom: 8px;">
+      ## About Me
+    </div>
+    <p style="color: var(--terminal-text);">
+      {personal.bio}
+    </p>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> cat stats.json</span>
+  </div>
+  
+  <div class="command-block">
+    <pre style="color: var(--terminal-text);">
+{`
+{
+  "developer_stats": {`}
+    </pre>
+    <div class="ml-4">
+      {stats.map((stat) => (
+        <div style="color: var(--terminal-text);">
+          <span style="color: var(--terminal-cyan);">{stat.icon} "{stat.label}"</span>: <span style="color: var(--terminal-green);">"{stat.value}"</span>,
+        </div>
+      ))}
+    </div>
+    <pre style="color: var(--terminal-text);">
+{`  }
+}`}
+    </pre>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-comment"> # Want to know more? Keep scrolling!</span>
+  </div>
+</section>

@@ -1,0 +1,54 @@
+---
+import '../styles/global.css'
+import TerminalWindow from '../components/TerminalWindow.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Portfolio website showcasing my work and skills" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    </script>
+  </head>
+  <body class="min-h-screen crt-effect" style="background: var(--terminal-bg);">
+    <div class="scanline"></div>
+    <TerminalWindow>
+      <slot />
+    </TerminalWindow>
+    <button 
+      id="scroll-top"
+      class="scroll-indicator"
+      style="display: none; background: var(--terminal-surface); border: 1px solid var(--terminal-border); padding: 8px 12px; color: var(--terminal-cyan); cursor: pointer;"
+      aria-label="Scroll to top"
+    >
+      ↑ top
+    </button>
+    <script is:inline>
+      const scrollTopBtn = document.getElementById('scroll-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          scrollTopBtn.style.display = 'block';
+        } else {
+          scrollTopBtn.style.display = 'none';
+        }
+      });
+      scrollTopBtn?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
+  </body>
+</html>

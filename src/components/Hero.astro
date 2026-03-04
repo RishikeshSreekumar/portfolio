@@ -1,0 +1,97 @@
+---
+import { personal, asciiArt } from '../data/portfolio';
+
+const welcomeMessages = [
+  { delay: 0, text: 'Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-generic x86_64)' },
+  { delay: 1, text: '' },
+  { delay: 2, text: ' * Documentation:  https://help.ubuntu.com' },
+  { delay: 3, text: ' * Management:     https://landscape.canonical.com' },
+  { delay: 4, text: ' * Support:        https://ubuntu.com/pro' },
+  { delay: 5, text: '' },
+];
+
+const systemInfo = [
+  { key: 'User', value: personal.name },
+  { key: 'Role', value: personal.role },
+  { key: 'Location', value: personal.location },
+  { key: 'Status', value: personal.status },
+  { key: 'Uptime', value: `${personal.experience} experience` },
+];
+
+const username = personal.name.toLowerCase().replace(' ', '');
+---
+
+<section class="mb-12">
+  <div class="space-y-0">
+    {welcomeMessages.map((msg) => (
+      <div style="color: var(--terminal-text-dim); animation: fadeInLine 0.3s ease forwards; opacity: 0; animation-delay: {msg.delay * 0.1}s;">
+        {msg.text}
+      </div>
+    ))}
+  </div>
+  
+  <div class="mt-6 mb-2">
+    <span class="terminal-prompt">last login:</span>
+    <span style="color: var(--terminal-text);"> {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })} on ttys000</span>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">{username}@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> whoami</span>
+  </div>
+  
+  <div style="color: var(--terminal-text-bright); font-weight: 500;">
+    {personal.name} - {personal.role}
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">{username}@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> finger</span>
+    <span style="color: var(--terminal-text-dim);"> {username}</span>
+  </div>
+  
+  <div class="command-block">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <pre style="color: var(--terminal-green); font-size: 11px; line-height: 1.2; overflow: hidden;">
+{asciiArt.logo}
+        </pre>
+      </div>
+      <div>
+        {systemInfo.map((info, index) => (
+          <div style="margin-bottom: 4px; animation: fadeInLine 0.3s ease forwards; opacity: 0; animation-delay: {0.6 + index * 0.1}s;">
+            <span style="color: var(--terminal-cyan);">{info.key.padEnd(10)}</span>
+            <span style="color: var(--terminal-text);">: {info.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">{username}@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> cat</span>
+    <span style="color: var(--terminal-string);"> welcome.txt</span>
+  </div>
+  
+  <div class="command-block">
+    <p style="color: var(--terminal-text-bright);">
+      Welcome to my interactive portfolio!
+    </p>
+    <p style="color: var(--terminal-text); margin-top: 12px;">
+      {personal.bio}
+    </p>
+    <p style="color: var(--terminal-comment); margin-top: 12px;">
+      # Use the commands above or scroll down to explore!
+    </p>
+  </div>
+</section>

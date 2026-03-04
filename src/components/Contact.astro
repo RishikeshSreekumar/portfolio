@@ -1,0 +1,174 @@
+---
+import { personal } from '../data/portfolio';
+---
+
+<section id="contact" class="mb-12">
+  <hr class="section-divider" />
+  
+  <div class="mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> cat contact.txt</span>
+  </div>
+  
+  <div class="command-block">
+    <div style="color: var(--terminal-yellow); margin-bottom: 16px;">
+      ═══════════════════════════════════════
+             CONTACT INFORMATION
+      ═══════════════════════════════════════
+    </div>
+    
+    <div class="space-y-4">
+      <div class="flex items-center gap-3">
+        <span style="color: var(--terminal-cyan);">📧  Email:</span>
+        <a href={`mailto:${personal.email}`} style="color: var(--terminal-string);">{personal.email}</a>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <span style="color: var(--terminal-cyan);">📍  Location:</span>
+        <span style="color: var(--terminal-text);">{personal.location}</span>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <span style="color: var(--terminal-cyan);">💼  Status:</span>
+        <span style="color: var(--terminal-green);">{personal.status}</span>
+      </div>
+    </div>
+    
+    <div class="mt-6 pt-4" style="border-top: 1px dashed var(--terminal-border);">
+      <div style="color: var(--terminal-comment); margin-bottom: 8px;">
+        # Connect with me on:
+      </div>
+      <div class="flex gap-4">
+        {personal.social.github && (
+          <a 
+            href={personal.social.github} 
+            style="color: var(--terminal-text);"
+            class="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            [GitHub]
+          </a>
+        )}
+        {personal.social.linkedin && (
+          <a 
+            href={personal.social.linkedin} 
+            style="color: var(--terminal-text);"
+            class="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            [LinkedIn]
+          </a>
+        )}
+        {personal.social.twitter && (
+          <a 
+            href={personal.social.twitter} 
+            style="color: var(--terminal-text);"
+            class="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            [Twitter]
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> mail</span>
+    <span style="color: var(--terminal-text-dim);"> -s</span>
+    <span style="color: var(--terminal-string);"> "Job Opportunity"</span>
+    <span style="color: var(--terminal-text-dim);"> {personal.email}</span>
+  </div>
+  
+  <div class="command-block" style="border-color: var(--terminal-orange);">
+    <div style="color: var(--terminal-orange); margin-bottom: 12px;">
+      Compose new message:
+    </div>
+    
+    <form class="space-y-4">
+      <div>
+        <label style="color: var(--terminal-comment); display: block; margin-bottom: 4px;">
+          To: {personal.email}
+        </label>
+      </div>
+      
+      <div>
+        <label for="contact-name" style="color: var(--terminal-comment); display: block; margin-bottom: 4px;">
+          From:
+        </label>
+        <input
+          type="text"
+          id="contact-name"
+          name="name"
+          class="w-full px-3 py-2 outline-none"
+          style="background: var(--terminal-bg); border: 1px solid var(--terminal-border); color: var(--terminal-text-bright);"
+          placeholder="Your name"
+        />
+      </div>
+      
+      <div>
+        <label for="contact-email" style="color: var(--terminal-comment); display: block; margin-bottom: 4px;">
+          Reply-to:
+        </label>
+        <input
+          type="email"
+          id="contact-email"
+          name="email"
+          class="w-full px-3 py-2 outline-none"
+          style="background: var(--terminal-bg); border: 1px solid var(--terminal-border); color: var(--terminal-text-bright);"
+          placeholder="your@email.com"
+        />
+      </div>
+      
+      <div>
+        <label for="contact-message" style="color: var(--terminal-comment); display: block; margin-bottom: 4px;">
+          Message body:
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows="4"
+          class="w-full px-3 py-2 outline-none resize-none"
+          style="background: var(--terminal-bg); border: 1px solid var(--terminal-border); color: var(--terminal-text-bright);"
+          placeholder="Type your message here..."
+        ></textarea>
+      </div>
+      
+      <div class="flex gap-3">
+        <button
+          type="submit"
+          class="px-4 py-2 border hover:opacity-80 transition-opacity"
+          style="background: var(--terminal-green); color: var(--terminal-bg); border-color: var(--terminal-green);"
+        >
+          [Send Message]
+        </button>
+        <button
+          type="button"
+          class="px-4 py-2 border hover:opacity-80 transition-opacity"
+          style="background: transparent; color: var(--terminal-red); border-color: var(--terminal-red);"
+          onclick="this.closest('form').reset()"
+        >
+          [Clear]
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-comment"> # Looking forward to hearing from you!</span>
+  </div>
+</section>

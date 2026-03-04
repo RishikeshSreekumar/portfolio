@@ -1,0 +1,93 @@
+---
+import { projects } from '../data/portfolio';
+
+const featuredProjects = projects.filter(p => p.featured);
+---
+
+<section id="projects" class="mb-12">
+  <hr class="section-divider" />
+  
+  <div class="mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> cd projects/</span>
+  </div>
+  
+  <div class="mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~/projects</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> ls -la</span>
+  </div>
+  
+  <div class="command-block">
+    <div style="color: var(--terminal-text-dim); margin-bottom: 8px;">
+      total {featuredProjects.length}
+    </div>
+    <div style="color: var(--terminal-text-dim); margin-bottom: 8px;">
+      drwxr-xr-x  {featuredProjects.length} items
+    </div>
+    
+    <div class="mt-4 space-y-6">
+      {featuredProjects.map((project) => (
+        <div class="border-l-2 pl-4" style="border-color: var(--terminal-cyan);">
+          <div class="flex items-center gap-2 mb-2">
+            <span style="color: var(--terminal-yellow);">drwxr-xr-x</span>
+            <span style="color: var(--terminal-cyan); font-weight: 600;">{project.title}/</span>
+          </div>
+          
+          <div class="ml-4" style="color: var(--terminal-text);">
+            <div style="color: var(--terminal-comment);">└── README.md</div>
+            <div class="mt-2 mb-3" style="color: var(--terminal-text);">
+              {project.description}
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mb-3">
+              {project.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+            
+            <div class="flex gap-4">
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  class="flex items-center gap-1 hover:underline"
+                  style="color: var(--terminal-green);"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>→</span>
+                  <span>live_demo</span>
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  class="flex items-center gap-1 hover:underline"
+                  style="color: var(--terminal-orange);"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>→</span>
+                  <span>source_code</span>
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~/projects</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-comment"> # These are some of my featured projects!</span>
+  </div>
+</section>

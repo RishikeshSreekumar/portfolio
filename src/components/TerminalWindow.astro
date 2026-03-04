@@ -1,0 +1,30 @@
+---
+import { personal } from '../data/portfolio';
+
+interface Props {
+  title?: string;
+}
+
+const { title = `${personal.name.toLowerCase().replace(' ', '')}@portfolio ~ zsh` } = Astro.props;
+---
+
+<div class="terminal-window">
+  <div class="terminal-title-bar fixed top-0 left-0 right-0 z-50">
+    <div class="terminal-buttons">
+      <div class="terminal-button close"></div>
+      <div class="terminal-button minimize"></div>
+      <div class="terminal-button maximize"></div>
+    </div>
+    <div class="terminal-title">
+      {title}
+    </div>
+    <div class="terminal-buttons" style="opacity: 0;">
+      <div class="terminal-button"></div>
+      <div class="terminal-button"></div>
+      <div class="terminal-button"></div>
+    </div>
+  </div>
+  <div class="terminal-body pt-16">
+    <slot />
+  </div>
+</div>

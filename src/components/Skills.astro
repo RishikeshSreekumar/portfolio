@@ -1,0 +1,87 @@
+---
+import { skills, type Skill } from '../data/portfolio';
+
+const categories = [...new Set(skills.map(skill => skill.category))];
+
+function getProgressBar(level: number, width: number = 20): string {
+  const filled = Math.round((level / 100) * width);
+  const empty = width - filled;
+  return '█'.repeat(filled) + '░'.repeat(empty);
+}
+---
+
+<section id="skills" class="mb-12">
+  <hr class="section-divider" />
+  
+  <div class="mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> ./skills --list</span>
+  </div>
+  
+  <div class="command-block">
+    <pre style="color: var(--terminal-cyan);">
+{`
+┌─────────────────────────────────────────────────────────┐
+│                  INSTALLED PACKAGES                     │
+└─────────────────────────────────────────────────────────┘
+`}
+    </pre>
+    
+    {categories.map((category) => (
+      <div class="mb-6">
+        <div style="color: var(--terminal-yellow); margin-bottom: 8px;">
+          [{category}]
+        </div>
+        
+        <div class="ml-4 space-y-2">
+          {skills.filter(skill => skill.category === category).map((skill) => (
+            <div class="flex items-center gap-3">
+              <span style="color: var(--terminal-cyan); min-width: 120px;">{skill.name}</span>
+              <span style="color: var(--terminal-green); font-size: 12px;">{getProgressBar(skill.level)}</span>
+              <span style="color: var(--terminal-comment);">{skill.level}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> htop</span>
+    <span style="color: var(--terminal-text-dim);"> --sort-by</span>
+    <span style="color: var(--terminal-string);"> "proficiency"</span>
+  </div>
+  
+  <div class="ascii-box" style="border-color: var(--terminal-green);">
+    <div style="color: var(--terminal-green); margin-bottom: 8px;">
+      CPU Usage by Skill:
+    </div>
+    <div class="grid gap-3">
+      {[...skills].sort((a, b) => b.level - a.level).slice(0, 5).map((skill, index) => (
+        <div class="flex items-center gap-2">
+          <span style="color: var(--terminal-yellow);">#{index + 1}</span>
+          <span style="color: var(--terminal-cyan); min-width: 100px;">{skill.name}</span>
+          <div class="flex-1 progress-bar" style="height: 16px;">
+            <div class="progress-fill" style={`width: ${skill.level}%;`}></div>
+          </div>
+          <span style="color: var(--terminal-text);">{skill.level}%</span>
+        </div>
+      ))}
+    </div>
+  </div>
+  
+  <div class="mt-6 mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-comment"> # Always learning new technologies!</span>
+  </div>
+</section>
