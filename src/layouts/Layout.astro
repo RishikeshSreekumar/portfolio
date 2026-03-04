@@ -4,20 +4,62 @@ import TerminalWindow from '../components/TerminalWindow.astro';
 
 interface Props {
   title: string;
+  description?: string;
+  ogImage?: string;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = "Founding Engineer at Mando, building AI-powered enterprise products. Previously optimized trading systems at Quantitative Brokers. Full-stack engineer with 3+ years of experience across Next.js, FastAPI, Postgres, and Terraform. IIT Madras graduate.",
+  ogImage = "/og-image.png",
+} = Astro.props;
+
+const siteUrl = "https://rishikeshsreekumar.github.io";
+const baseUrl = "/portfolio";
+const canonicalUrl = `${siteUrl}${baseUrl}`;
+const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
 ---
 
 <!doctype html>
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Portfolio website showcasing my work and skills" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Rishikesh S" />
+    <meta name="keywords" content="Rishikesh S, Software Engineer, Founding Engineer, Mando, Full Stack Developer, Next.js, FastAPI, React, Portfolio" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
+    <link rel="icon" type="image/x-icon" href={`${baseUrl}/favicon.ico`} />
+    <link rel="apple-touch-icon" href={`${baseUrl}/favicon.svg`} />
+    <meta name="theme-color" content="#0a0e17" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Rishikesh S — Portfolio" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:creator" content="@rishikesh_s_18" />
+
     <script is:inline>
       const theme = localStorage.getItem('theme') || 
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

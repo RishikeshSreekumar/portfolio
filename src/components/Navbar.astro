@@ -9,7 +9,7 @@ const commands = [
 ---
 
 <nav class="mb-8">
-  <div class="mb-2">
+  <div class="mb-2 mt-6">
     <span class="terminal-prompt">visitor@portfolio</span>
     <span style="color: var(--terminal-text-dim);">:</span>
     <span style="color: var(--terminal-blue);">~</span>
@@ -22,7 +22,7 @@ const commands = [
       Available commands:
     </div>
     
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
       {commands.map((command) => (
         <a
           href={`#${command.cmd}`}
