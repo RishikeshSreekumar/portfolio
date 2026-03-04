@@ -1,0 +1,62 @@
+---
+import { experience } from '../data/portfolio';
+---
+
+<section id="experience" class="mb-12">
+  <hr class="section-divider" />
+  
+  <div class="mb-4">
+    <span class="terminal-prompt">visitor@portfolio</span>
+    <span style="color: var(--terminal-text-dim);">:</span>
+    <span style="color: var(--terminal-blue);">~</span>
+    <span style="color: var(--terminal-text-dim);">$</span>
+    <span class="terminal-command"> cat experience.log</span>
+  </div>
+  
+  <div class="command-block">
+    <div style="color: var(--terminal-yellow); margin-bottom: 12px;">
+      ## Work Experience
+    </div>
+    
+    <div class="space-y-8">
+      {experience.map((exp, index) => (
+        <div class="border-l-2 pl-4" style={`border-color: ${index === 0 ? 'var(--terminal-green)' : 'var(--terminal-cyan)'};`}>
+          <div class="flex flex-wrap items-baseline gap-2 mb-1">
+            <span style={`color: ${index === 0 ? 'var(--terminal-green)' : 'var(--terminal-cyan)'}; font-weight: 600; font-size: 15px;`}>
+              {exp.role}
+            </span>
+            <span style="color: var(--terminal-text-dim);">@</span>
+            <span style="color: var(--terminal-yellow); font-weight: 500;">
+              {exp.company}
+            </span>
+          </div>
+          
+          <div class="mb-3" style="color: var(--terminal-comment); font-size: 13px;">
+            {exp.period}
+          </div>
+          
+          <div class="mb-3" style="color: var(--terminal-text);">
+            {exp.description}
+          </div>
+          
+          {exp.highlights.length > 0 && (
+            <div class="ml-2 space-y-1 mb-3">
+              {exp.highlights.map((highlight) => (
+                <div class="flex gap-2" style="color: var(--terminal-text);">
+                  <span style="color: var(--terminal-green); flex-shrink: 0;">▸</span>
+                  <span>{highlight}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <div class="flex flex-wrap gap-2">
+            {exp.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

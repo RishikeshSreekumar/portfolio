@@ -1,9 +1,8 @@
 ---
-import { personal, resumeUrl, projects, skills, experience, stats } from '../data/portfolio';
+import { personal, projects, skills, experience, stats } from '../data/portfolio';
 
 const currentYear = new Date().getFullYear();
 const username = personal.name.toLowerCase().replace(' ', '');
-const exportData = JSON.stringify({ personal, projects, skills, experience, stats });
 ---
 
 <footer class="mt-8 pt-6" style="border-top: 1px solid var(--terminal-border);">
@@ -22,45 +21,6 @@ const exportData = JSON.stringify({ personal, projects, skills, experience, stat
     </div>
   </div>
   
-  <div class="mt-6 mb-4">
-    <span class="terminal-prompt">system@portfolio</span>
-    <span style="color: var(--terminal-text-dim);">:</span>
-    <span style="color: var(--terminal-blue);">~</span>
-    <span style="color: var(--terminal-text-dim);">$</span>
-    <span class="terminal-command"> export</span>
-    <span style="color: var(--terminal-text-dim);"> --format</span>
-    <span style="color: var(--terminal-string);"> json</span>
-  </div>
-  
-  <div class="command-block mb-4">
-    <div class="flex flex-wrap gap-4">
-      <button 
-        id="export-json"
-        class="px-4 py-2 border hover:opacity-80 transition-opacity"
-        style="background: var(--terminal-cyan); color: var(--terminal-bg); border-color: var(--terminal-cyan); cursor: pointer;"
-      >
-        [Download JSON]
-      </button>
-      {resumeUrl && (
-        <a 
-          href={resumeUrl}
-          class="px-4 py-2 border hover:opacity-80 transition-opacity inline-block"
-          style="background: var(--terminal-green); color: var(--terminal-bg); border-color: var(--terminal-green);"
-          download
-        >
-          [Download Resume]
-        </a>
-      )}
-      <button 
-        id="print-page"
-        class="px-4 py-2 border hover:opacity-80 transition-opacity"
-        style="background: transparent; color: var(--terminal-orange); border-color: var(--terminal-orange); cursor: pointer;"
-      >
-        [Print / Save PDF]
-      </button>
-    </div>
-  </div>
-  
   <div style="color: var(--terminal-text);">
     Portfolio {currentYear} | All rights reserved
   </div>
@@ -76,23 +36,3 @@ const exportData = JSON.stringify({ personal, projects, skills, experience, stat
   </div>
 </footer>
 
-<script define:vars={{ exportData, personal }}>
-  document.getElementById('export-json')?.addEventListener('click', () => {
-    const data = JSON.parse(exportData);
-    data.exportedAt = new Date().toISOString();
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${personal.name.toLowerCase().replace(' ', '-')}-portfolio.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
-  
-  document.getElementById('print-page')?.addEventListener('click', () => {
-    window.print();
-  });
-</script>

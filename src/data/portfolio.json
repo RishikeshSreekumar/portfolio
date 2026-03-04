@@ -1,0 +1,128 @@
+{
+  "personal_info": {
+    "name": "Rishikesh S",
+    "email": "rishikeshpavithram@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/rishikesh-s-0a4a47166/",
+    "location": "Kerala, India"
+  },
+  "summary": "Full-stack software engineer with 3+ years of experience building high-performance web applications, backend services, and cloud infrastructure. Currently a Founding Engineer at Mando, architecting AI-powered enterprise products spanning natural language search, browser-based workflow automation, and service management platforms. Proficient across the stack—Next.js, FastAPI, Postgres, and Terraform—with a strong track record in real-time systems, billing integrations, and developer tooling. Previously optimized trading systems at Quantitative Brokers, reducing latency by 20% and load times from 40s to under 1s.",
+  "education": [
+    {
+      "institution": "Indian Institute of Technology, Madras",
+      "degree": "B.Tech in Chemical Engineering",
+      "location": "Chennai, IN",
+      "duration": "2018-2022",
+      "cgpa": "8.58/10"
+    }
+  ],
+  "skills": {
+    "frontend": [
+      "JavaScript",
+      "TypeScript",
+      "HTML",
+      "CSS",
+      "React",
+      "Next.js",
+      "Angular",
+      "Tailwind CSS"
+    ],
+    "backend": [
+      "Python",
+      "FastAPI",
+      "NodeJS + Express",
+      "NestJS",
+      "Java"
+    ],
+    "databases": [
+      "PostgreSQL",
+      "MongoDB",
+      "Redis"
+    ],
+    "tools_and_infrastructure": [
+      "Terraform",
+      "Docker",
+      "AWS",
+      "Git",
+      "CI/CD",
+      "Shell Scripting",
+      "Alembic",
+      "Stripe",
+      "LLMs"
+    ]
+  },
+  "work_experience": [
+    {
+      "company": "MANDO",
+      "role": "Founding Software Engineer",
+      "location": "Remote",
+      "duration": "Sep 2024-Present",
+      "responsibilities": [
+        "Architected a natural language search and conversational AI interface over Workday's knowledge base for enterprise users.",
+        "Designed a knowledge collection platform for capturing structured insights from industry subject matter experts.",
+        "Built a Chrome browser extension that records user workflows and auto-generates documentation and training materials.",
+        "Developed a services platform (Jira/Zendesk-like) for support ticket creation and expert resolution workflows.",
+        "Integrated Stripe for end-to-end customer billing, subscription management, and payment processing.",
+        "Own the full stack: Next.js + Tailwind CSS, FastAPI, PostgreSQL, Terraform for infrastructure-as-code."
+      ]
+    },
+    {
+      "company": "QUANTITATIVE BROKERS",
+      "role": "Software Engineer",
+      "location": "Chennai, IN",
+      "duration": "Jul 2022-Sep 2024",
+      "responsibilities": [
+        "Designed a scalable order monitoring system processing 200 messages/sec of 800-1000 bytes from multiple sources.",
+        "Reduced application load time from ~40 seconds to under 1 second by migrating data loading to server-side.",
+        "Optimized critical paths to reduce latency by 20% and CPU usage by 50% in the order entry application.",
+        "Implemented DV01-based risk calculations for CASH instruments, improving cash stream revenue by 5%.",
+        "Built real-time data aggregation and dynamic market data ladder visualizations for desk analysts."
+      ]
+    },
+    {
+      "company": "QUANTITATIVE BROKERS",
+      "role": "Software Development Intern",
+      "location": "Chennai, IN",
+      "duration": "May 2021-Jul 2021",
+      "responsibilities": [
+        "Created a desktop integration prototype using OpenFin to enable context sharing across four applications.",
+        "Developed an Angular app for plotting financial curves with real-time kdb database integration using Highcharts."
+      ]
+    },
+    {
+      "company": "PRESCRIBE",
+      "role": "Android App Developer",
+      "duration": "Feb 2021-May 2021",
+      "responsibilities": [
+        "Developed android application for collecting patient details and displaying feedbacks collected.",
+        "Leveraged Firebase services to create API endpoints and customised notification system.",
+        "Implemented techniques for analysis of user interaction at each point in app."
+      ]
+    },
+    {
+      "company": "WORKFENCE TECHNOLOGIES",
+      "role": "Software Development Intern",
+      "duration": "May 2020-Jul 2020",
+      "responsibilities": [
+        "Developed a mobile app for social distancing and a hardware solution for automatic distance calculation.",
+        "Created a scalable visualization interface for 1,000 to 100,000 users and built a geofencing-based attendance system.",
+        "Designed responsive mobile UI/UX features with custom views and elements."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Sorting Algorithm Visualizer",
+      "tech_stack": "Angular, TypeScript, Algorithms, Data Structures",
+      "description": "Interactive web application to visualize sorting algorithms (Selection, Insertion, Bubble, Shell, Count) with smooth JavaScript animations and step-by-step playback."
+    },
+    {
+      "name": "Rubix Cube Solver",
+      "tech_stack": "Next.js, Three.js, Algorithms",
+      "description": "A web application to solve rubix cube using algorithms. Enables user to solve rubix cube by feeding the current state of the cube."
+    }
+  ],
+  "achievements": [
+    "AIR 2275 in JEE Advanced 2018",
+    "AIR 5 in KEAM 2018"
+  ]
+}
