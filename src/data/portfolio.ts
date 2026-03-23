@@ -6,12 +6,19 @@ export interface PersonalInfo {
   status: string;
   experience: string;
   bio: string;
+  aboutParagraphs: string[];
   social: {
     github?: string;
     linkedin?: string;
-    twitter?: string;
-    website?: string;
+    cal?: string;
   };
+}
+
+export interface Education {
+  institution: string;
+  degree: string;
+  period: string;
+  highlights: string[];
 }
 
 export interface Stat {
@@ -24,6 +31,7 @@ export interface Project {
   id: string;
   title: string;
   description: string;
+  highlight?: string;
   tags: string[];
   liveUrl?: string;
   githubUrl?: string;
@@ -52,34 +60,43 @@ export const personal: PersonalInfo = {
   email: "rishikeshpavithram@gmail.com",
   status: "Building at Mando",
   experience: "3+ years",
-  bio: "Founding Engineer at Mando, building AI-powered enterprise products from the ground up. I architect full-stack systems spanning natural language search, workflow automation, and service management platforms using Next.js, FastAPI, Postgres, and Terraform. Previously optimized trading systems at Quantitative Brokers. IIT Madras graduate passionate about shipping impactful products at startup speed.",
+  bio: "IIT Madras graduate and Founding Engineer at Mando — I build AI-powered enterprise products from zero to production. I've shipped natural language search over enterprise knowledge bases, workflow automation tools, and service management platforms. Previously at Quantitative Brokers, where I cut application load time from 40s to under 1s and reduced trading system latency by 20%. I work across the full stack: Next.js, FastAPI, PostgreSQL, Terraform — and I move fast without breaking things.",
+  aboutParagraphs: [
+    "I'm a founding software engineer at Mando, building AI-powered enterprise products from the ground up. I graduated from IIT Madras with a B.Tech in Engineering Design — a programme that blends systems thinking, applied mathematics, and human-centred design. That combination of analytical rigour and product intuition shapes how I approach every engineering problem.",
+    "My focus is the intersection of AI and full-stack engineering — building systems where large language models meet real enterprise workflows. At Mando I've shipped natural language search over Workday's knowledge base, a Chrome extension that auto-generates documentation from recorded workflows, and a Stripe-integrated billing platform. Before that, at Quantitative Brokers, I worked on high-throughput trading systems — cutting one application's load time from 40 seconds to under one second and reducing trading system latency by 20%.",
+    "Right now I'm deepening my work in multi-agent architectures and making LLM-powered workflows more reliable and cost-efficient at scale. I also enjoy the infrastructure side — I manage cloud environments with Terraform and care about the reproducibility it brings to deployments.",
+    "Outside work, I follow cricket closely — it's part of why the IPL Scenario Builder is one of my favourite side projects. I'm drawn to problems where data and real-world intuition intersect, whether that's sports analytics or financial systems.",
+  ],
   social: {
     github: "https://github.com/RishikeshSreekumar",
     linkedin: "https://www.linkedin.com/in/rishikesh-s-0a4a47166/",
-    twitter: "https://x.com/rishikesh_s_18",
+    cal: "https://cal.com/rishikesh-s",
   }
 };
 
 export const stats: Stat[] = [
-  { label: "years_experience", value: "3+", icon: "►" },
+  { label: "load_time_reduced", value: "40s → <1s", icon: "►" },
+  { label: "latency_improvement", value: "-20%", icon: "►" },
+  { label: "order_throughput", value: "200/sec", icon: "►" },
   { label: "products_shipped", value: "4+", icon: "►" },
-  { label: "companies", value: "3", icon: "►" },
-  { label: "technologies", value: "15+", icon: "►" },
 ];
 
 export const projects: Project[] = [
   {
-    id: "sorting-visualizer",
-    title: "Sorting Algorithm Visualizer",
-    description: "Interactive web application to visualize sorting algorithms (Selection, Insertion, Bubble, Shell, Count) with smooth JavaScript animations and step-by-step playback.",
-    tags: ["Angular", "TypeScript", "Algorithms", "Data Structures"],
+    id: "ipl-fanpark",
+    title: "IPL FanPark — Scenario Builder & Prediction Engine",
+    description: "A fan engagement platform for cricket's IPL that lets users construct custom match scenarios and get AI-powered win probability predictions in real time. Configure team lineups, pitch type, weather conditions, and batting order — the model updates predictions as you build. Backed by historical IPL match data, player performance analytics, and venue-specific factors. Built to explore the intersection of sports analytics and interactive AI.",
+    highlight: "Prediction engine dynamically updates win probabilities across team lineup, pitch, weather, and batting order combinations — backed by historical IPL match data from 2008–2024.",
+    tags: ["Next.js", "Python", "FastAPI", "Machine Learning", "PostgreSQL", "Data Analytics"],
     featured: true,
   },
   {
     id: "rubiks-cube-solver",
     title: "Rubik's Cube Solver",
-    description: "A web application to solve Rubik's Cube using algorithms. Enables users to solve the cube by feeding the current state and visualizing the solution in 3D.",
+    description: "A web application to solve Rubik's Cube using algorithms. Enables users to solve the cube by feeding the current state and visualizing the step-by-step solution in an interactive 3D view.",
+    highlight: "Implemented Kociemba's two-phase algorithm in the browser, solving any valid cube configuration in under 20 moves with step-by-step 3D visualization via Three.js.",
     tags: ["Next.js", "Three.js", "Algorithms"],
+    githubUrl: "https://github.com/RishikeshSreekumar/rubiks-cube-solver",
     featured: true,
   },
 ];
@@ -178,6 +195,19 @@ export const experience: Experience[] = [
   },
 ];
 
+export const education: Education[] = [
+  {
+    institution: "IIT Madras",
+    degree: "B.Tech, Engineering Design",
+    period: "2018 – 2022",
+    highlights: [
+      "Indian Institute of Technology Madras — one of India's top-ranked engineering institutions",
+      "Coursework spanning algorithms, systems design, applied mathematics, and human-centred design",
+      "Strong foundation in both analytical problem-solving and end-to-end product thinking",
+    ],
+  },
+];
+
 export const asciiArt = {
   logo: `
 ░█████████  ░██           ░██        ░██░██                             ░██             ░██████   
@@ -213,4 +243,3 @@ Navigation:
   Use the links above or type a command name`,
 };
 
-export const resumeUrl = "/resume.pdf";

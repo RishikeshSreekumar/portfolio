@@ -2,9 +2,48 @@
 import { experience } from '../data/portfolio';
 ---
 
-<section id="experience" class="mb-12">
+<!-- ===== PROFESSIONAL EXPERIENCE ===== -->
+<section id="experience" class="pro-section pro-only">
+  <div class="pro-container">
+    <div class="pro-section-header">
+      <p class="pro-section-label">Experience</p>
+      <h2 class="pro-section-title">Work history</h2>
+    </div>
+
+    <div class="pro-timeline">
+      {experience.map((exp, index) => (
+        <div class="pro-timeline-item">
+          <div class="pro-timeline-date">{exp.period}</div>
+          <div class="pro-timeline-content">
+            <div class="pro-timeline-role">{exp.role}</div>
+            <div class="pro-timeline-company">{exp.company}</div>
+            <div class="pro-timeline-desc">{exp.description}</div>
+            {exp.highlights.length > 0 && (
+              <div class="pro-timeline-highlights">
+                {exp.highlights.map((h) => (
+                  <div class="pro-timeline-highlight">
+                    <span class="pro-timeline-highlight-dot">›</span>
+                    <span>{h}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div class="pro-timeline-tags">
+              {exp.tags.map((tag) => (
+                <span class="pro-tag">{tag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ===== TERMINAL EXPERIENCE ===== -->
+<section id="experience" class="mb-12 terminal-only">
   <hr class="section-divider" />
-  
+
   <div class="mb-4">
     <span class="terminal-prompt">visitor@portfolio</span>
     <span style="color: var(--terminal-text-dim);">:</span>
@@ -12,12 +51,12 @@ import { experience } from '../data/portfolio';
     <span style="color: var(--terminal-text-dim);">$</span>
     <span class="terminal-command"> cat experience.log</span>
   </div>
-  
+
   <div class="command-block">
     <div style="color: var(--terminal-yellow); margin-bottom: 12px;">
       ## Work Experience
     </div>
-    
+
     <div class="space-y-8">
       {experience.map((exp, index) => (
         <div class="border-l-2 pl-4" style={`border-color: ${index === 0 ? 'var(--terminal-green)' : 'var(--terminal-cyan)'};`}>
@@ -30,15 +69,15 @@ import { experience } from '../data/portfolio';
               {exp.company}
             </span>
           </div>
-          
+
           <div class="mb-3" style="color: var(--terminal-comment); font-size: 13px;">
             {exp.period}
           </div>
-          
+
           <div class="mb-3" style="color: var(--terminal-text);">
             {exp.description}
           </div>
-          
+
           {exp.highlights.length > 0 && (
             <div class="ml-2 space-y-1 mb-3">
               {exp.highlights.map((highlight) => (
@@ -49,7 +88,7 @@ import { experience } from '../data/portfolio';
               ))}
             </div>
           )}
-          
+
           <div class="flex flex-wrap gap-2">
             {exp.tags.map((tag) => (
               <span class="tag">{tag}</span>

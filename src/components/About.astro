@@ -1,10 +1,48 @@
 ---
 import { personal, stats } from '../data/portfolio';
+const { aboutParagraphs } = personal;
+
+const statLabels: Record<string, string> = {
+  load_time_reduced: 'Load time reduced',
+  latency_improvement: 'Latency improvement',
+  order_throughput: 'Order throughput',
+  products_shipped: 'Products shipped',
+};
 ---
 
-<section id="about" class="mb-12">
+<!-- ===== PROFESSIONAL ABOUT ===== -->
+<section id="about" class="pro-section pro-only">
+  <div class="pro-container">
+    <div class="pro-section-header">
+      <p class="pro-section-label">About</p>
+      <h2 class="pro-section-title">Who I am</h2>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr; gap:48px;">
+      <div style="display:flex; flex-direction:column; gap:16px; max-width:680px;">
+        {aboutParagraphs.map((para) => (
+          <p style="font-size:16px; line-height:1.75; color:var(--pro-text-muted);">
+            {para}
+          </p>
+        ))}
+      </div>
+
+      <div class="pro-stats-grid">
+        {stats.map((stat) => (
+          <div class="pro-stat-card">
+            <div class="pro-stat-value">{stat.value}</div>
+            <div class="pro-stat-label">{statLabels[stat.label] ?? stat.label.replace(/_/g, ' ')}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TERMINAL ABOUT ===== -->
+<section id="about" class="mb-12 terminal-only">
   <hr class="section-divider" />
-  
+
   <div class="mb-4">
     <span class="terminal-prompt">visitor@portfolio</span>
     <span style="color: var(--terminal-text-dim);">:</span>
@@ -12,16 +50,20 @@ import { personal, stats } from '../data/portfolio';
     <span style="color: var(--terminal-text-dim);">$</span>
     <span class="terminal-command"> cat about.md</span>
   </div>
-  
+
   <div class="command-block">
     <div style="color: var(--terminal-yellow); margin-bottom: 8px;">
       ## About Me
     </div>
-    <p style="color: var(--terminal-text);">
-      {personal.bio}
-    </p>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      {aboutParagraphs.map((para) => (
+        <p style="color: var(--terminal-text);">
+          {para}
+        </p>
+      ))}
+    </div>
   </div>
-  
+
   <div class="mt-6 mb-4">
     <span class="terminal-prompt">visitor@portfolio</span>
     <span style="color: var(--terminal-text-dim);">:</span>
@@ -29,11 +71,10 @@ import { personal, stats } from '../data/portfolio';
     <span style="color: var(--terminal-text-dim);">$</span>
     <span class="terminal-command"> cat stats.json</span>
   </div>
-  
+
   <div class="command-block">
     <pre style="color: var(--terminal-text);">
-{`
-{
+{`{
   "developer_stats": {`}
     </pre>
     <div class="ml-4">
@@ -48,7 +89,7 @@ import { personal, stats } from '../data/portfolio';
 }`}
     </pre>
   </div>
-  
+
   <div class="mt-6 mb-4">
     <span class="terminal-prompt">visitor@portfolio</span>
     <span style="color: var(--terminal-text-dim);">:</span>

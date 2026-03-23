@@ -1,11 +1,39 @@
 ---
-import { personal, projects, skills, experience, stats } from '../data/portfolio';
+import { personal } from '../data/portfolio';
 
 const currentYear = new Date().getFullYear();
 const username = personal.name.toLowerCase().replace(' ', '');
 ---
 
-<footer class="mt-8 pt-6" style="border-top: 1px solid var(--terminal-border);">
+<!-- ===== PROFESSIONAL FOOTER ===== -->
+<footer class="pro-footer pro-only">
+  <div class="pro-footer-inner">
+    <div>
+      <span class="pro-footer-name">{personal.name}</span>
+      <p class="pro-footer-copy" style="margin-top:4px;">{personal.role}</p>
+    </div>
+    <div style="display:flex; align-items:center; gap:16px;">
+      {personal.social.github && (
+        <a href={personal.social.github} target="_blank" rel="noopener noreferrer"
+          style="font-size:13px; font-weight:500; color:var(--pro-text-subtle); text-decoration:none; transition:color 0.15s;"
+          onmouseover="this.style.color='var(--pro-text)'" onmouseout="this.style.color='var(--pro-text-subtle)'">
+          GitHub
+        </a>
+      )}
+      {personal.social.linkedin && (
+        <a href={personal.social.linkedin} target="_blank" rel="noopener noreferrer"
+          style="font-size:13px; font-weight:500; color:var(--pro-text-subtle); text-decoration:none; transition:color 0.15s;"
+          onmouseover="this.style.color='var(--pro-text)'" onmouseout="this.style.color='var(--pro-text-subtle)'">
+          LinkedIn
+        </a>
+      )}
+      <span class="pro-footer-copy">© {currentYear}</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== TERMINAL FOOTER ===== -->
+<footer class="mt-8 pt-6 terminal-only" style="border-top: 1px solid var(--terminal-border);">
   <div class="mb-4">
     <span class="terminal-prompt">system@portfolio</span>
     <span style="color: var(--terminal-text-dim);">:</span>
@@ -14,17 +42,17 @@ const username = personal.name.toLowerCase().replace(' ', '');
     <span class="terminal-command"> echo</span>
     <span style="color: var(--terminal-string);"> "Thanks for visiting!"</span>
   </div>
-  
+
   <div class="command-block" style="padding: 12px;">
     <div style="color: var(--terminal-success);">
       Thanks for visiting!
     </div>
   </div>
-  
+
   <div style="color: var(--terminal-text);">
     Portfolio {currentYear} | All rights reserved
   </div>
-  
+
   <div class="mt-6 pt-4" style="border-top: 1px dashed var(--terminal-border);">
     <div class="flex items-center gap-2">
       <span class="terminal-prompt">{username}@portfolio</span>
@@ -35,4 +63,3 @@ const username = personal.name.toLowerCase().replace(' ', '');
     </div>
   </div>
 </footer>
-

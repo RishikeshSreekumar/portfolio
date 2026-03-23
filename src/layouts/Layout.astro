@@ -21,7 +21,7 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="dark professional-mode">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -61,9 +61,11 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
     <meta name="twitter:creator" content="@rishikesh_s_18" />
 
     <script is:inline>
-      const theme = localStorage.getItem('theme') || 
+      const theme = localStorage.getItem('theme') ||
         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.classList.toggle('dark', theme === 'dark');
+      const savedMode = localStorage.getItem('portfolioMode') || 'professional';
+      document.documentElement.classList.toggle('professional-mode', savedMode === 'professional');
     </script>
   </head>
   <body class="min-h-screen crt-effect" style="background: var(--terminal-bg);">
