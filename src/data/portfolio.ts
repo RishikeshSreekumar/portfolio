@@ -91,6 +91,16 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: "deadfall",
+    title: "deadfall — Dead Component Detector for React/Next.js",
+    description: "An open-source CLI dev tool that statically maps React and Next.js component usage and surfaces dead, unused components as a dependency graph. Parses the codebase with ts-morph, builds an import/usage graph, and renders an interactive Cytoscape visualization so teams can find and prune orphaned components. Supports the Next.js App Router. Published on npm.",
+    highlight: "Static analysis with ts-morph builds a full component dependency graph and flags unreachable components — interactive Cytoscape visualization, App Router aware, installable from npm.",
+    tags: ["TypeScript", "Node.js", "CLI", "ts-morph", "Cytoscape", "Static Analysis"],
+    liveUrl: "https://www.npmjs.com/package/deadfall",
+    githubUrl: "https://github.com/RishikeshSreekumar/deadfall",
+    featured: true,
+  },
+  {
     id: "rubiks-cube-solver",
     title: "Rubik's Cube Solver",
     description: "A web application to solve Rubik's Cube using algorithms. Enables users to solve the cube by feeding the current state and visualizing the step-by-step solution in an interactive 3D view.",
