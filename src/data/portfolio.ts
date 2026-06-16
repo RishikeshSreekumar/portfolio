@@ -21,12 +21,6 @@ export interface Education {
   highlights: string[];
 }
 
-export interface Stat {
-  label: string;
-  value: string;
-  icon: string;
-}
-
 export interface Project {
   id: string;
   title: string;
@@ -40,8 +34,8 @@ export interface Project {
 
 export interface Skill {
   name: string;
-  level: number;
-  category: 'Frontend' | 'Backend' | 'Database' | 'DevOps' | 'Tools' | 'Languages';
+  category: 'Frontend' | 'AI/ML' | 'Backend' | 'Database' | 'DevOps' | 'Tools' | 'Languages';
+  url?: string;
 }
 
 export interface Experience {
@@ -62,10 +56,10 @@ export const personal: PersonalInfo = {
   experience: "3+ years",
   bio: "IIT Madras graduate and Founding Engineer at Mando — I build AI-powered enterprise products from zero to production. I've shipped natural language search over enterprise knowledge bases, workflow automation tools, and service management platforms. Previously at Quantitative Brokers, where I cut application load time from 40s to under 1s and reduced trading system latency by 20%. I work across the full stack: Next.js, FastAPI, PostgreSQL, Terraform — and I move fast without breaking things.",
   aboutParagraphs: [
-    "I'm a founding software engineer at Mando, building AI-powered enterprise products from the ground up. I graduated from IIT Madras with a B.Tech in Engineering Design — a programme that blends systems thinking, applied mathematics, and human-centred design. That combination of analytical rigour and product intuition shapes how I approach every engineering problem.",
-    "My focus is the intersection of AI and full-stack engineering — building systems where large language models meet real enterprise workflows. At Mando I've shipped natural language search over Workday's knowledge base, a Chrome extension that auto-generates documentation from recorded workflows, and a Stripe-integrated billing platform. Before that, at Quantitative Brokers, I worked on high-throughput trading systems — cutting one application's load time from 40 seconds to under one second and reducing trading system latency by 20%.",
-    "Right now I'm deepening my work in multi-agent architectures and making LLM-powered workflows more reliable and cost-efficient at scale. I also enjoy the infrastructure side — I manage cloud environments with Terraform and care about the reproducibility it brings to deployments.",
-    "Outside work, I follow cricket closely — it's part of why the IPL Scenario Builder is one of my favourite side projects. I'm drawn to problems where data and real-world intuition intersect, whether that's sports analytics or financial systems.",
+    "I'm a <strong>founding software engineer at Mando</strong>, building AI-powered enterprise products from the ground up. I graduated from <strong>IIT Madras</strong> with a B.Tech in Engineering Design — a programme that blends systems thinking, applied mathematics, and human-centred design. That combination of analytical rigour and product intuition shapes how I approach every engineering problem.",
+    "My focus is the <strong>intersection of AI and full-stack engineering</strong> — building systems where large language models meet real enterprise workflows. At Mando I've shipped <strong>natural language search over Workday's knowledge base</strong>, a Chrome extension that auto-generates documentation from recorded workflows, and a Stripe-integrated billing platform. Before that, at Quantitative Brokers, I worked on high-throughput trading systems — cutting one application's load time from <strong>40 seconds to under one second</strong> and reducing trading system latency by <strong>20%</strong>.",
+    "Right now I'm deepening my work in <strong>multi-agent architectures</strong> and making LLM-powered workflows more <strong>reliable and cost-efficient at scale</strong>. I also enjoy the infrastructure side — I manage cloud environments with Terraform and care about the reproducibility it brings to deployments.",
+    "Outside work, I follow cricket closely — it's part of why the <strong>IPL Scenario Builder</strong> is one of my favourite side projects. I'm drawn to problems where <strong>data and real-world intuition intersect</strong>, whether that's sports analytics or financial systems.",
   ],
   social: {
     github: "https://github.com/RishikeshSreekumar",
@@ -73,13 +67,6 @@ export const personal: PersonalInfo = {
     cal: "https://cal.com/rishikesh-s",
   }
 };
-
-export const stats: Stat[] = [
-  { label: "load_time_reduced", value: "40s → <1s", icon: "►" },
-  { label: "latency_improvement", value: "-20%", icon: "►" },
-  { label: "order_throughput", value: "200/sec", icon: "►" },
-  { label: "products_shipped", value: "4+", icon: "►" },
-];
 
 export const projects: Project[] = [
   {
@@ -112,30 +99,39 @@ export const projects: Project[] = [
 ];
 
 export const skills: Skill[] = [
-  { name: "JavaScript", level: 92, category: "Frontend" },
-  { name: "TypeScript", level: 90, category: "Frontend" },
-  { name: "React", level: 88, category: "Frontend" },
-  { name: "Next.js", level: 90, category: "Frontend" },
-  { name: "Angular", level: 80, category: "Frontend" },
-  { name: "Tailwind CSS", level: 90, category: "Frontend" },
-  { name: "HTML/CSS", level: 92, category: "Frontend" },
-  { name: "Python", level: 90, category: "Backend" },
-  { name: "FastAPI", level: 88, category: "Backend" },
-  { name: "Node.js", level: 85, category: "Backend" },
-  { name: "NestJS", level: 75, category: "Backend" },
-  { name: "Java", level: 70, category: "Backend" },
-  { name: "PostgreSQL", level: 88, category: "Database" },
-  { name: "MongoDB", level: 75, category: "Database" },
-  { name: "Redis", level: 68, category: "Database" },
-  { name: "Terraform", level: 80, category: "DevOps" },
-  { name: "Docker", level: 78, category: "DevOps" },
-  { name: "AWS", level: 75, category: "DevOps" },
-  { name: "CI/CD", level: 80, category: "DevOps" },
-  { name: "Git", level: 90, category: "Tools" },
-  { name: "Stripe", level: 80, category: "Tools" },
-  { name: "LLMs", level: 82, category: "Tools" },
-  { name: "Shell Scripting", level: 78, category: "Tools" },
-  { name: "Alembic", level: 75, category: "Tools" },
+  { name: "TypeScript", category: "Frontend", url: "https://www.typescriptlang.org/" },
+  { name: "React", category: "Frontend", url: "https://react.dev/" },
+  { name: "Next.js", category: "Frontend", url: "https://nextjs.org/" },
+  { name: "Tailwind CSS", category: "Frontend", url: "https://tailwindcss.com/" },
+  { name: "Angular", category: "Frontend", url: "https://angular.dev/" },
+  { name: "JavaScript", category: "Frontend", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
+  { name: "LLMs", category: "AI/ML", url: "https://platform.openai.com/docs" },
+  { name: "Multi-Agent Systems", category: "AI/ML", url: "https://langchain-ai.github.io/langgraph/" },
+  { name: "RAG", category: "AI/ML" },
+  { name: "LangGraph", category: "AI/ML", url: "https://langchain-ai.github.io/langgraph/" },
+  { name: "Model Context Protocol", category: "AI/ML", url: "https://modelcontextprotocol.io/" },
+  { name: "Anthropic / OpenAI APIs", category: "AI/ML", url: "https://docs.anthropic.com/" },
+  { name: "Vector Search", category: "AI/ML", url: "https://github.com/pgvector/pgvector" },
+  { name: "Python", category: "Backend", url: "https://www.python.org/" },
+  { name: "FastAPI", category: "Backend", url: "https://fastapi.tiangolo.com/" },
+  { name: "Node.js", category: "Backend", url: "https://nodejs.org/" },
+  { name: "NestJS", category: "Backend", url: "https://nestjs.com/" },
+  { name: "SQLAlchemy", category: "Backend", url: "https://www.sqlalchemy.org/" },
+  { name: "Java", category: "Backend", url: "https://www.java.com/" },
+  { name: "PostgreSQL", category: "Database", url: "https://www.postgresql.org/" },
+  { name: "Neon", category: "Database", url: "https://neon.tech/" },
+  { name: "pgvector", category: "Database", url: "https://github.com/pgvector/pgvector" },
+  { name: "Redis", category: "Database", url: "https://redis.io/" },
+  { name: "MongoDB", category: "Database", url: "https://www.mongodb.com/" },
+  { name: "Terraform", category: "DevOps", url: "https://www.terraform.io/" },
+  { name: "Docker", category: "DevOps", url: "https://www.docker.com/" },
+  { name: "AWS", category: "DevOps", url: "https://aws.amazon.com/" },
+  { name: "CI/CD", category: "DevOps", url: "https://docs.github.com/en/actions" },
+  { name: "Vercel", category: "DevOps", url: "https://vercel.com/" },
+  { name: "Git", category: "Tools", url: "https://git-scm.com/" },
+  { name: "Stripe", category: "Tools", url: "https://stripe.com/" },
+  { name: "Shell Scripting", category: "Tools", url: "https://www.gnu.org/software/bash/manual/" },
+  { name: "Alembic", category: "Tools", url: "https://alembic.sqlalchemy.org/" },
 ];
 
 export const experience: Experience[] = [

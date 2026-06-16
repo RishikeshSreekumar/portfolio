@@ -2,100 +2,38 @@
 import { experience } from '../data/portfolio';
 ---
 
-<!-- ===== PROFESSIONAL EXPERIENCE ===== -->
-<section id="experience" class="pro-section pro-only">
-  <div class="pro-container">
-    <div class="pro-section-header">
-      <p class="pro-section-label">Experience</p>
-      <h2 class="pro-section-title">Work history</h2>
+<section class="section" id="experience">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <span class="mlabel"><span class="ac">02</span> — experience</span>
+      <h2 class="section-title">Work history</h2>
     </div>
-
-    <div class="pro-timeline">
-      {experience.map((exp, index) => (
-        <div class="pro-timeline-item">
-          <div class="pro-timeline-date">{exp.period}</div>
-          <div class="pro-timeline-content">
-            <div class="pro-timeline-role">{exp.role}</div>
-            <div class="pro-timeline-company">{exp.company}</div>
-            <div class="pro-timeline-desc">{exp.description}</div>
-            {exp.highlights.length > 0 && (
-              <div class="pro-timeline-highlights">
-                {exp.highlights.map((h) => (
-                  <div class="pro-timeline-highlight">
-                    <span class="pro-timeline-highlight-dot">›</span>
-                    <span>{h}</span>
-                  </div>
-                ))}
+    <div class="xp">
+      {experience.map((exp) => {
+        const present = /present|now/i.test(exp.period);
+        return (
+          <article class="xp-item reveal">
+            <div class="xp-when">
+              {present ? (
+                <Fragment><span class="now">Present</span><span class="dur">{exp.period}</span></Fragment>
+              ) : (
+                exp.period
+              )}
+            </div>
+            <div>
+              <h3 class="xp-role">{exp.role}</h3>
+              <div class="xp-co">{exp.company}</div>
+              <p class="xp-summary">{exp.description}</p>
+              <ul class="xp-list">
+                {exp.highlights.map((h) => <li>{h}</li>)}
+              </ul>
+              <div class="tags">
+                {exp.tags.map((tag) => <span class="tag">{tag}</span>)}
               </div>
-            )}
-            <div class="pro-timeline-tags">
-              {exp.tags.map((tag) => (
-                <span class="pro-tag">{tag}</span>
-              ))}
             </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-<!-- ===== TERMINAL EXPERIENCE ===== -->
-<section id="experience" class="mb-12 terminal-only">
-  <hr class="section-divider" />
-
-  <div class="mb-4">
-    <span class="terminal-prompt">visitor@portfolio</span>
-    <span style="color: var(--terminal-text-dim);">:</span>
-    <span style="color: var(--terminal-blue);">~</span>
-    <span style="color: var(--terminal-text-dim);">$</span>
-    <span class="terminal-command"> cat experience.log</span>
-  </div>
-
-  <div class="command-block">
-    <div style="color: var(--terminal-yellow); margin-bottom: 12px;">
-      ## Work Experience
-    </div>
-
-    <div class="space-y-8">
-      {experience.map((exp, index) => (
-        <div class="border-l-2 pl-4" style={`border-color: ${index === 0 ? 'var(--terminal-green)' : 'var(--terminal-cyan)'};`}>
-          <div class="flex flex-wrap items-baseline gap-2 mb-1">
-            <span style={`color: ${index === 0 ? 'var(--terminal-green)' : 'var(--terminal-cyan)'}; font-weight: 600; font-size: 15px;`}>
-              {exp.role}
-            </span>
-            <span style="color: var(--terminal-text-dim);">@</span>
-            <span style="color: var(--terminal-yellow); font-weight: 500;">
-              {exp.company}
-            </span>
-          </div>
-
-          <div class="mb-3" style="color: var(--terminal-comment); font-size: 13px;">
-            {exp.period}
-          </div>
-
-          <div class="mb-3" style="color: var(--terminal-text);">
-            {exp.description}
-          </div>
-
-          {exp.highlights.length > 0 && (
-            <div class="ml-2 space-y-1 mb-3">
-              {exp.highlights.map((highlight) => (
-                <div class="flex gap-2" style="color: var(--terminal-text);">
-                  <span style="color: var(--terminal-green); flex-shrink: 0;">▸</span>
-                  <span>{highlight}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div class="flex flex-wrap gap-2">
-            {exp.tags.map((tag) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-        </div>
-      ))}
+          </article>
+        );
+      })}
     </div>
   </div>
 </section>

@@ -1,100 +1,31 @@
 ---
-import { personal, stats } from '../data/portfolio';
-const { aboutParagraphs } = personal;
+import { personal } from '../data/portfolio';
 
-const statLabels: Record<string, string> = {
-  load_time_reduced: 'Load time reduced',
-  latency_improvement: 'Latency improvement',
-  order_throughput: 'Order throughput',
-  products_shipped: 'Products shipped',
-};
+const side = [
+  { k: 'role', v: 'Founding Engineer', ac: true },
+  { k: 'company', v: 'Mando', ac: false },
+  { k: 'education', v: 'IIT Madras', ac: false },
+  { k: 'focus', v: 'AI · Full-stack', ac: false },
+  { k: 'location', v: personal.location, ac: false },
+  { k: 'status', v: 'open_to_talk', ac: true },
+];
 ---
 
-<!-- ===== PROFESSIONAL ABOUT ===== -->
-<section id="about" class="pro-section pro-only">
-  <div class="pro-container">
-    <div class="pro-section-header">
-      <p class="pro-section-label">About</p>
-      <h2 class="pro-section-title">Who I am</h2>
+<section class="section" id="about">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <span class="mlabel"><span class="ac">01</span> — about</span>
+      <h2 class="section-title">Who I am</h2>
     </div>
-
-    <div style="display:grid; grid-template-columns:1fr; gap:48px;">
-      <div style="display:flex; flex-direction:column; gap:16px; max-width:680px;">
-        {aboutParagraphs.map((para) => (
-          <p style="font-size:16px; line-height:1.75; color:var(--pro-text-muted);">
-            {para}
-          </p>
-        ))}
+    <div class="about-grid">
+      <div class="about-prose reveal">
+        {personal.aboutParagraphs.map((para) => <p set:html={para} />)}
       </div>
-
-      <div class="pro-stats-grid">
-        {stats.map((stat) => (
-          <div class="pro-stat-card">
-            <div class="pro-stat-value">{stat.value}</div>
-            <div class="pro-stat-label">{statLabels[stat.label] ?? stat.label.replace(/_/g, ' ')}</div>
-          </div>
+      <aside class="about-side reveal">
+        {side.map((row) => (
+          <div class="row"><span class="k">{row.k}</span><span class={row.ac ? 'v ac' : 'v'}>{row.v}</span></div>
         ))}
-      </div>
+      </aside>
     </div>
-  </div>
-</section>
-
-<!-- ===== TERMINAL ABOUT ===== -->
-<section id="about" class="mb-12 terminal-only">
-  <hr class="section-divider" />
-
-  <div class="mb-4">
-    <span class="terminal-prompt">visitor@portfolio</span>
-    <span style="color: var(--terminal-text-dim);">:</span>
-    <span style="color: var(--terminal-blue);">~</span>
-    <span style="color: var(--terminal-text-dim);">$</span>
-    <span class="terminal-command"> cat about.md</span>
-  </div>
-
-  <div class="command-block">
-    <div style="color: var(--terminal-yellow); margin-bottom: 8px;">
-      ## About Me
-    </div>
-    <div style="display:flex; flex-direction:column; gap:12px;">
-      {aboutParagraphs.map((para) => (
-        <p style="color: var(--terminal-text);">
-          {para}
-        </p>
-      ))}
-    </div>
-  </div>
-
-  <div class="mt-6 mb-4">
-    <span class="terminal-prompt">visitor@portfolio</span>
-    <span style="color: var(--terminal-text-dim);">:</span>
-    <span style="color: var(--terminal-blue);">~</span>
-    <span style="color: var(--terminal-text-dim);">$</span>
-    <span class="terminal-command"> cat stats.json</span>
-  </div>
-
-  <div class="command-block">
-    <pre style="color: var(--terminal-text);">
-{`{
-  "developer_stats": {`}
-    </pre>
-    <div class="ml-4">
-      {stats.map((stat) => (
-        <div style="color: var(--terminal-text);">
-          <span style="color: var(--terminal-cyan);">{stat.icon} "{stat.label}"</span>: <span style="color: var(--terminal-green);">"{stat.value}"</span>,
-        </div>
-      ))}
-    </div>
-    <pre style="color: var(--terminal-text);">
-{`  }
-}`}
-    </pre>
-  </div>
-
-  <div class="mt-6 mb-4">
-    <span class="terminal-prompt">visitor@portfolio</span>
-    <span style="color: var(--terminal-text-dim);">:</span>
-    <span style="color: var(--terminal-blue);">~</span>
-    <span style="color: var(--terminal-text-dim);">$</span>
-    <span class="terminal-comment"> # Want to know more? Keep scrolling!</span>
   </div>
 </section>

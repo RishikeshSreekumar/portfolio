@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css'
-import TerminalWindow from '../components/TerminalWindow.astro';
 
 interface Props {
   title: string;
@@ -21,7 +20,7 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
 ---
 
 <!doctype html>
-<html lang="en" class="dark professional-mode">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,7 +38,11 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
     <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
     <link rel="icon" type="image/x-icon" href={`${baseUrl}/favicon.ico`} />
     <link rel="apple-touch-icon" href={`${baseUrl}/favicon.svg`} />
-    <meta name="theme-color" content="#0a0e17" />
+    <meta name="theme-color" content="#FCFCFB" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -59,40 +62,183 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:creator" content="@rishikesh_s_18" />
+  </head>
+  <body id="top">
+    <slot />
+
+    <!-- TERMINAL OVERLAY -->
+    <div class="term-overlay" id="termOverlay">
+      <div class="term">
+        <div class="term-bar"><span class="d r" id="termClose"></span><span class="d y"></span><span class="d g"></span><span class="t">rishikesh@portfolio — interactive · type 'help'</span></div>
+        <div class="term-body" id="termBody">
+          <div class="out">Welcome. Type <span class="k">help</span> to see available commands. <span class="cmt"># esc to close</span></div>
+        </div>
+        <div style="padding: 4px 18px 18px; font-family: var(--mono); font-size: 13px; display:flex; gap:8px; align-items:center; background:#0E1110;">
+          <span style="color:#6B746A;">rishikesh@portfolio:~$</span>
+          <input class="term-input" id="termInput" autocomplete="off" spellcheck="false" />
+        </div>
+      </div>
+    </div>
 
     <script is:inline>
-      const theme = localStorage.getItem('theme') ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.toggle('dark', theme === 'dark');
-      const savedMode = localStorage.getItem('portfolioMode') || 'professional';
-      document.documentElement.classList.toggle('professional-mode', savedMode === 'professional');
-    </script>
-  </head>
-  <body class="min-h-screen crt-effect" style="background: var(--terminal-bg);">
-    <div class="scanline"></div>
-    <TerminalWindow>
-      <slot />
-    </TerminalWindow>
-    <button 
-      id="scroll-top"
-      class="scroll-indicator"
-      style="display: none; background: var(--terminal-surface); border: 1px solid var(--terminal-border); padding: 8px 12px; color: var(--terminal-cyan); cursor: pointer;"
-      aria-label="Scroll to top"
-    >
-      ↑ top
-    </button>
-    <script is:inline>
-      const scrollTopBtn = document.getElementById('scroll-top');
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-          scrollTopBtn.style.display = 'block';
+      (function () {
+        /* ---- scroll reveal ---- */
+        var reveals = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+          reveals.forEach(function (el) { io.observe(el); });
         } else {
-          scrollTopBtn.style.display = 'none';
+          reveals.forEach(function (el) { el.classList.add('in'); });
         }
-      });
-      scrollTopBtn?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+
+        /* ---- mobile menu ---- */
+        var menuBtn = document.getElementById('menuBtn');
+        if (menuBtn) menuBtn.addEventListener('click', function () { window.location.hash = '#contact'; });
+
+        /* ---- hero terminal typewriter ---- */
+        var heroLines = [
+          { t: 'pl', html: 'whoami' },
+          { t: 'out', html: 'Rishikesh S — Founding Software Engineer @ Mando' },
+          { t: 'pl', html: 'cat stack.txt' },
+          { t: 'out', html: '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Terraform</span> · <span class="k">LLMs</span>' },
+          { t: 'pl', html: 'git log --oneline -3' },
+          { t: 'out', html: 'a1f9c2 nl-search over Workday knowledge base' },
+          { t: 'out', html: '7d3e0b cut load time 40s &rarr; &lt;1s' },
+          { t: 'out', html: 'c08a14 latency &minus;20%, cpu &minus;50%' },
+          { t: 'pl', html: 'echo $STATUS' },
+          { t: 'out', html: '<span class="k">open to interesting conversations</span> ✓' }
+        ];
+        var heroTerm = document.getElementById('heroTerm');
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function renderHeroInstant() {
+          heroTerm.innerHTML = heroLines.map(function (l) {
+            return '<div class="' + l.t + '">' + l.html + '</div>';
+          }).join('') + '<div class="pl"><span class="term-cursor"></span></div>';
+        }
+
+        function typeHero() {
+          var i = 0;
+          function next() {
+            if (i >= heroLines.length) {
+              var c = document.createElement('div'); c.className = 'pl';
+              c.innerHTML = '<span class="term-cursor"></span>';
+              heroTerm.appendChild(c);
+              return;
+            }
+            var l = heroLines[i];
+            var div = document.createElement('div');
+            div.className = l.t;
+            heroTerm.appendChild(div);
+            if (l.t === 'pl') {
+              var full = l.html, j = 0;
+              div.innerHTML = '';
+              (function typeChar() {
+                div.innerHTML = full.slice(0, j) + '<span class="term-cursor"></span>';
+                j++;
+                if (j <= full.length) { setTimeout(typeChar, 34); }
+                else { div.innerHTML = full; i++; setTimeout(next, 240); }
+              })();
+            } else {
+              div.innerHTML = l.html; i++; setTimeout(next, 160);
+            }
+          }
+          next();
+        }
+
+        if (heroTerm) {
+          if (reduceMotion) renderHeroInstant();
+          else {
+            var started = false;
+            setTimeout(function () { if (!started) { started = true; typeHero(); } }, 500);
+          }
+        }
+
+        /* ---- interactive terminal overlay ---- */
+        var overlay = document.getElementById('termOverlay');
+        var body = document.getElementById('termBody');
+        var input = document.getElementById('termInput');
+
+        function openTerm() {
+          overlay.classList.add('open');
+          setTimeout(function () { input && input.focus(); }, 40);
+        }
+        function closeTerm() { overlay.classList.remove('open'); }
+
+        ['termOpen', 'termOpen2'].forEach(function (id) {
+          var b = document.getElementById(id);
+          if (b) b.addEventListener('click', openTerm);
+        });
+        var tc = document.getElementById('termClose');
+        if (tc) tc.addEventListener('click', closeTerm);
+        if (overlay) overlay.addEventListener('click', function (e) { if (e.target === overlay) closeTerm(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeTerm(); });
+
+        var commands = {
+          help: function () {
+            return 'available commands:\n' +
+              '  <span class="k">about</span>       who I am\n' +
+              '  <span class="k">experience</span>  work history\n' +
+              '  <span class="k">projects</span>    things I\'ve built\n' +
+              '  <span class="k">skills</span>       tech stack\n' +
+              '  <span class="k">contact</span>      get in touch\n' +
+              '  <span class="k">stack</span>        current stack\n' +
+              '  <span class="k">goto</span> [sec]   scroll to a section\n' +
+              '  <span class="k">clear</span>        clear the screen';
+          },
+          about: function () { return 'Founding Software Engineer @ Mando. IIT Madras grad. I build AI-powered\nenterprise products end to end — from LLM workflows to infrastructure.'; },
+          experience: function () { return 'Mando — Founding SWE (Sep 2024 → now)\nQuantitative Brokers — Software Engineer (Jul 2022 → Sep 2024)\nQuantitative Brokers — SWE Intern (May 2021 → Jul 2021)\n<span class="cmt"># run `goto experience` for details</span>'; },
+          projects: function () { return 'IPL FanPark — scenario builder & prediction engine\ndeadfall — dead component detector (open source · npm)\nRubik\'s Cube Solver — Kociemba two-phase, 3D via Three.js\n<span class="cmt"># run `goto projects` for details</span>'; },
+          skills: function () { return 'frontend  Next.js, React, TypeScript, Tailwind\nbackend   Python, FastAPI, Node.js, NestJS\ndata      PostgreSQL, MongoDB, Redis\ndevops    Terraform, Docker, AWS, CI/CD'; },
+          stack: function () { return '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Terraform</span> · <span class="k">Stripe</span> · <span class="k">LLMs</span>'; },
+          contact: function () { return 'email     rishikeshpavithram@gmail.com\nlocation  India\nstatus    open to interesting conversations\n<span class="cmt"># run `goto contact` to send a message</span>'; },
+          clear: function () { body.innerHTML = ''; return null; }
+        };
+
+        function print(html, cls) {
+          var d = document.createElement('div');
+          d.className = cls || 'out';
+          d.innerHTML = html;
+          body.appendChild(d);
+          body.scrollTop = body.scrollHeight;
+        }
+
+        function run(raw) {
+          var cmd = raw.trim();
+          if (!cmd) return;
+          print('<span style="color:#6B746A;">rishikesh@portfolio:~$</span> ' + cmd.replace(/</g,'&lt;'), 'pl-echo');
+          var parts = cmd.split(/\s+/);
+          var name = parts[0].toLowerCase();
+          if (name === 'goto') {
+            var sec = (parts[1] || '').toLowerCase();
+            var valid = ['about','experience','education','projects','skills','contact'];
+            if (valid.indexOf(sec) >= 0) {
+              print('navigating to <span class="k">~/' + sec + '</span> …');
+              setTimeout(function () { closeTerm(); window.location.hash = '#' + sec; }, 350);
+            } else {
+              print('goto: unknown section. try: ' + valid.join(', '));
+            }
+            return;
+          }
+          var fn = commands[name];
+          if (fn) {
+            var out = fn();
+            if (out !== null) print(out.replace(/\n/g, '<br>'));
+          } else {
+            print('command not found: <span style="color:#E0584E;">' + name.replace(/</g,'&lt;') + '</span>. type <span class="k">help</span>.');
+          }
+        }
+
+        if (input) {
+          input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { run(input.value); input.value = ''; }
+          });
+        }
+      })();
     </script>
   </body>
 </html>
