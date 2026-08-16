@@ -13,13 +13,7 @@ const resumeUrl = `${base}/${personal.resumeFile}`;
       <h1><span class="scramble" data-scramble="Rishikesh S">Rishikesh&nbsp;S</span><span class="dot">.</span></h1>
       <p class="role">{personal.role}</p>
 
-      <p class="hero-body">
-        I build enterprise products end to end — <strong>natural language search</strong> over knowledge
-        bases, ticketing, <strong>video calls</strong>, booking and <strong>Stripe billing</strong> — as the
-        first engineer at Mando. Before that, two years on real-time trading systems at Quantitative
-        Brokers, where I cut one app's load time from <strong>40s to under 1s</strong> and took
-        <strong>20% off order-entry latency</strong>.
-      </p>
+      <p class="hero-body" set:html={personal.bio}></p>
 
       <div class="hero-actions">
         <a href="#projects" class="btn btn-primary">

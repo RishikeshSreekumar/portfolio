@@ -8,6 +8,9 @@
  * text in reading order, which is exactly what an applicant tracking system
  * wants to parse.
  *
+ * The styling (accent rules, tinted header band, square bullets) is vector
+ * fills drawn behind that text, so it costs nothing at parse time.
+ *
  *   node scripts/generate-resume.mjs
  *
  * Output is deterministic (no timestamps), so rebuilding without content
@@ -45,7 +48,6 @@ const W_BOLD = [
   611, 611, 389, 556, 333, 611, 556, 778, 556, 556, 500, 389, 280, 389, 584,
 ];
 
-const BULLET = ''; // WinAnsi 0x95 -> bullet glyph
 const BULLET_W = { regular: 350, bold: 350 };
 
 function charWidth(code, font) {
@@ -107,7 +109,20 @@ const FONT_KEY = { regular: '/F1', bold: '/F2', italic: '/F3' };
 
 /** Body type. Nudge these two to trade density against fitting one page. */
 const BODY = 9.2;
-const LEAD = 11.1;
+const LEAD = 10.9;
+
+/* Palette, lifted from the site's light theme so print and web agree. */
+const INK = [0.07, 0.08, 0.06];
+const SOFT = [0.28, 0.30, 0.26];
+const MUTE = [0.47, 0.50, 0.44];
+const ACCENT = [0.07, 0.54, 0.31]; // #128A4F
+const ACCENT_DK = [0.055, 0.43, 0.25]; // #0E6E3F
+const RULE = [0.84, 0.85, 0.82];
+const BAND = [0.937, 0.965, 0.945];
+
+const HEADER_H = 92;
+
+const rgb = (c) => `${c[0]} ${c[1]} ${c[2]}`;
 
 const overflows = [];
 
@@ -133,13 +148,16 @@ class Resume {
   }
 
   /** Draw one line of text. Returns the drawn width. */
-  draw(text, { x = MARGIN_X, size = BODY, font = 'regular', align = 'left', gray = 0, link } = {}) {
+  draw(
+    text,
+    { x = MARGIN_X, y = this.y, size = BODY, font = 'regular', align = 'left', color = INK, tracking = 0, link } = {}
+  ) {
     const clean = ascii(text);
-    const width = measure(clean, size, font);
+    const width = measure(clean, size, font) + tracking * clean.length;
     const drawX = align === 'right' ? RIGHT - width : x;
     this.ops.push(
-      `BT ${gray ? `${gray} ${gray} ${gray} rg` : '0 0 0 rg'} ${FONT_KEY[font]} ${size} Tf ` +
-        `1 0 0 1 ${drawX.toFixed(2)} ${this.y.toFixed(2)} Tm (${escapePdf(clean)}) Tj ET`
+      `BT ${rgb(color)} rg ${FONT_KEY[font]} ${size} Tf ${tracking} Tc ` +
+        `1 0 0 1 ${drawX.toFixed(2)} ${y.toFixed(2)} Tm (${escapePdf(clean)}) Tj ET 0 Tc`
     );
     if (drawX + width > RIGHT + 0.5) {
       overflows.push(`${clean.slice(0, 48)} (+${(drawX + width - RIGHT).toFixed(0)}pt)`);
@@ -147,27 +165,35 @@ class Resume {
     if (link) {
       this.links.push({
         url: link,
-        rect: [drawX - 1, this.y - 2.5, drawX + width + 1, this.y + size * 0.86],
+        rect: [drawX - 1, y - 2.5, drawX + width + 1, y + size * 0.86],
       });
     }
     return width;
   }
 
-  rule(gray = 0.72) {
+  /** Filled rectangle, drawn from its lower-left corner. */
+  rect(x, y, w, h, color) {
+    this.ops.push(`${rgb(color)} rg ${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f`);
+  }
+
+  rule({ y = this.y, x = MARGIN_X, to = RIGHT, color = RULE, weight = 0.6 } = {}) {
     this.ops.push(
-      `${gray} ${gray} ${gray} RG 0.6 w ${MARGIN_X} ${this.y.toFixed(2)} m ${RIGHT} ${this.y.toFixed(2)} l S`
+      `${rgb(color)} RG ${weight} w ${x.toFixed(2)} ${y.toFixed(2)} m ${to.toFixed(2)} ${y.toFixed(2)} l S`
     );
   }
 
   /** Word-wrapped paragraph. */
-  paragraph(text, { size = BODY, font = 'regular', x = MARGIN_X, width = CONTENT_W, leading = LEAD, hang = 0 } = {}) {
+  paragraph(
+    text,
+    { size = BODY, font = 'regular', x = MARGIN_X, width = CONTENT_W, leading = LEAD, hang = 0, color = SOFT } = {}
+  ) {
     const words = ascii(text).split(/\s+/).filter(Boolean);
     let line = '';
     let first = true;
     const flush = () => {
       const lineX = first ? x : x + hang;
       this.ensure(leading);
-      this.draw(line, { x: lineX, size, font });
+      this.draw(line, { x: lineX, size, font, color });
       this.y -= leading;
       first = false;
       line = '';
@@ -185,54 +211,32 @@ class Resume {
     if (line) flush();
   }
 
-  /** Bold label followed by wrapped body text on the same line. */
-  labelled(label, body, { size = BODY, leading = LEAD } = {}) {
-    const labelText = ascii(`${label}: `);
-    const labelW = measure(labelText, size, 'bold');
+  /**
+   * Bold label in a fixed left column, wrapped body beside it. The column keeps
+   * every skill row aligned; the colon stays because parsers look for it.
+   */
+  labelled(label, body, { size = BODY, leading = LEAD, col = 88 } = {}) {
     this.ensure(leading);
-    this.draw(labelText, { size, font: 'bold' });
-
-    const words = ascii(body).split(/\s+/).filter(Boolean);
-    let line = '';
-    let x = MARGIN_X + labelW;
-    let avail = CONTENT_W - labelW;
-    const flush = () => {
-      this.draw(line, { x, size });
-      this.y -= leading;
-      line = '';
-      x = MARGIN_X + 10;
-      avail = CONTENT_W - 10;
-      this.ensure(leading);
-    };
-    for (const word of words) {
-      const candidate = line ? `${line} ${word}` : word;
-      if (line && measure(candidate, size, 'regular') > avail) {
-        flush();
-        line = word;
-      } else {
-        line = candidate;
-      }
-    }
-    if (line) {
-      this.draw(line, { x, size });
-      this.y -= leading;
-    }
+    this.draw(`${label}:`, { size, font: 'bold', color: ACCENT_DK });
+    this.paragraph(body, { size, x: MARGIN_X + col, width: CONTENT_W - col, leading, color: SOFT });
   }
 
   bullet(text, { size = BODY, leading = LEAD } = {}) {
-    const indent = 11;
+    const indent = 12;
     this.ensure(leading);
-    this.draw(BULLET, { x: MARGIN_X + 1.5, size });
+    // A small accent square reads cleaner in print than Helvetica's bullet.
+    this.rect(MARGIN_X + 1.5, this.y + size * 0.28, 3, 3, ACCENT);
     this.paragraph(text, { size, x: MARGIN_X + indent, width: CONTENT_W - indent, leading });
   }
 
-  section(title) {
-    this.space(8);
-    this.ensure(30);
-    this.draw(title.toUpperCase(), { size: 10, font: 'bold' });
-    this.y -= 4.5;
-    this.rule();
-    this.y -= 11.5;
+  section(title, { lead = 9 } = {}) {
+    this.space(lead);
+    this.ensure(34);
+    this.draw(title.toUpperCase(), { size: 8.8, font: 'bold', color: INK, tracking: 1.5 });
+    this.y -= 5;
+    this.rule({ color: RULE });
+    this.rule({ to: MARGIN_X + 30, color: ACCENT, weight: 1.4 });
+    this.y -= 11;
   }
 }
 
@@ -248,15 +252,32 @@ const siteShort = personal.website.replace(/^https?:\/\/(www\.)?/, '');
 
 const doc = new Resume();
 
-/* --- header --- */
-doc.draw(personal.name, { size: 20, font: 'bold' });
+/* --- header ---
+ * A tinted full-bleed band under an accent rule. Everything inside it is still
+ * plain text in reading order (name, role, contacts), so the band is decoration
+ * an ATS never has to understand. */
+doc.rect(0, PAGE_H - HEADER_H, PAGE_W, HEADER_H, BAND);
+doc.rect(0, PAGE_H - 3.4, PAGE_W, 3.4, ACCENT);
+doc.rule({ y: PAGE_H - HEADER_H, x: 0, to: PAGE_W, color: RULE, weight: 0.7 });
+
+doc.y = PAGE_H - 36;
+const nameW = doc.draw(personal.name, { size: 21, font: 'bold', color: INK, tracking: -0.3 });
+doc.draw('.', { x: MARGIN_X + nameW + 1, size: 21, font: 'bold', color: ACCENT });
+
 doc.y -= 15;
-doc.draw(`${personal.role} | ${personal.location}`, { size: 10 });
-doc.y -= 12.5;
+const roleW = doc.draw(personal.role.toUpperCase(), {
+  size: 9,
+  font: 'bold',
+  color: ACCENT_DK,
+  tracking: 1.1,
+});
+doc.draw(`|  ${personal.location}`, { x: MARGIN_X + roleW + 9, size: 9, color: MUTE });
+
+doc.y -= 14;
 
 // Contact rows, laid out inline so each URL gets its own clickable rect.
 {
-  const size = 9;
+  const size = 8.7;
   const rows = [
     [
       { text: personal.email, link: `mailto:${personal.email}` },
@@ -270,22 +291,18 @@ doc.y -= 12.5;
   rows.forEach((row, rowIndex) => {
     let x = MARGIN_X;
     row.forEach((piece, i) => {
-      if (i > 0) x += doc.draw('  |  ', { x, size });
-      x += doc.draw(piece.text, { x, size, link: piece.link });
+      if (i > 0) x += doc.draw('  |  ', { x, size, color: MUTE });
+      x += doc.draw(piece.text, { x, size, color: SOFT, link: piece.link });
     });
     if (rowIndex < rows.length - 1) doc.y -= 11;
   });
 }
-doc.y -= 6;
-doc.rule(0.55);
-doc.y -= 13;
+
+doc.y = PAGE_H - HEADER_H - 18;
 
 /* --- summary --- */
-doc.draw('SUMMARY', { size: 10, font: 'bold' });
-doc.y -= 4.5;
-doc.rule();
-doc.y -= 11.5;
-doc.paragraph(resume.summary);
+doc.section('Summary', { lead: 0 });
+doc.paragraph(resume.summary, { color: SOFT });
 
 /* --- skills --- */
 doc.section('Technical Skills');
@@ -306,46 +323,54 @@ for (const wanted of RESUME_ROLES) {
   const role = experience.find((e) => e.company === wanted.company && e.period === wanted.period);
   if (!role) throw new Error(`resume: no experience entry for ${wanted.company} ${wanted.period}`);
 
-  doc.ensure(40);
-  doc.draw(role.company, { size: 10.6, font: 'bold' });
-  doc.draw(role.period, { size: 9, align: 'right' });
+  doc.ensure(42);
+  doc.draw(role.company, { size: 10.6, font: 'bold', color: INK });
+  doc.draw(role.period, { size: 8.6, align: 'right', color: MUTE, tracking: 0.4 });
   doc.y -= 11.5;
-  doc.draw(`${role.role} | ${role.location}`, { size: 9.6, font: 'italic' });
-  doc.y -= 12;
+  doc.draw(role.role, { size: 9.4, font: 'italic', color: ACCENT_DK });
+  doc.draw(role.location, { size: 8.6, align: 'right', color: MUTE });
+  doc.y -= 11.5;
 
   const bullets = (role.resumeHighlights ?? role.highlights).slice(0, wanted.bullets);
   for (const line of bullets) doc.bullet(line);
-  doc.y -= 3.5;
+  doc.y -= 3;
 }
 
-doc.paragraph(resume.earlier, { size: 9.2 });
+doc.paragraph(resume.earlier, { size: 8.8, color: MUTE });
 
 /* --- projects --- */
 doc.section('Projects');
 for (const project of resume.projects) {
-  doc.ensure(34);
-  const nameW = doc.draw(project.name, { size: 10, font: 'bold' });
+  doc.ensure(36);
+  const projectW = doc.draw(project.name, { size: 10, font: 'bold', color: INK });
   if (project.link) {
-    doc.draw(project.link, { x: MARGIN_X + nameW + 6, size: 8.8, link: `https://${project.link}` });
+    doc.draw(project.link, {
+      x: MARGIN_X + projectW + 8,
+      size: 8.4,
+      color: ACCENT_DK,
+      link: `https://${project.link}`,
+    });
   }
   doc.y -= 11;
-  doc.draw(project.stack, { size: 9, font: 'italic' });
+  doc.draw(project.stack, { size: 8.8, font: 'italic', color: MUTE });
   doc.y -= 11.5;
   for (const line of project.bullets) doc.bullet(line);
-  doc.y -= 3.5;
+  doc.y -= 3;
 }
 
 /* --- education --- */
 doc.section('Education');
 const edu = education[0];
-doc.draw(edu.institution, { size: 10.6, font: 'bold' });
-doc.draw(edu.period, { size: 9, align: 'right' });
+doc.draw(edu.institution, { size: 10.6, font: 'bold', color: INK });
+doc.draw(edu.period, { size: 8.6, align: 'right', color: MUTE, tracking: 0.4 });
 doc.y -= 11.5;
-doc.draw(`${edu.degree} | ${edu.location} | ${edu.grade}`, { size: 9.6 });
-doc.y -= 12;
-doc.paragraph(
-  'Achievements: All India Rank 2275 in JEE Advanced 2018 (top 0.2% of ~1.6 million candidates); All India Rank 5 in KEAM 2018.',
-  { size: 9.2 }
+doc.draw(edu.degree, { size: 9.4, font: 'italic', color: ACCENT_DK });
+doc.draw(`${edu.location}  |  ${edu.grade}`, { size: 8.6, align: 'right', color: MUTE });
+doc.y -= 11.5;
+doc.labelled(
+  'Achievements',
+  'All India Rank 2275 in JEE Advanced 2018 (top 0.2% of ~1.6 million candidates); All India Rank 5 in KEAM 2018.',
+  { size: 8.8 }
 );
 
 /* ------------------------------------------------------------------ *

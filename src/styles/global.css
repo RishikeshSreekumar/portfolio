@@ -370,7 +370,6 @@ h1, h2, h3 { font-family: var(--sans); font-weight: 700; margin: 0; letter-spaci
 .contact-socials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 
 .form-panel { border: 1px solid var(--line); background: var(--panel); border-radius: 11px; padding: 26px; }
-.form-note { font-family: var(--mono); font-size: 11.5px; color: var(--ink-mute); margin: 0 0 18px; display: flex; align-items: center; gap: 8px; }
 form.contact-form { display: grid; gap: 15px; }
 .field label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 7px; }
 .field input, .field textarea { width: 100%; font-family: var(--sans); font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line-2); border-radius: 6px; padding: 12px 14px; transition: border-color .18s, box-shadow .18s; resize: vertical; }
@@ -387,9 +386,12 @@ form .btn-primary { justify-self: start; }
 /* ---------- terminal overlay ---------- */
 .term-overlay { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; background: color-mix(in srgb, var(--ink) 45%, transparent); backdrop-filter: blur(5px); }
 .term-overlay.open { display: flex; animation: fade .18s var(--ease); }
+/* terminal open: page behind stays put */
+body.term-open { overflow: hidden; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 .term-overlay .term { width: min(760px, 100%); }
-.term-overlay .term-body { min-height: 340px; max-height: 68vh; overflow: auto; }
+.term-overlay .term-body { min-height: 340px; max-height: 68vh; overflow: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.term-overlay .term-body::-webkit-scrollbar { width: 0; height: 0; display: none; }
 .term-prompt { padding: 4px 18px 18px; font-family: var(--mono); font-size: 13px; display: flex; gap: 8px; align-items: center; background: var(--term-bg); }
 .term-prompt .ps1 { color: #6B746A; }
 .term-input { width: 100%; background: transparent; border: none; outline: none; color: #3FCB7E; font-family: var(--mono); font-size: 13px; caret-color: #3FCB7E; }

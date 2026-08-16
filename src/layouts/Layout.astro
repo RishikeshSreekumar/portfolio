@@ -264,12 +264,28 @@ const jsonLd = {
 
         /* ---------- hero name scramble ---------- */
         var GLYPHS = '!<>-_\\/[]{}—=+*^?#________';
-        function scramble(el) {
+        var scrambling = false;
+        function scramble(el, opts) {
+          if (scrambling) return;
+          scrambling = true;
+          opts = opts || {};
+          var maxStart = opts.maxStart == null ? 12 : opts.maxStart;
+          var minEnd = opts.minEnd == null ? 12 : opts.minEnd;
+          var span = opts.span == null ? 24 : opts.span;
+          var chance = opts.chance == null ? 1 : opts.chance;
           var target = el.dataset.scramble || el.textContent;
           var frame = 0;
           var queue = [];
           for (var i = 0; i < target.length; i++) {
-            queue.push({ to: target[i], start: Math.floor(Math.random() * 12), end: Math.floor(Math.random() * 24) + 12 });
+            if (Math.random() > chance) {
+              queue.push({ to: target[i], start: 0, end: 0 });
+            } else {
+              queue.push({
+                to: target[i],
+                start: Math.floor(Math.random() * maxStart),
+                end: Math.floor(Math.random() * span) + minEnd,
+              });
+            }
           }
           function tick() {
             var output = '';
@@ -283,14 +299,17 @@ const jsonLd = {
             el.innerHTML = output;
             frame++;
             if (done < queue.length) requestAnimationFrame(tick);
-            else el.textContent = target;
+            else { el.textContent = target; scrambling = false; }
           }
           tick();
         }
         var nameEl = document.querySelector('.scramble');
         if (nameEl && !reduceMotion) {
           scramble(nameEl);
-          nameEl.addEventListener('mouseenter', function () { scramble(nameEl); });
+          /* hover is a light shimmer: half the glyphs, a third of the frames */
+          nameEl.addEventListener('mouseenter', function () {
+            scramble(nameEl, { maxStart: 3, minEnd: 4, span: 5, chance: 0.45 });
+          });
         }
 
         /* ---------- hero terminal typewriter ---------- */
@@ -360,11 +379,31 @@ const jsonLd = {
         var history = [];
         var historyIndex = -1;
 
+        function termOpen() { return overlay && overlay.classList.contains('open'); }
+
+        /* while the terminal is open the caret lives in the input — clicking the
+           body, the chrome or the backdrop never leaves it without focus. */
+        function focusInput() {
+          if (!termOpen() || !input) return;
+          var sel = window.getSelection && window.getSelection().toString();
+          if (sel) return; /* mid text-selection: don't steal it */
+          input.focus();
+        }
+
         function openTerm() {
           overlay.classList.add('open');
-          setTimeout(function () { input && input.focus(); }, 40);
+          document.body.classList.add('term-open');
+          setTimeout(focusInput, 40);
         }
-        function closeTerm() { overlay.classList.remove('open'); }
+        function closeTerm() {
+          overlay.classList.remove('open');
+          document.body.classList.remove('term-open');
+          if (input) input.blur();
+        }
+
+        if (input) input.addEventListener('blur', function () { setTimeout(focusInput, 0); });
+        if (overlay) overlay.addEventListener('mouseup', function () { setTimeout(focusInput, 0); });
+        window.addEventListener('focus', focusInput);
 
         ['termOpen', 'termOpen2'].forEach(function (id) {
           var btn = document.getElementById(id);
@@ -402,8 +441,8 @@ const jsonLd = {
           },
           about: function () {
             return 'Founding software engineer @ Mando. Chemical Engineering, IIT Madras.\n' +
-              'I build enterprise products end to end: search, ticketing, video calls,\n' +
-              'booking, billing. Previously real-time trading systems at QB.';
+              'I own products end to end: API, interface, and everything between.\n' +
+              'Previously two years on real-time trading systems at QB.';
           },
           experience: function () {
             return 'Mando                  founding software engineer   Sep 2024 → now\n' +
@@ -425,7 +464,6 @@ const jsonLd = {
               'youtube_music_lyrics   offline lyrics romanizer · Chrome extension\n' +
               'marvel_nexus           MCU story-dependency graph · Astro\n' +
               'lift_simulation        sky-lobby lift discrete-event sim · Python\n' +
-              'homebrew-tap           my Homebrew tap\n' +
               '<span class="cmt"># github.com/RishikeshSreekumar</span>';
           },
           skills: function () {

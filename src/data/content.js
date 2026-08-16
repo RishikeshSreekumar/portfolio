@@ -13,7 +13,8 @@ export const personal = {
   email: "rishikeshpavithram@gmail.com",
   status: "Building at Mando",
   experience: "3+ years",
-  bio: "Founding engineer at Mando. I build enterprise products end to end — search over knowledge bases, ticketing, video calls, booking, billing — and I ship them. Before that, two years on real-time trading systems at Quantitative Brokers, where I cut one app's load time from 40 seconds to under one and took 20% off order-entry latency. Chemical Engineering at IIT Madras; software won anyway.",
+  /** Rendered as HTML in the hero — <strong> allowed. Keep it plain-English and generic. */
+  bio: "I'm a software engineer who likes <strong>owning a product end to end</strong> — the API, the interface, and everything that has to work between them. Right now I'm the <strong>founding engineer at Mando</strong>, taking things from an empty repository to something enterprise customers pay for. Before that, two years on <strong>real-time trading systems</strong>, where being slow was the same as being wrong.",
   aboutParagraphs: [
     "I'm a <strong>founding engineer at Mando</strong>, where I've taken products from an empty repository to something customers pay for. I studied <strong>Chemical Engineering at IIT Madras</strong>, which taught me to think in systems, flows and balances long before I thought in APIs. Somewhere between a process simulation assignment and a hostel-room Android app, software won.",
     "At Mando I own product surfaces end to end. <strong>Natural language search</strong> over Workday's knowledge base. A <strong>ticketing platform</strong> for expert-led support. <strong>Video calls</strong> between customers and experts, the <strong>booking flow</strong> that puts them on a calendar, and the <strong>Stripe billing</strong> that charges for all of it. A browser-based <strong>video and image editor</strong> for session media. A Chrome extension that watches a workflow once and writes the documentation for it.",
@@ -32,9 +33,9 @@ export const personal = {
 /** Headline numbers for the hero strip. `value` is what the count-up counts to. */
 export const stats = [
   { label: "years shipping", value: 3, suffix: "+" },
-  { label: "msgs/sec monitored", value: 200, suffix: "/s" },
-  { label: "latency cut", value: 20, prefix: "−", suffix: "%" },
-  { label: "cpu freed", value: 50, prefix: "−", suffix: "%" },
+  { label: "products 0 to launch", value: 5, suffix: "+" },
+  { label: "open source tools", value: 4 },
+  { label: "languages in production", value: 6 },
 ];
 
 export const experience = [
@@ -245,22 +246,6 @@ export const openSource = [
       "Discrete-event simulation of sky-lobby lift systems. BFS routing across banks, collective-control dispatch, transfers modelled as real waits — then measured against an unrestricted baseline fleet.",
     url: "https://github.com/RishikeshSreekumar/lift_simulation",
   },
-  {
-    name: "homebrew-tap",
-    repo: "homebrew-tap",
-    lang: "Ruby",
-    description:
-      "My Homebrew tap. `brew install RishikeshSreekumar/tap/leak` and you're running the thing thirty seconds later.",
-    url: "https://github.com/RishikeshSreekumar/homebrew-tap",
-  },
-  {
-    name: "This portfolio",
-    repo: "portfolio",
-    lang: "Astro",
-    description:
-      "Astro, zero client frameworks, hand-written CSS. The resume PDF you can download is generated from the same data file that renders this page.",
-    url: "https://github.com/RishikeshSreekumar/portfolio",
-  },
 ];
 
 export const skills = [
@@ -317,7 +302,7 @@ export const skills = [
  */
 export const resume = {
   summary:
-    "Founding software engineer with 3+ years shipping production systems end to end. First engineer at Mando, building natural language search, service management, video calling, booking and Stripe billing for enterprise customers. Previously cut load time from 40s to under 1s and latency by 20% on trading systems at Quantitative Brokers.",
+    "Software engineer with 3+ years building and shipping production systems end to end, across backend, frontend and infrastructure. Founding engineer at Mando, taking enterprise products from first commit to paying customers. Previously two years on real-time trading systems at Quantitative Brokers, working to hard latency and reliability budgets.",
   skillGroups: [
     { label: "Languages", items: ["TypeScript", "JavaScript", "Python", "Go", "Java", "SQL"] },
     { label: "Frontend", items: ["React", "Next.js", "Angular", "Astro", "Tailwind CSS", "Three.js"] },
