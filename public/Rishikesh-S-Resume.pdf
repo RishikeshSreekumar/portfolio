@@ -1,0 +1,161 @@
+%PDF-1.7
+%ту╧╙
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Pages /Count 1 /Kids [12 0 R] >>
+endobj
+5 0 obj
+<< /Length 8860 >>
+stream
+BT 0 0 0 rg /F2 20 Tf 1 0 0 1 52.00 746.00 Tm (Rishikesh S) Tj ET
+BT 0 0 0 rg /F1 10 Tf 1 0 0 1 52.00 731.00 Tm (Founding Software Engineer | Chennai, India) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 52.00 718.50 Tm (rishikeshpavithram@gmail.com) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 177.15 718.50 Tm (  |  ) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 189.50 718.50 Tm (rishikeshsreekumar.github.io/portfolio) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 52.00 707.50 Tm (github.com/RishikeshSreekumar) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 181.54 707.50 Tm (  |  ) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 193.89 707.50 Tm (linkedin.com/in/rishikesh-s-0a4a47166) Tj ET
+0.55 0.55 0.55 RG 0.6 w 52 701.50 m 560 701.50 l S
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 688.50 Tm (SUMMARY) Tj ET
+0.72 0.72 0.72 RG 0.6 w 52 684.00 m 560 684.00 l S
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 52.00 672.50 Tm (Founding software engineer with 3+ years shipping production systems end to end. First engineer at Mando, building natural) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 52.00 661.40 Tm (language search, service management, video calling, booking and Stripe billing for enterprise customers. Previously cut load) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 52.00 650.30 Tm (time from 40s to under 1s and latency by 20% on trading systems at Quantitative Brokers.) Tj ET
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 631.20 Tm (TECHNICAL SKILLS) Tj ET
+0.72 0.72 0.72 RG 0.6 w 52 626.70 m 560 626.70 l S
+BT 0 0 0 rg /F2 9.2 Tf 1 0 0 1 52.00 615.20 Tm (Languages: ) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 106.19 615.20 Tm (TypeScript, JavaScript, Python, Go, Java, SQL) Tj ET
+BT 0 0 0 rg /F2 9.2 Tf 1 0 0 1 52.00 604.10 Tm (Frontend: ) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 97.48 604.10 Tm (React, Next.js, Angular, Astro, Tailwind CSS, Three.js) Tj ET
+BT 0 0 0 rg /F2 9.2 Tf 1 0 0 1 52.00 593.00 Tm (Backend: ) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 95.97 593.00 Tm (FastAPI, Node.js, NestJS, SQLAlchemy, REST APIs, WebSockets, Stripe) Tj ET
+BT 0 0 0 rg /F2 9.2 Tf 1 0 0 1 52.00 581.90 Tm (AI / ML: ) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 87.78 581.90 Tm (LLM applications, Retrieval-Augmented Generation \(RAG\), Vector search, pgvector, Model Context Protocol \(MCP\)) Tj ET
+BT 0 0 0 rg /F2 9.2 Tf 1 0 0 1 52.00 570.80 Tm (Databases: ) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 103.64 570.80 Tm (PostgreSQL, Redis, MongoDB, Alembic) Tj ET
+BT 0 0 0 rg /F2 9.2 Tf 1 0 0 1 52.00 559.70 Tm (Cloud & DevOps: ) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 130.21 559.70 Tm (Amazon Web Services \(AWS\), Microsoft Azure, Terraform, Docker, GitHub Actions, CI/CD, Vercel) Tj ET
+BT 0 0 0 rg /F2 9.2 Tf 1 0 0 1 52.00 548.60 Tm (Tools: ) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 82.16 548.60 Tm (Git, Playwright, Chrome Extensions, Shell scripting, Jira) Tj ET
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 529.50 Tm (WORK EXPERIENCE) Tj ET
+0.72 0.72 0.72 RG 0.6 w 52 525.00 m 560 525.00 l S
+BT 0 0 0 rg /F2 10.6 Tf 1 0 0 1 52.00 513.50 Tm (Mando) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 482.46 513.50 Tm (Sep 2024 - Present) Tj ET
+BT 0 0 0 rg /F3 9.6 Tf 1 0 0 1 52.00 502.00 Tm (Founding Software Engineer | Remote) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 490.00 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 490.00 Tm (Built natural language search and a conversational AI interface over Workday's knowledge base) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 478.90 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 478.90 Tm (Shipped a Jira/Zendesk-style service management platform: ticket intake, routing, assignment, resolution) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 467.80 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 467.80 Tm (Built a video call system on Azure Communication Services with a time-zone-aware booking flow for expert sessions) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 456.70 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 456.70 Tm (Integrated Stripe end to end for subscriptions, checkout, invoicing and webhook-driven entitlement) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 445.60 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 445.60 Tm (Built a browser-based video/image editor and a Chrome extension that turns recordings into step-by-step docs) Tj ET
+BT 0 0 0 rg /F2 10.6 Tf 1 0 0 1 52.00 431.00 Tm (Quantitative Brokers) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 479.45 431.00 Tm (Jul 2022 - Sep 2024) Tj ET
+BT 0 0 0 rg /F3 9.6 Tf 1 0 0 1 52.00 419.50 Tm (Software Engineer | Chennai, India) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 407.50 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 407.50 Tm (Designed an order monitoring system handling 200 messages/sec of 800-1000 bytes from multiple upstream sources) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 396.40 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 396.40 Tm (Cut application load time from ~40 seconds to under 1 second by moving data loading server-side) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 385.30 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 385.30 Tm (Reduced latency by 20% and CPU usage by 50% on the critical path of the order entry application) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 374.20 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 374.20 Tm (Implemented DV01-based risk calculations for CASH instruments, improving cash stream revenue by 5%) Tj ET
+BT 0 0 0 rg /F2 10.6 Tf 1 0 0 1 52.00 359.60 Tm (Quantitative Brokers) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 478.46 359.60 Tm (May 2021 - Jul 2021) Tj ET
+BT 0 0 0 rg /F3 9.6 Tf 1 0 0 1 52.00 348.10 Tm (Software Development Intern | Chennai, India) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 336.10 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 336.10 Tm (Built a desktop integration prototype with OpenFin, sharing context across four separate applications) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 325.00 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 325.00 Tm (Developed an Angular app plotting financial curves from a live kdb+ database using Highcharts) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 52.00 310.40 Tm (Earlier: Android developer at Prescribe \(2021\); software development intern at Workfence Technologies \(2020\).) Tj ET
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 291.30 Tm (PROJECTS) Tj ET
+0.72 0.72 0.72 RG 0.6 w 52 286.80 m 560 286.80 l S
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 275.30 Tm (leak - Terminal Subscription Manager) Tj ET
+BT 0 0 0 rg /F1 8.8 Tf 1 0 0 1 235.83 275.30 Tm (github.com/RishikeshSreekumar/leak) Tj ET
+BT 0 0 0 rg /F3 9 Tf 1 0 0 1 52.00 264.30 Tm (Go, Bubble Tea, SQLite, GitHub Actions) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 252.80 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 252.80 Tm (Built a local-first terminal app that tracks and audits recurring subscriptions, shipped as a single Go binary) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 241.70 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 241.70 Tm (Shipped a Homebrew tap, install script and semver releases: macOS, Linux, Windows on amd64 and arm64) Tj ET
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 227.10 Tm (deadfall - Dead Component Detector \(npm\)) Tj ET
+BT 0 0 0 rg /F1 8.8 Tf 1 0 0 1 261.35 227.10 Tm (npmjs.com/package/deadfall) Tj ET
+BT 0 0 0 rg /F3 9 Tf 1 0 0 1 52.00 216.10 Tm (TypeScript, Node.js, ts-morph) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 204.60 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 204.60 Tm (Published an npm CLI that maps a Next.js codebase into a component usage graph and flags unused components) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 193.50 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 193.50 Tm (Exits non-zero on dead code so it doubles as a CI gate, and generates an interactive HTML report for exploring the graph) Tj ET
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 178.90 Tm (Rubik's Cube Solver) Tj ET
+BT 0 0 0 rg /F3 9 Tf 1 0 0 1 52.00 167.90 Tm (Next.js, Three.js, Web Workers, PWA) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 156.40 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 156.40 Tm (Built a browser solver running Kociemba's two-phase algorithm in a Web Worker, with webcam cube scanning) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 53.50 145.30 Tm (Х) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 63.00 145.30 Tm (Validates cube state and rejects impossible cubes with a specific reason, not a generic failure) Tj ET
+BT 0 0 0 rg /F2 10 Tf 1 0 0 1 52.00 122.70 Tm (EDUCATION) Tj ET
+0.72 0.72 0.72 RG 0.6 w 52 118.20 m 560 118.20 l S
+BT 0 0 0 rg /F2 10.6 Tf 1 0 0 1 52.00 106.70 Tm (Indian Institute of Technology, Madras) Tj ET
+BT 0 0 0 rg /F1 9 Tf 1 0 0 1 511.97 106.70 Tm (2018 - 2022) Tj ET
+BT 0 0 0 rg /F1 9.6 Tf 1 0 0 1 52.00 95.20 Tm (B.Tech, Chemical Engineering | Chennai, India | CGPA 8.58 / 10) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 52.00 83.20 Tm (Achievements: All India Rank 2275 in JEE Advanced 2018 \(top 0.2% of ~1.6 million candidates\); All India Rank 5 in KEAM) Tj ET
+BT 0 0 0 rg /F1 9.2 Tf 1 0 0 1 52.00 72.10 Tm (2018.) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Annot /Subtype /Link /Rect [51.00 716.00 178.15 726.24] /Border [0 0 0] /A << /S /URI /URI (mailto:rishikeshpavithram@gmail.com) >> >>
+endobj
+7 0 obj
+<< /Type /Annot /Subtype /Link /Rect [188.50 716.00 339.55 726.24] /Border [0 0 0] /A << /S /URI /URI (https://rishikeshsreekumar.github.io/portfolio) >> >>
+endobj
+8 0 obj
+<< /Type /Annot /Subtype /Link /Rect [51.00 705.00 182.54 715.24] /Border [0 0 0] /A << /S /URI /URI (https://github.com/RishikeshSreekumar) >> >>
+endobj
+9 0 obj
+<< /Type /Annot /Subtype /Link /Rect [192.89 705.00 347.94 715.24] /Border [0 0 0] /A << /S /URI /URI (https://www.linkedin.com/in/rishikesh-s-0a4a47166/) >> >>
+endobj
+10 0 obj
+<< /Type /Annot /Subtype /Link /Rect [234.83 272.80 382.07 282.87] /Border [0 0 0] /A << /S /URI /URI (https://github.com/RishikeshSreekumar/leak) >> >>
+endobj
+11 0 obj
+<< /Type /Annot /Subtype /Link /Rect [260.35 224.60 373.86 234.67] /Border [0 0 0] /A << /S /URI /URI (https://npmjs.com/package/deadfall) >> >>
+endobj
+12 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 5 0 R /Annots [6 0 R 7 0 R 8 0 R 9 0 R 10 0 R 11 0 R] >>
+endobj
+13 0 obj
+<< /Title (Rishikesh S - Resume) /Author (Rishikesh S) /Subject (Founding Software Engineer) /Keywords (TypeScript, JavaScript, Python, Go, Java, SQL, React, Next.js, Angular, Astro, Tailwind CSS, Three.js, FastAPI, Node.js, NestJS, SQLAlchemy, REST APIs, WebSockets, Stripe, LLM applications, Retrieval-Augmented Generation \(RAG\), Vector search, pgvector, Model Context Protocol \(MCP\), PostgreSQL, Redis, MongoDB, Alembic, Amazon Web Services \(AWS\), Microsoft Azure, Terraform, Docker, GitHub Actions, CI/CD, Vercel, Git, Playwright, Chrome Extensions, Shell scripting, Jira) /Creator (portfolio/scripts/generate-resume.mjs) /Producer (portfolio) >>
+endobj
+14 0 obj
+<< /Type /Catalog /Pages 4 0 R /Lang (en-US) >>
+endobj
+xref
+0 15
+0000000000 65535 f 
+0000000015 00000 n 
+0000000112 00000 n 
+0000000214 00000 n 
+0000000319 00000 n 
+0000000377 00000 n 
+0000009289 00000 n 
+0000009449 00000 n 
+0000009621 00000 n 
+0000009783 00000 n 
+0000009959 00000 n 
+0000010128 00000 n 
+0000010289 00000 n 
+0000010484 00000 n 
+0000011157 00000 n 
+trailer
+<< /Size 15 /Root 14 0 R /Info 13 0 R >>
+startxref
+11221
+%%EOF

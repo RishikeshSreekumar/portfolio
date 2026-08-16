@@ -14,45 +14,63 @@ function splitTitle(title: string) {
     <div class="section-head reveal">
       <span class="mlabel"><span class="ac">04</span> — projects</span>
       <h2 class="section-title">Things I've built</h2>
-      <p class="desc">Side projects where data and real-world intuition intersect — from sports analytics to developer tooling.</p>
+      <p class="desc">
+        Tools I wanted to exist, so I wrote them. Two of these you can install right now with one command.
+      </p>
     </div>
+
     <div class="proj-grid">
       {featured.map((project, i) => {
         const { main, sub } = splitTitle(project.title);
-        const openSource = !!project.liveUrl && /npmjs\.com/.test(project.liveUrl);
+        const shipped = !!project.install;
         const num = `PRJ_${String(i + 1).padStart(2, '0')}`;
         return (
-          <article class="proj reveal">
+          <article class="proj spot reveal" style={`--d:${(i % 2) * 70}ms`}>
             <div class="top">
               <span class="no">{num}</span>
-              {openSource && <span class="badge-os">open source · npm</span>}
+              {shipped && <span class="badge-os">open source · installable</span>}
             </div>
+
             <h3 class="proj-name">{main} {sub && <span class="sub">— {sub}</span>}</h3>
+            {project.tagline && <p class="proj-tagline">{project.tagline}</p>}
             <p class="proj-desc">{project.description}</p>
+
+            {project.install && (
+              <div class="proj-install">
+                <span class="sig">$</span>
+                <code>{project.install}</code>
+                <button data-copy={project.install} class="copy-target"><span class="txt">copy</span></button>
+              </div>
+            )}
+
             {project.highlight && (
               <div class="proj-hl">
                 <span class="k">Key highlight</span>
                 <p>{project.highlight}</p>
               </div>
             )}
+
             <div class="proj-foot">
               <div class="tags">
                 {project.tags.map((tag) => <span class="tag">{tag}</span>)}
               </div>
-              {(project.liveUrl || project.githubUrl) && (
-                <div class="proj-links">
-                  {project.liveUrl && (
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>{openSource ? 'View on npm' : 'Live demo'}
-                    </a>
-                  )}
-                  {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>Source
-                    </a>
-                  )}
-                </div>
-              )}
+              <div class="proj-links">
+                {project.liveUrl && (
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                    {project.liveLabel ?? 'Live demo'}
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
+                    Source
+                  </a>
+                )}
+                {!project.liveUrl && !project.githubUrl && (
+                  <span class="muted" style="font-family:var(--mono);font-size:12px;">private repo — happy to walk through it</span>
+                )}
+              </div>
             </div>
           </article>
         );

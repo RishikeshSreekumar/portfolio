@@ -1,25 +1,28 @@
 ---
 import { skills } from '../data/portfolio';
 
-const categories = [...new Set(skills.map((s) => s.category))];
+const order = ['Languages', 'Frontend', 'Backend', 'AI/ML', 'Data', 'Infrastructure', 'Tools'];
+const categories = order.filter((c) => skills.some((s) => s.category === c));
 ---
 
 <section class="section" id="skills">
   <div class="section-inner">
     <div class="section-head reveal">
-      <span class="mlabel"><span class="ac">05</span> — skills</span>
-      <h2 class="section-title">Technologies I work with</h2>
+      <span class="mlabel"><span class="ac">06</span> — skills</span>
+      <h2 class="section-title">What I reach for</h2>
+      <p class="desc">No proficiency bars. If it's listed here, I've shipped something with it and can defend it in an interview.</p>
     </div>
-    <div class="skills-grid reveal">
-      {categories.map((category) => (
-        <div class="skill-group">
+
+    <div class="skills-grid">
+      {categories.map((category, i) => (
+        <div class="skill-group reveal" style={`--d:${(i % 3) * 60}ms`}>
           <div class="gname">{category}</div>
           <div class="skill-chips">
             {skills.filter((s) => s.category === category).map((s) => (
               s.url ? (
                 <a class="chip chip-link" href={s.url} target="_blank" rel="noopener noreferrer">
                   {s.name}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
                 </a>
               ) : (
                 <span class="chip">{s.name}</span>

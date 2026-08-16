@@ -1,100 +1,115 @@
-# Portfolio Data Configuration
+# Editing the content
 
-This file contains all the data for your portfolio. Edit this file to update your information.
+Everything on the site — and everything in the downloadable PDF resume — comes from
+**one file**:
 
-## File Location
-
-`src/data/portfolio.ts`
-
-## How to Edit
-
-### Personal Information
-
-```typescript
-export const personal: PersonalInfo = {
-  name: "Your Name",              // Your full name
-  role: "Your Role",              // Your job title
-  location: "Your Location",      // City, Country
-  email: "your@email.com",        // Your email
-  status: "Open to opportunities", // Availability status
-  experience: "5+ years",         // Years of experience
-  bio: "Your bio...",             // Short description about you
-  social: {
-    github: "https://github.com/...",
-    linkedin: "https://linkedin.com/in/...",
-    twitter: "https://twitter.com/...",
-    website: "https://yourwebsite.com",
-  }
-};
+```
+src/data/content.js
 ```
 
-### Stats
+Edit it, run `npm run build`, and both the page and `public/Rishikesh-S-Resume.pdf`
+update together. There is no second copy of your CV to keep in sync.
 
-```typescript
-export const stats: Stat[] = [
-  { label: "years_experience", value: "5+", icon: "►" },
-  { label: "projects_completed", value: "50+", icon: "►" },
-  // Add more stats
-];
+```
+src/data/content.js   ← the only file you edit
+   ├── src/data/portfolio.ts        adds TypeScript types, re-exports for .astro components
+   └── scripts/generate-resume.mjs  renders the ATS-friendly PDF into public/
 ```
 
-### Projects
+---
 
-```typescript
-export const projects: Project[] = [
-  {
-    id: "project-id",              // URL-friendly ID
-    title: "Project Title",        // Display name
-    description: "Description...", // Project description
-    tags: ["React", "Node.js"],    // Technology tags
-    liveUrl: "https://...",        // Live demo URL (optional)
-    githubUrl: "https://...",      // GitHub URL (optional)
-    featured: true,                // Show in featured section
-  },
-  // Add more projects
-];
+## What lives where
+
+| Export | Used by | Notes |
+|---|---|---|
+| `personal` | hero, about, contact, resume header | name, role, email, socials, `resumeFile` |
+| `stats` | hero strip | `value` is a number — it drives the count-up animation |
+| `experience` | experience section, resume | see below |
+| `education`, `achievements` | education section, resume | |
+| `projects` | projects section | `featured: true` renders a card |
+| `openSource` | the shelf | keep these repos **public** or the links 404 |
+| `skills` | skills grid | `category` must be one of the seven groups |
+| `resume` | PDF only | summary, skill groups, project entries |
+
+---
+
+## Two voices, on purpose
+
+The site speaks in first person. The resume does not. Where they differ, the data
+carries both:
+
+```js
+{
+  company: "Mando",
+  highlights: [ /* long form, first person, shown on the page */ ],
+  resumeHighlights: [ /* tight, past tense, metric-led — used in the PDF */ ],
+}
 ```
 
-### Skills
+If `resumeHighlights` is missing, the PDF falls back to `highlights`.
 
-```typescript
-export const skills: Skill[] = [
-  { name: "JavaScript", level: 95, category: "Frontend" },
-  { name: "Node.js", level: 85, category: "Backend" },
-  // Categories: Frontend | Backend | Database | DevOps | Tools | Languages
-];
-```
+---
 
-### Experience
-
-```typescript
-export const experience: Experience[] = [
-  {
-    company: "Company Name",
-    role: "Job Title",
-    period: "2020 - 2022",
-    description: "Description...",
-  },
-];
-```
-
-## Tips
-
-1. **Keep descriptions concise** - They should fit well in the terminal layout
-2. **Use realistic skill levels** - 0-100 scale
-3. **Update regularly** - Keep your portfolio current
-4. **Test after changes** - Refresh the page to see updates
-
-## Development
-
-Run the dev server to see your changes:
+## The resume PDF
 
 ```bash
-npm run dev
+npm run resume     # regenerate just the PDF
+npm run build      # prebuild regenerates it, then Astro builds the site
 ```
 
-Build for production:
+It is written by hand in `scripts/generate-resume.mjs` — no dependencies, no
+headless browser. That is deliberate:
 
-```bash
-npm run build
+- **Single column, real text, base-14 Helvetica.** No embedded font subsets, no
+  images, no tables, no text boxes. Applicant tracking systems parse it cleanly.
+- **ASCII only.** Curly quotes, em dashes and arrows are normalised before they
+  reach the page.
+- **Deterministic.** No timestamps, so rebuilding without content changes gives a
+  byte-identical file and no git noise.
+
+### Keeping it to one page
+
+The generator prints how much room is left:
+
 ```
+resume -> public/Rishikesh-S-Resume.pdf  11.3 KB  1 page  (685pt used, 23pt left)
+```
+
+If it spills to two pages, in order of preference:
+
+1. Shorten bullets so they wrap to one line instead of two (~105 characters).
+2. Drop a bullet — edit the `bullets` counts in `RESUME_ROLES`.
+3. Nudge `BODY` / `LEAD` (font size and line height) at the top of the script.
+
+It also warns if any line overflows the right margin.
+
+---
+
+## Adding a project
+
+```js
+{
+  id: "thing",
+  title: "thing — What It Does",     // text after the em dash renders muted
+  tagline: "One line, in mono.",
+  description: "Two or three sentences on the problem and the approach.",
+  highlight: "The one technically interesting decision.",
+  install: "npx thing",              // optional — renders a copyable command block
+  tags: ["Go", "SQLite"],
+  liveUrl: "https://…",
+  liveLabel: "View on npm",          // optional link label
+  githubUrl: "https://…",
+  featured: true,
+}
+```
+
+A project with neither `liveUrl` nor `githubUrl` shows "private repo — happy to
+walk through it" instead of a dead link.
+
+---
+
+## Terminal commands
+
+The ⌘K terminal lives in `src/layouts/Layout.astro`. Add a command by adding a key
+to the `commands` object — it returns a string (or `null` to print nothing), and
+tab-completion picks it up automatically.

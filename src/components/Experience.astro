@@ -7,18 +7,20 @@ import { experience } from '../data/portfolio';
     <div class="section-head reveal">
       <span class="mlabel"><span class="ac">02</span> — experience</span>
       <h2 class="section-title">Work history</h2>
+      <p class="desc">Five roles, one habit: own the thing end to end and leave a number behind.</p>
     </div>
     <div class="xp">
-      {experience.map((exp) => {
+      {experience.map((exp, i) => {
         const present = /present|now/i.test(exp.period);
         return (
-          <article class="xp-item reveal">
+          <article class="xp-item reveal" style={`--d:${Math.min(i, 3) * 60}ms`}>
             <div class="xp-when">
               {present ? (
                 <Fragment><span class="now">Present</span><span class="dur">{exp.period}</span></Fragment>
               ) : (
                 exp.period
               )}
+              <span class="loc">{exp.location}</span>
             </div>
             <div>
               <h3 class="xp-role">{exp.role}</h3>

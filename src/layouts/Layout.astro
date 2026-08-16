@@ -1,5 +1,6 @@
 ---
-import '../styles/global.css'
+import '../styles/global.css';
+import { personal } from '../data/portfolio';
 
 interface Props {
   title: string;
@@ -9,14 +10,29 @@ interface Props {
 
 const {
   title,
-  description = "Founding Engineer at Mando, building AI-powered enterprise products. Previously optimized trading systems at Quantitative Brokers. Full-stack engineer with 3+ years of experience across Next.js, FastAPI, Postgres, and Terraform. IIT Madras graduate.",
-  ogImage = "/og-image.png",
+  description = "Founding engineer at Mando building AI-powered enterprise products — natural language search, ticketing, video calls, booking and Stripe billing. Previously cut trading-system latency by 20% at Quantitative Brokers. Full stack: Next.js, FastAPI, PostgreSQL, Terraform. IIT Madras.",
+  ogImage = '/og-image.png',
 } = Astro.props;
 
-const siteUrl = "https://rishikeshsreekumar.github.io";
-const baseUrl = "/portfolio";
-const canonicalUrl = `${siteUrl}${baseUrl}`;
-const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const siteUrl = 'https://rishikeshsreekumar.github.io';
+const canonicalUrl = `${siteUrl}${base}`;
+const ogImageUrl = `${siteUrl}${base}${ogImage}`;
+const resumeUrl = `${base}/${personal.resumeFile}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: personal.name,
+  jobTitle: personal.role,
+  email: `mailto:${personal.email}`,
+  url: canonicalUrl,
+  worksFor: { '@type': 'Organization', name: 'Mando' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Indian Institute of Technology, Madras' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressCountry: 'IN' },
+  sameAs: [personal.social.github, personal.social.linkedin].filter(Boolean),
+  knowsAbout: ['Software Engineering', 'Next.js', 'FastAPI', 'PostgreSQL', 'Terraform', 'Large Language Models'],
+};
 ---
 
 <!doctype html>
@@ -26,25 +42,22 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content="Rishikesh S" />
-    <meta name="keywords" content="Rishikesh S, Software Engineer, Founding Engineer, Mando, Full Stack Developer, Next.js, FastAPI, React, Portfolio" />
+    <meta name="keywords" content="Rishikesh S, Software Engineer, Founding Engineer, Mando, Full Stack Developer, Next.js, FastAPI, Python, Go, Terraform, IIT Madras, Portfolio" />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
-    <link rel="icon" type="image/x-icon" href={`${baseUrl}/favicon.ico`} />
-    <link rel="apple-touch-icon" href={`${baseUrl}/favicon.svg`} />
-    <meta name="theme-color" content="#FCFCFB" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="icon" type="image/x-icon" href={`${base}/favicon.ico`} />
+    <link rel="apple-touch-icon" href={`${base}/favicon.svg`} />
+    <meta name="theme-color" content="#FCFCFB" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0A0C0B" media="(prefers-color-scheme: dark)" />
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
@@ -55,65 +68,246 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
     <meta property="og:site_name" content="Rishikesh S — Portfolio" />
     <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:creator" content="@rishikesh_s_18" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <noscript>
+      <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+    </noscript>
+
+    <!-- theme, resolved before first paint so the page never flashes -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', saved || system);
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body id="top">
+
+  <body id="top" data-resume={resumeUrl}>
+    <div class="aura" id="aura"></div>
+
     <slot />
 
-    <!-- TERMINAL OVERLAY -->
-    <div class="term-overlay" id="termOverlay">
+    <!-- interactive terminal -->
+    <div class="term-overlay" id="termOverlay" role="dialog" aria-modal="true" aria-label="Interactive terminal">
       <div class="term">
-        <div class="term-bar"><span class="d r" id="termClose"></span><span class="d y"></span><span class="d g"></span><span class="t">rishikesh@portfolio — interactive · type 'help'</span></div>
-        <div class="term-body" id="termBody">
-          <div class="out">Welcome. Type <span class="k">help</span> to see available commands. <span class="cmt"># esc to close</span></div>
+        <div class="term-bar">
+          <span class="d r" id="termClose" title="Close"></span><span class="d y"></span><span class="d g"></span>
+          <span class="t">rishikesh@portfolio — interactive · type 'help' · esc to close</span>
         </div>
-        <div style="padding: 4px 18px 18px; font-family: var(--mono); font-size: 13px; display:flex; gap:8px; align-items:center; background:#0E1110;">
-          <span style="color:#6B746A;">rishikesh@portfolio:~$</span>
-          <input class="term-input" id="termInput" autocomplete="off" spellcheck="false" />
+        <div class="term-body" id="termBody">
+          <div class="out">Welcome. Type <span class="k">help</span> for commands. <span class="cmt"># tab completes, ↑/↓ recalls history</span></div>
+        </div>
+        <div class="term-prompt">
+          <span class="ps1">rishikesh@portfolio:~$</span>
+          <input class="term-input" id="termInput" autocomplete="off" spellcheck="false" aria-label="Terminal input" />
         </div>
       </div>
     </div>
 
     <script is:inline>
       (function () {
-        /* ---- scroll reveal ---- */
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var resumeUrl = document.body.dataset.resume || '';
+
+        /* ---------- scroll reveal ---------- */
         var reveals = document.querySelectorAll('.reveal');
+        function revealAll() { reveals.forEach(function (el) { el.classList.add('in'); }); }
         if ('IntersectionObserver' in window) {
           var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (en) {
-              if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+                io.unobserve(entry.target);
+              }
             });
-          }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+          }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
           reveals.forEach(function (el) { io.observe(el); });
+          // Never let the animation be the reason content is invisible.
+          setTimeout(function () {
+            reveals.forEach(function (el) {
+              var box = el.getBoundingClientRect();
+              if (box.top < window.innerHeight && box.bottom > 0) el.classList.add('in');
+            });
+          }, 1200);
         } else {
-          reveals.forEach(function (el) { el.classList.add('in'); });
+          revealAll();
         }
 
-        /* ---- mobile menu ---- */
-        var menuBtn = document.getElementById('menuBtn');
-        if (menuBtn) menuBtn.addEventListener('click', function () { window.location.hash = '#contact'; });
+        /* ---------- scroll progress + active section ---------- */
+        var progress = document.getElementById('navProgress');
+        var navLinks = Array.prototype.slice.call(document.querySelectorAll('[data-nav]'));
+        var sections = navLinks
+          .map(function (a) { return document.getElementById(a.dataset.nav); })
+          .filter(Boolean);
+        var ticking = false;
 
-        /* ---- hero terminal typewriter ---- */
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            var max = document.documentElement.scrollHeight - window.innerHeight;
+            if (progress) progress.style.setProperty('--p', max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+
+            var current = null;
+            for (var i = 0; i < sections.length; i++) {
+              if (sections[i].getBoundingClientRect().top <= 140) current = sections[i].id;
+            }
+            navLinks.forEach(function (a) { a.classList.toggle('active', a.dataset.nav === current); });
+            ticking = false;
+          });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        /* ---------- theme ---------- */
+        var themeBtn = document.getElementById('themeBtn');
+        function setTheme(next) {
+          document.documentElement.setAttribute('data-theme', next);
+          try { localStorage.setItem('theme', next); } catch (e) {}
+        }
+        function toggleTheme() {
+          setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        }
+        if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+        /* ---------- mobile drawer ---------- */
+        var menuBtn = document.getElementById('menuBtn');
+        var drawer = document.getElementById('drawer');
+        if (menuBtn && drawer) {
+          menuBtn.addEventListener('click', function () {
+            var open = drawer.classList.toggle('open');
+            menuBtn.setAttribute('aria-expanded', String(open));
+            menuBtn.textContent = open ? '×' : '≡';
+          });
+          drawer.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+              drawer.classList.remove('open');
+              menuBtn.textContent = '≡';
+              menuBtn.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+
+        /* ---------- cursor aura ---------- */
+        var aura = document.getElementById('aura');
+        if (aura && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+          window.addEventListener('pointermove', function (e) {
+            aura.classList.add('on');
+            aura.style.setProperty('--ax', e.clientX + 'px');
+            aura.style.setProperty('--ay', e.clientY + 'px');
+          }, { passive: true });
+        }
+
+        /* ---------- card spotlight ---------- */
+        document.querySelectorAll('.spot').forEach(function (card) {
+          card.addEventListener('pointermove', function (e) {
+            var r = card.getBoundingClientRect();
+            card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+          });
+        });
+
+        /* ---------- copy buttons ---------- */
+        document.querySelectorAll('.copy-target').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var value = btn.dataset.copy || '';
+            var label = btn.querySelector('.txt');
+            var original = label ? label.textContent : '';
+            function done(ok) {
+              if (!label) return;
+              label.textContent = ok ? 'copied ✓' : 'press ⌘C';
+              setTimeout(function () { label.textContent = original; }, 1600);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(value).then(function () { done(true); }, function () { done(false); });
+            } else {
+              done(false);
+            }
+          });
+        });
+
+        /* ---------- count-up stats ---------- */
+        var counters = document.querySelectorAll('[data-count]');
+        if ('IntersectionObserver' in window) {
+          var cio = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              cio.unobserve(entry.target);
+              var el = entry.target;
+              var target = parseInt(el.dataset.count, 10) || 0;
+              var prefix = el.dataset.prefix || '';
+              var suffix = el.dataset.suffix || '';
+              if (reduceMotion) return;
+              var start = performance.now();
+              var duration = 900;
+              function frame(now) {
+                var t = Math.min((now - start) / duration, 1);
+                var eased = 1 - Math.pow(1 - t, 3);
+                el.innerHTML = prefix + Math.round(target * eased) + '<span class="unit">' + suffix + '</span>';
+                if (t < 1) requestAnimationFrame(frame);
+              }
+              requestAnimationFrame(frame);
+            });
+          }, { threshold: 0.5 });
+          counters.forEach(function (el) { cio.observe(el); });
+        }
+
+        /* ---------- hero name scramble ---------- */
+        var GLYPHS = '!<>-_\\/[]{}—=+*^?#________';
+        function scramble(el) {
+          var target = el.dataset.scramble || el.textContent;
+          var frame = 0;
+          var queue = [];
+          for (var i = 0; i < target.length; i++) {
+            queue.push({ to: target[i], start: Math.floor(Math.random() * 12), end: Math.floor(Math.random() * 24) + 12 });
+          }
+          function tick() {
+            var output = '';
+            var done = 0;
+            for (var i = 0; i < queue.length; i++) {
+              var q = queue[i];
+              if (frame >= q.end) { done++; output += q.to; }
+              else if (frame >= q.start) { output += '<span style="opacity:.45">' + GLYPHS[Math.floor(Math.random() * GLYPHS.length)] + '</span>'; }
+              else { output += q.to === ' ' ? ' ' : '<span style="opacity:0">' + q.to + '</span>'; }
+            }
+            el.innerHTML = output;
+            frame++;
+            if (done < queue.length) requestAnimationFrame(tick);
+            else el.textContent = target;
+          }
+          tick();
+        }
+        var nameEl = document.querySelector('.scramble');
+        if (nameEl && !reduceMotion) {
+          scramble(nameEl);
+          nameEl.addEventListener('mouseenter', function () { scramble(nameEl); });
+        }
+
+        /* ---------- hero terminal typewriter ---------- */
         var heroLines = [
           { t: 'pl', html: 'whoami' },
-          { t: 'out', html: 'Rishikesh S — Founding Software Engineer @ Mando' },
+          { t: 'out', html: 'Rishikesh S — founding software engineer @ Mando' },
           { t: 'pl', html: 'cat stack.txt' },
-          { t: 'out', html: '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Terraform</span> · <span class="k">LLMs</span>' },
-          { t: 'pl', html: 'git log --oneline -3' },
-          { t: 'out', html: 'a1f9c2 nl-search over Workday knowledge base' },
-          { t: 'out', html: '7d3e0b cut load time 40s &rarr; &lt;1s' },
+          { t: 'out', html: '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Go</span> · <span class="k">Terraform</span> · <span class="k">LLMs</span>' },
+          { t: 'pl', html: 'git log --oneline -4' },
+          { t: 'out', html: 'a1f9c2 nl-search over enterprise knowledge base' },
+          { t: 'out', html: '4b70de video calls + booking + stripe billing' },
+          { t: 'out', html: '7d3e0b load time 40s &rarr; &lt;1s' },
           { t: 'out', html: 'c08a14 latency &minus;20%, cpu &minus;50%' },
           { t: 'pl', html: 'echo $STATUS' },
-          { t: 'out', html: '<span class="k">open to interesting conversations</span> ✓' }
+          { t: 'out', html: '<span class="k">open to interesting problems</span> ✓' }
         ];
         var heroTerm = document.getElementById('heroTerm');
-        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         function renderHeroInstant() {
           heroTerm.innerHTML = heroLines.map(function (l) {
@@ -125,26 +319,30 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
           var i = 0;
           function next() {
             if (i >= heroLines.length) {
-              var c = document.createElement('div'); c.className = 'pl';
-              c.innerHTML = '<span class="term-cursor"></span>';
-              heroTerm.appendChild(c);
+              var cursor = document.createElement('div');
+              cursor.className = 'pl';
+              cursor.innerHTML = '<span class="term-cursor"></span>';
+              heroTerm.appendChild(cursor);
               return;
             }
-            var l = heroLines[i];
+            var line = heroLines[i];
             var div = document.createElement('div');
-            div.className = l.t;
+            div.className = line.t;
             heroTerm.appendChild(div);
-            if (l.t === 'pl') {
-              var full = l.html, j = 0;
+            if (line.t === 'pl') {
+              var full = line.html;
+              var j = 0;
               div.innerHTML = '';
               (function typeChar() {
                 div.innerHTML = full.slice(0, j) + '<span class="term-cursor"></span>';
                 j++;
-                if (j <= full.length) { setTimeout(typeChar, 34); }
-                else { div.innerHTML = full; i++; setTimeout(next, 240); }
+                if (j <= full.length) setTimeout(typeChar, 32);
+                else { div.innerHTML = full; i++; setTimeout(next, 220); }
               })();
             } else {
-              div.innerHTML = l.html; i++; setTimeout(next, 160);
+              div.innerHTML = line.html;
+              i++;
+              setTimeout(next, 150);
             }
           }
           next();
@@ -152,16 +350,15 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
 
         if (heroTerm) {
           if (reduceMotion) renderHeroInstant();
-          else {
-            var started = false;
-            setTimeout(function () { if (!started) { started = true; typeHero(); } }, 500);
-          }
+          else setTimeout(typeHero, 420);
         }
 
-        /* ---- interactive terminal overlay ---- */
+        /* ---------- interactive terminal ---------- */
         var overlay = document.getElementById('termOverlay');
         var body = document.getElementById('termBody');
         var input = document.getElementById('termInput');
+        var history = [];
+        var historyIndex = -1;
 
         function openTerm() {
           overlay.classList.add('open');
@@ -170,74 +367,180 @@ const ogImageUrl = `${siteUrl}${baseUrl}${ogImage}`;
         function closeTerm() { overlay.classList.remove('open'); }
 
         ['termOpen', 'termOpen2'].forEach(function (id) {
-          var b = document.getElementById(id);
-          if (b) b.addEventListener('click', openTerm);
+          var btn = document.getElementById(id);
+          if (btn) btn.addEventListener('click', openTerm);
         });
-        var tc = document.getElementById('termClose');
-        if (tc) tc.addEventListener('click', closeTerm);
+        var termClose = document.getElementById('termClose');
+        if (termClose) termClose.addEventListener('click', closeTerm);
         if (overlay) overlay.addEventListener('click', function (e) { if (e.target === overlay) closeTerm(); });
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeTerm(); });
+
+        function print(html, cls) {
+          var div = document.createElement('div');
+          div.className = cls || 'out';
+          div.innerHTML = html;
+          body.appendChild(div);
+          body.scrollTop = body.scrollHeight;
+        }
+
+        var SECTIONS = ['about', 'experience', 'education', 'projects', 'open-source', 'skills', 'contact'];
 
         var commands = {
           help: function () {
             return 'available commands:\n' +
-              '  <span class="k">about</span>       who I am\n' +
-              '  <span class="k">experience</span>  work history\n' +
-              '  <span class="k">projects</span>    things I\'ve built\n' +
-              '  <span class="k">skills</span>       tech stack\n' +
-              '  <span class="k">contact</span>      get in touch\n' +
+              '  <span class="k">about</span>        who I am\n' +
+              '  <span class="k">experience</span>   work history\n' +
+              '  <span class="k">projects</span>     things I have built\n' +
+              '  <span class="k">oss</span>          public repositories\n' +
+              '  <span class="k">skills</span>       what I reach for\n' +
               '  <span class="k">stack</span>        current stack\n' +
+              '  <span class="k">contact</span>      get in touch\n' +
+              '  <span class="k">resume</span>       download the PDF\n' +
+              '  <span class="k">theme</span>        flip light / dark\n' +
               '  <span class="k">goto</span> [sec]   scroll to a section\n' +
+              '  <span class="k">neofetch</span>     system info\n' +
               '  <span class="k">clear</span>        clear the screen';
           },
-          about: function () { return 'Founding Software Engineer @ Mando. IIT Madras grad. I build AI-powered\nenterprise products end to end — from LLM workflows to infrastructure.'; },
-          experience: function () { return 'Mando — Founding SWE (Sep 2024 → now)\nQuantitative Brokers — Software Engineer (Jul 2022 → Sep 2024)\nQuantitative Brokers — SWE Intern (May 2021 → Jul 2021)\n<span class="cmt"># run `goto experience` for details</span>'; },
-          projects: function () { return 'IPL FanPark — scenario builder & prediction engine\ndeadfall — dead component detector (open source · npm)\nRubik\'s Cube Solver — Kociemba two-phase, 3D via Three.js\n<span class="cmt"># run `goto projects` for details</span>'; },
-          skills: function () { return 'frontend  Next.js, React, TypeScript, Tailwind\nbackend   Python, FastAPI, Node.js, NestJS\ndata      PostgreSQL, MongoDB, Redis\ndevops    Terraform, Docker, AWS, CI/CD'; },
-          stack: function () { return '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Terraform</span> · <span class="k">Stripe</span> · <span class="k">LLMs</span>'; },
-          contact: function () { return 'email     rishikeshpavithram@gmail.com\nlocation  India\nstatus    open to interesting conversations\n<span class="cmt"># run `goto contact` to send a message</span>'; },
+          about: function () {
+            return 'Founding software engineer @ Mando. Chemical Engineering, IIT Madras.\n' +
+              'I build enterprise products end to end: search, ticketing, video calls,\n' +
+              'booking, billing. Previously real-time trading systems at QB.';
+          },
+          experience: function () {
+            return 'Mando                  founding software engineer   Sep 2024 → now\n' +
+              'Quantitative Brokers   software engineer            Jul 2022 → Sep 2024\n' +
+              'Quantitative Brokers   swe intern                   May 2021 → Jul 2021\n' +
+              'Prescribe              android developer            Feb 2021 → May 2021\n' +
+              'Workfence              swe intern                   May 2020 → Jul 2020\n' +
+              '<span class="cmt"># goto experience for the detail</span>';
+          },
+          projects: function () {
+            return 'leak       terminal subscription manager · Go · brew installable\n' +
+              'deadfall   dead React component detector · npm\n' +
+              'fanpark    IPL scenario builder + win probability engine\n' +
+              'rubiks     Kociemba two-phase solver, webcam scan, 3D playback\n' +
+              '<span class="cmt"># goto projects for the detail</span>';
+          },
+          oss: function () {
+            return 'nimbus                 animated ASCII weather CLI · Go\n' +
+              'youtube_music_lyrics   offline lyrics romanizer · Chrome extension\n' +
+              'marvel_nexus           MCU story-dependency graph · Astro\n' +
+              'lift_simulation        sky-lobby lift discrete-event sim · Python\n' +
+              'homebrew-tap           my Homebrew tap\n' +
+              '<span class="cmt"># github.com/RishikeshSreekumar</span>';
+          },
+          skills: function () {
+            return 'languages  TypeScript, Python, Go, Java, SQL\n' +
+              'frontend   React, Next.js, Angular, Astro, Tailwind, Three.js\n' +
+              'backend    FastAPI, Node.js, NestJS, Stripe\n' +
+              'data       PostgreSQL, Redis, MongoDB, pgvector\n' +
+              'infra      Terraform, Docker, AWS, Azure, GitHub Actions';
+          },
+          stack: function () {
+            return '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Go</span> · <span class="k">Terraform</span> · <span class="k">Stripe</span> · <span class="k">LLMs</span>';
+          },
+          contact: function () {
+            return 'email     rishikeshpavithram@gmail.com\n' +
+              'github    github.com/RishikeshSreekumar\n' +
+              'linkedin  linkedin.com/in/rishikesh-s-0a4a47166\n' +
+              'location  Chennai, India (IST, UTC+5:30)\n' +
+              '<span class="cmt"># goto contact to send a message</span>';
+          },
+          resume: function () {
+            var link = document.createElement('a');
+            link.href = resumeUrl;
+            link.download = '';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            return 'downloading <span class="k">' + resumeUrl.split('/').pop() + '</span> … <span class="cmt"># single column, ATS-parseable</span>';
+          },
+          theme: function () {
+            toggleTheme();
+            return 'theme → <span class="k">' + document.documentElement.getAttribute('data-theme') + '</span>';
+          },
+          neofetch: function () {
+            return '<span class="k">rishikesh</span>@<span class="k">portfolio</span>\n' +
+              '-------------------------\n' +
+              'Role      Founding Software Engineer\n' +
+              'Company   Mando\n' +
+              'Uptime    3+ years shipping\n' +
+              'Shell     zsh · nvim · tmux\n' +
+              'Host      Chennai, India\n' +
+              'Built by  Astro · 0 client frameworks';
+          },
+          whoami: function () { return 'rishikesh'; },
+          ls: function () { return SECTIONS.map(function (s) { return s + '/'; }).join('  '); },
+          sudo: function () { return '<span class="err">nice try.</span> <span class="cmt"># this incident has been reported</span>'; },
           clear: function () { body.innerHTML = ''; return null; }
         };
 
-        function print(html, cls) {
-          var d = document.createElement('div');
-          d.className = cls || 'out';
-          d.innerHTML = html;
-          body.appendChild(d);
-          body.scrollTop = body.scrollHeight;
-        }
+        var COMMAND_NAMES = Object.keys(commands).concat(['goto']);
 
         function run(raw) {
           var cmd = raw.trim();
           if (!cmd) return;
-          print('<span style="color:#6B746A;">rishikesh@portfolio:~$</span> ' + cmd.replace(/</g,'&lt;'), 'pl-echo');
+          history.push(cmd);
+          historyIndex = history.length;
+          print('<span class="ps1" style="color:#6B746A;">rishikesh@portfolio:~$</span> ' + cmd.replace(/</g, '&lt;'), 'pl-echo');
+
           var parts = cmd.split(/\s+/);
           var name = parts[0].toLowerCase();
+
           if (name === 'goto') {
-            var sec = (parts[1] || '').toLowerCase();
-            var valid = ['about','experience','education','projects','skills','contact'];
-            if (valid.indexOf(sec) >= 0) {
-              print('navigating to <span class="k">~/' + sec + '</span> …');
-              setTimeout(function () { closeTerm(); window.location.hash = '#' + sec; }, 350);
+            var target = (parts[1] || '').toLowerCase();
+            if (SECTIONS.indexOf(target) >= 0) {
+              print('navigating to <span class="k">~/' + target + '</span> …');
+              setTimeout(function () { closeTerm(); window.location.hash = '#' + target; }, 320);
             } else {
-              print('goto: unknown section. try: ' + valid.join(', '));
+              print('goto: unknown section. try: ' + SECTIONS.join(', '));
             }
             return;
           }
+
           var fn = commands[name];
           if (fn) {
             var out = fn();
             if (out !== null) print(out.replace(/\n/g, '<br>'));
           } else {
-            print('command not found: <span style="color:#E0584E;">' + name.replace(/</g,'&lt;') + '</span>. type <span class="k">help</span>.');
+            print('command not found: <span class="err">' + name.replace(/</g, '&lt;') + '</span>. type <span class="k">help</span>.');
           }
         }
 
         if (input) {
           input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') { run(input.value); input.value = ''; }
+            if (e.key === 'Enter') {
+              run(input.value);
+              input.value = '';
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              if (historyIndex > 0) { historyIndex--; input.value = history[historyIndex]; }
+            } else if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              if (historyIndex < history.length - 1) { historyIndex++; input.value = history[historyIndex]; }
+              else { historyIndex = history.length; input.value = ''; }
+            } else if (e.key === 'Tab') {
+              e.preventDefault();
+              var typed = input.value.trim().toLowerCase();
+              if (!typed) return;
+              var matches = COMMAND_NAMES.filter(function (c) { return c.indexOf(typed) === 0; });
+              if (matches.length === 1) input.value = matches[0] + ' ';
+              else if (matches.length > 1) print(matches.join('  '), 'cmt');
+            }
           });
         }
+
+        /* ---------- global keyboard ---------- */
+        document.addEventListener('keydown', function (e) {
+          var typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+          if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            overlay.classList.contains('open') ? closeTerm() : openTerm();
+            return;
+          }
+          if (e.key === 'Escape') { closeTerm(); return; }
+          if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+          if (e.key.toLowerCase() === 't') toggleTheme();
+        });
       })();
     </script>
   </body>

@@ -5,6 +5,7 @@ const side = [
   { k: 'role', v: 'Founding Engineer', ac: true },
   { k: 'company', v: 'Mando', ac: false },
   { k: 'education', v: 'IIT Madras', ac: false },
+  { k: 'degree', v: 'Chemical Engg.', ac: false },
   { k: 'focus', v: 'AI · Full-stack', ac: false },
   { k: 'location', v: personal.location, ac: false },
   { k: 'status', v: 'open_to_talk', ac: true },
@@ -21,9 +22,12 @@ const side = [
       <div class="about-prose reveal">
         {personal.aboutParagraphs.map((para) => <p set:html={para} />)}
       </div>
-      <aside class="about-side reveal">
+      <aside class="about-side reveal" style="--d:80ms">
         {side.map((row) => (
-          <div class="row"><span class="k">{row.k}</span><span class={row.ac ? 'v ac' : 'v'}>{row.v}</span></div>
+          <div class="row">
+            <span class="k">{row.k}</span>
+            <span class={row.ac ? 'v ac' : 'v'}>{row.v}</span>
+          </div>
         ))}
       </aside>
     </div>

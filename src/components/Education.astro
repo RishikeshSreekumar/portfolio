@@ -1,5 +1,5 @@
 ---
-import { education } from '../data/portfolio';
+import { education, achievements } from '../data/portfolio';
 ---
 
 <section class="section" id="education">
@@ -9,12 +9,20 @@ import { education } from '../data/portfolio';
       <h2 class="section-title">Foundations</h2>
     </div>
     {education.map((edu) => (
-      <div class="edu-card reveal">
-        <div class="xp-when">{edu.period}<span class="dur">B.Tech</span></div>
+      <div class="edu-card spot reveal">
+        <div class="xp-when">
+          {edu.period}
+          <span class="dur">B.Tech</span>
+          <span class="loc">{edu.location}</span>
+        </div>
         <div>
           <div class="edu-deg">{edu.degree.replace(/^B\.Tech,?\s*/i, '')}</div>
-          <div class="edu-school">{edu.institution === 'IIT Madras' ? 'Indian Institute of Technology, Madras' : edu.institution}</div>
+          <div class="edu-school">{edu.institution}</div>
           <p class="edu-note">{edu.highlights[1] ?? edu.highlights[0]}</p>
+          <div class="edu-meta">
+            <span class="tag">{edu.grade}</span>
+            {achievements.map((a) => <span class="tag">{a.split(' (')[0]}</span>)}
+          </div>
         </div>
       </div>
     ))}
