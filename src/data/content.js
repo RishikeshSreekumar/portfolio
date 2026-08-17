@@ -25,7 +25,7 @@ export const personal = {
     linkedin: "https://www.linkedin.com/in/rishikesh-s-0a4a47166/",
     cal: "https://cal.com/rishikesh-s",
   },
-  website: "https://rishikeshsreekumar.github.io",
+  website: "https://rishikeshs.dev",
   resumeFile: "Rishikesh-S-Resume.pdf",
 };
 

@@ -4,7 +4,7 @@ Personal site and resume for Rishikesh S, founding software engineer at Mando.
 Astro, zero client-side frameworks, hand-written CSS. The downloadable resume PDF
 is generated at build time from the same data file that renders the page.
 
-**Live:** https://rishikeshsreekumar.github.io
+**Live:** https://rishikeshs.dev
 
 ---
 
