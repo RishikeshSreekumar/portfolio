@@ -1,10 +1,12 @@
 ---
+import Logo from './Logo.astro';
+
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="foot">
   <div class="foot-inner">
-    <a href="#top" class="brand"><span class="sq"></span> rishikesh.s</a>
+    <a href="#top" class="brand" aria-label="Rishikesh S — back to top"><Logo size={20} /> rishikesh.s</a>
     <span class="copy">© {currentYear} · Astro, no client frameworks · resume generated from the same data file</span>
     <a href="#top" class="to-top">return_top() ↑</a>
   </div>

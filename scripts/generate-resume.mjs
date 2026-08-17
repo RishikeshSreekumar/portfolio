@@ -22,6 +22,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { personal, experience, education, resume } from '../src/data/content.js';
+import { activeAccent } from '../src/data/theme.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, '..', 'public', personal.resumeFile);
@@ -111,14 +112,22 @@ const FONT_KEY = { regular: '/F1', bold: '/F2', italic: '/F3' };
 const BODY = 9.2;
 const LEAD = 10.9;
 
-/* Palette, lifted from the site's light theme so print and web agree. */
+/* Palette, lifted from the site's light theme so print and web agree. Paper is
+ * always light, so the accent comes from the active palette's light side. */
+const hexToPdf = (hex) => {
+  const h = hex.replace('#', '');
+  return [0, 2, 4].map((i) => Number((parseInt(h.slice(i, i + 2), 16) / 255).toFixed(4)));
+};
+/** Tint towards paper white — used for the header band behind the name. */
+const tint = (c, amount) => c.map((v) => Number((v + (1 - v) * amount).toFixed(4)));
+
 const INK = [0.07, 0.08, 0.06];
 const SOFT = [0.28, 0.30, 0.26];
 const MUTE = [0.47, 0.50, 0.44];
-const ACCENT = [0.07, 0.54, 0.31]; // #128A4F
-const ACCENT_DK = [0.055, 0.43, 0.25]; // #0E6E3F
+const ACCENT = hexToPdf(activeAccent().light.base);
+const ACCENT_DK = hexToPdf(activeAccent().light.deep);
 const RULE = [0.84, 0.85, 0.82];
-const BAND = [0.937, 0.965, 0.945];
+const BAND = tint(ACCENT, 0.94);
 
 const HEADER_H = 92;
 
@@ -174,6 +183,46 @@ class Resume {
   /** Filled rectangle, drawn from its lower-left corner. */
   rect(x, y, w, h, color) {
     this.ops.push(`${rgb(color)} rg ${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f`);
+  }
+
+  /**
+   * The Rs mark, drawn onto a box `size` points tall whose lower-left corner sits
+   * at (x, y). Authoring coordinates are the SVG's, which run top-down, so y is
+   * flipped on the way out.
+   *
+   * The SVG path is already all lines and cubics with the arcs pre-flattened, so
+   * it transfers across one operator at a time. Flat caps, round joins, one colour.
+   */
+  mark(x, y, size) {
+    const s = size / 100; // 100 authoring units of ink height
+    const px = (gx) => (x + gx * s).toFixed(2);
+    const py = (gy) => (y + (100 - gy) * s).toFixed(2);
+    const pt = (gx, gy) => `${px(gx)} ${py(gy)}`;
+
+    this.ops.push(
+      'q 0 J 1 j',
+      `${(15 * s).toFixed(2)} w`,
+      `${rgb(INK)} RG`,
+      `${pt(7.5, 92.5)} m`,
+      `${pt(7.5, 11.5)} l`,
+      `${pt(7.5, 9.291)} ${pt(9.291, 7.5)} ${pt(11.5, 7.5)} c`,
+      `${pt(45.0, 7.5)} l`,
+      `${pt(50.572, 7.498)} ${pt(55.526, 11.047)} ${pt(57.316, 16.324)} c`,
+      `${pt(59.105, 21.601)} ${pt(57.333, 27.432)} ${pt(52.91, 30.82)} c`,
+      `${pt(38.05, 42.2)} l`,
+      `${pt(36.25, 43.578)} ${pt(35.119, 45.654)} ${pt(34.938, 47.914)} c`,
+      `${pt(34.757, 50.173)} ${pt(35.542, 52.403)} ${pt(37.1, 54.05)} c`,
+      `${pt(67.54, 86.24)} l`,
+      `${pt(71.317, 90.235)} ${pt(76.572, 92.499)} ${pt(82.07, 92.5)} c`,
+      `${pt(98.5, 92.5)} l`,
+      `${pt(107.198, 92.5)} ${pt(114.25, 85.448)} ${pt(114.25, 76.75)} c`,
+      `${pt(114.25, 68.052)} ${pt(107.198, 61.0)} ${pt(98.5, 61.0)} c`,
+      `${pt(84.0, 61.0)} l`,
+      `${pt(78.753, 61.0)} ${pt(74.5, 56.747)} ${pt(74.5, 51.5)} c`,
+      `${pt(74.5, 46.253)} ${pt(78.753, 42.0)} ${pt(84.0, 42.0)} c`,
+      `${pt(108.0, 42.0)} l S`,
+      'Q'
+    );
   }
 
   rule({ y = this.y, x = MARGIN_X, to = RIGHT, color = RULE, weight = 0.6 } = {}) {
@@ -259,6 +308,9 @@ const doc = new Resume();
 doc.rect(0, PAGE_H - HEADER_H, PAGE_W, HEADER_H, BAND);
 doc.rect(0, PAGE_H - 3.4, PAGE_W, 3.4, ACCENT);
 doc.rule({ y: PAGE_H - HEADER_H, x: 0, to: PAGE_W, color: RULE, weight: 0.7 });
+
+// Mark sits opposite the name, its right edge on the text margin.
+doc.mark(RIGHT - 26 * 1.2175, 730, 26);
 
 doc.y = PAGE_H - 36;
 const nameW = doc.draw(personal.name, { size: 21, font: 'bold', color: INK, tracking: -0.3 });

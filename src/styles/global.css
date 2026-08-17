@@ -1,12 +1,26 @@
 /* ============================================================
    CONSOLE
    Technical, precise, terminal-forward. Hairline grid, mono
-   labels, one signal-green accent. Light and dark.
+   labels, one accent. Light and dark.
+
+   The accent is swappable. A palette sets six raw values —
+   --a-l/-2/-on for light, --a-d/-2/-on for dark — and each theme
+   block below maps the pair it needs onto --accent. Palettes are
+   defined in src/data/theme.js and emitted by Layout.astro as
+   :root[data-accent="…"] rules; the values here are the built-in
+   default, so the stylesheet still stands up on its own.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
+  --a-l:    #0F7A46;
+  --a-l-2:  #0B5C34;
+  --a-l-on: #FFFFFF;
+  --a-d:    #2FBF71;
+  --a-d-2:  #6FD08C;
+  --a-d-on: #0A0C0B;
+
   --bg:          #FCFCFB;
   --bg-2:        #F4F5F2;
   --panel:       #FFFFFF;
@@ -17,10 +31,10 @@
   --line:        #E2E4DD;
   --line-2:      #D2D5CB;
   --grid:        rgba(12, 14, 11, 0.045);
-  --accent:      #128A4F;
-  --accent-2:    #0E6E3F;
-  --accent-wash: #E3F4EA;
-  --on-accent:   #FFFFFF;
+  --accent:      var(--a-l);
+  --accent-2:    var(--a-l-2);
+  --accent-wash: color-mix(in srgb, var(--a-l) 14%, #FFFFFF);
+  --on-accent:   var(--a-l-on);
   --amber:       #B26A00;
   --shadow:      rgba(12, 14, 11, 0.38);
   --term-bg:     #0E1110;
@@ -48,10 +62,10 @@
   --line:        #1D221E;
   --line-2:      #2C332D;
   --grid:        rgba(233, 238, 232, 0.032);
-  --accent:      #2FBF71;
-  --accent-2:    #6FD08C;
-  --accent-wash: rgba(47, 191, 113, 0.13);
-  --on-accent:   #04140B;
+  --accent:      var(--a-d);
+  --accent-2:    var(--a-d-2);
+  --accent-wash: color-mix(in srgb, var(--a-d) 13%, transparent);
+  --on-accent:   var(--a-d-on);
   --amber:       #E3B341;
   --shadow:      rgba(0, 0, 0, 0.6);
   --term-bg:     #0D100F;
@@ -74,10 +88,10 @@
     --line:        #1D221E;
     --line-2:      #2C332D;
     --grid:        rgba(233, 238, 232, 0.032);
-    --accent:      #2FBF71;
-    --accent-2:    #6FD08C;
-    --accent-wash: rgba(47, 191, 113, 0.13);
-    --on-accent:   #04140B;
+    --accent:      var(--a-d);
+    --accent-2:    var(--a-d-2);
+    --accent-wash: color-mix(in srgb, var(--a-d) 13%, transparent);
+    --on-accent:   var(--a-d-on);
     --amber:       #E3B341;
     --shadow:      rgba(0, 0, 0, 0.6);
     --term-bg:     #0D100F;
@@ -147,9 +161,34 @@ h1, h2, h3 { font-family: var(--sans); font-weight: 700; margin: 0; letter-spaci
   transform: scaleX(var(--p, 0)); transform-origin: 0 50%;
 }
 .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-.brand { font-family: var(--mono); font-weight: 500; font-size: 15px; display: inline-flex; align-items: center; gap: 9px; }
-.brand .sq { width: 11px; height: 11px; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); transition: transform .3s var(--ease), border-radius .3s var(--ease); }
-.brand:hover .sq { transform: rotate(45deg) scale(.9); border-radius: 2px; }
+/* Baseline, not centre: the bottom of the mark's viewBox is its baseline, so
+   this sits the letter on the same line as the wordmark. */
+.brand { font-family: var(--mono); font-weight: 500; font-size: 15px; display: inline-flex; align-items: baseline; gap: 9px; color: var(--ink); }
+/* The mark: "Rs" routed as one constant-width stroke, single colour. Flat
+   terminals and round joins — the bends are real fillets in the path, so do not
+   change the caps to round or the whole thing softens. */
+.logo { display: block; overflow: visible; }
+.logo-path {
+  fill: none; stroke: currentColor; stroke-width: 15;
+  stroke-linecap: butt; stroke-linejoin: round;
+  transition: stroke .22s var(--ease);
+}
+
+@keyframes logo-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+/* One path in drawing order, so one dash offset writes the whole mark on:
+   stem, arm, hook, diagonal, leg, then the s. No handovers, no stagger. */
+.logo--animate .logo-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: logo-draw 1.4s cubic-bezier(.55, 0, .25, 1) .15s forwards;
+}
+
+.brand:hover .logo-path { stroke: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .logo--animate .logo-path { animation: none; stroke-dashoffset: 0; }
+}
 .nav-links { display: flex; gap: 2px; }
 .nav-links a { position: relative; font-family: var(--mono); font-size: 12.5px; color: var(--ink-mute); padding: 7px 10px; border-radius: 3px; transition: color .18s; }
 .nav-links a::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 3px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: 0 50%; transition: transform .25s var(--ease); }

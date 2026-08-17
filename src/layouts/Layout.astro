@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import { personal } from '../data/portfolio';
+import { ACCENTS, theme, GROUND } from '../data/theme.js';
+import AccentLab from '../components/AccentLab.astro';
 
 interface Props {
   title: string;
@@ -33,11 +35,35 @@ const jsonLd = {
   sameAs: [personal.social.github, personal.social.linkedin].filter(Boolean),
   knowsAbout: ['Software Engineering', 'Next.js', 'FastAPI', 'PostgreSQL', 'Terraform', 'Large Language Models'],
 };
+/* Theme mode. Anything but 'auto' pins one side: the attribute is stamped in the
+ * markup, the pre-paint script has nothing to resolve, and the toggle is gone. */
+const locked = theme.mode === 'light' || theme.mode === 'dark' ? theme.mode : null;
+
+/* Accent palettes as CSS. In dev every palette ships so the lab panel can flip
+ * between them live; a build carries only the one the site is set to. */
+const palettes = import.meta.env.DEV
+  ? Object.entries(ACCENTS)
+  : [[theme.accent, ACCENTS[theme.accent] ?? ACCENTS.signal]];
+
+const accentCss = palettes
+  .map(
+    ([name, a]) =>
+      `:root[data-accent="${name}"]{` +
+      `--a-l:${a.light.base};--a-l-2:${a.light.deep};--a-l-on:${a.light.on};` +
+      `--a-d:${a.dark.base};--a-d-2:${a.dark.deep};--a-d-on:${a.dark.on};}`
+  )
+  .join('');
 ---
 
 <!doctype html>
-<html lang="en">
+<html
+  lang="en"
+  data-accent={theme.accent}
+  data-theme={locked ?? undefined}
+  data-theme-lock={locked ? '' : undefined}
+>
   <head>
+    <style is:inline set:html={accentCss}></style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
@@ -51,9 +77,18 @@ const jsonLd = {
 
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <link rel="icon" type="image/x-icon" href={`${base}/favicon.ico`} />
-    <link rel="apple-touch-icon" href={`${base}/favicon.svg`} />
-    <meta name="theme-color" content="#FCFCFB" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0A0C0B" media="(prefers-color-scheme: dark)" />
+    <link rel="apple-touch-icon" sizes="180x180" href={`${base}/apple-touch-icon.png`} />
+    <link rel="manifest" href={`${base}/site.webmanifest`} />
+    {
+      locked ? (
+        <meta name="theme-color" content={GROUND[locked]} />
+      ) : (
+        <>
+          <meta name="theme-color" content={GROUND.light} media="(prefers-color-scheme: light)" />
+          <meta name="theme-color" content={GROUND.dark} media="(prefers-color-scheme: dark)" />
+        </>
+      )
+    }
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -80,9 +115,12 @@ const jsonLd = {
       <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
     </noscript>
 
-    <!-- theme, resolved before first paint so the page never flashes -->
+    <!-- theme, resolved before first paint so the page never flashes.
+         Skipped entirely when the site is pinned to one mode, since the
+         attribute is already in the markup. -->
     <script is:inline>
       (function () {
+        if (document.documentElement.hasAttribute('data-theme-lock')) return;
         try {
           var saved = localStorage.getItem('theme');
           var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -171,7 +209,9 @@ const jsonLd = {
 
         /* ---------- theme ---------- */
         var themeBtn = document.getElementById('themeBtn');
+        var themeLocked = document.documentElement.hasAttribute('data-theme-lock');
         function setTheme(next) {
+          if (themeLocked) return;
           document.documentElement.setAttribute('data-theme', next);
           try { localStorage.setItem('theme', next); } catch (e) {}
         }
@@ -434,7 +474,7 @@ const jsonLd = {
               '  <span class="k">stack</span>        current stack\n' +
               '  <span class="k">contact</span>      get in touch\n' +
               '  <span class="k">resume</span>       download the PDF\n' +
-              '  <span class="k">theme</span>        flip light / dark\n' +
+              '  <span class="k">theme</span>        ' + (themeLocked ? 'show the pinned mode' : 'flip light / dark') + '\n' +
               '  <span class="k">goto</span> [sec]   scroll to a section\n' +
               '  <span class="k">neofetch</span>     system info\n' +
               '  <span class="k">clear</span>        clear the screen';
@@ -493,6 +533,9 @@ const jsonLd = {
             return 'downloading <span class="k">' + resumeUrl.split('/').pop() + '</span> … <span class="cmt"># single column, ATS-parseable</span>';
           },
           theme: function () {
+            if (themeLocked) {
+              return 'theme is pinned to <span class="k">' + document.documentElement.getAttribute('data-theme') + '</span> on this site';
+            }
             toggleTheme();
             return 'theme → <span class="k">' + document.documentElement.getAttribute('data-theme') + '</span>';
           },
@@ -577,9 +620,10 @@ const jsonLd = {
           }
           if (e.key === 'Escape') { closeTerm(); return; }
           if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
-          if (e.key.toLowerCase() === 't') toggleTheme();
+          if (e.key.toLowerCase() === 't' && !themeLocked) toggleTheme();
         });
       })();
     </script>
+    {import.meta.env.DEV && <AccentLab />}
   </body>
 </html>

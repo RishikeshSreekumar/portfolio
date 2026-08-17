@@ -13,14 +13,36 @@ endobj
 << /Type /Pages /Count 1 /Kids [12 0 R] >>
 endobj
 5 0 obj
-<< /Length 11034 >>
+<< /Length 11839 >>
 stream
-0.937 0.965 0.945 rg 0.00 700.00 612.00 92.00 re f
-0.07 0.54 0.31 rg 0.00 788.60 612.00 3.40 re f
+0.9414 0.9678 0.9699 rg 0.00 700.00 612.00 92.00 re f
+0.0235 0.4627 0.498 rg 0.00 788.60 612.00 3.40 re f
 0.84 0.85 0.82 RG 0.7 w 0.00 700.00 m 612.00 700.00 l S
+q 0 J 1 j
+3.90 w
+0.07 0.08 0.06 RG
+530.30 731.95 m
+530.30 753.01 l
+530.30 753.58 530.76 754.05 531.34 754.05 c
+540.05 754.05 l
+541.49 754.05 542.78 753.13 543.25 751.76 c
+543.71 750.38 543.25 748.87 542.10 747.99 c
+538.24 745.03 l
+537.77 744.67 537.48 744.13 537.43 743.54 c
+537.38 742.96 537.59 742.38 537.99 741.95 c
+545.91 733.58 l
+546.89 732.54 548.25 731.95 549.68 731.95 c
+553.96 731.95 l
+556.22 731.95 558.05 733.78 558.05 736.04 c
+558.05 738.31 556.22 740.14 553.96 740.14 c
+550.19 740.14 l
+548.82 740.14 547.72 741.25 547.72 742.61 c
+547.72 743.97 548.82 745.08 550.19 745.08 c
+556.43 745.08 l S
+Q
 BT 0.07 0.08 0.06 rg /F2 21 Tf -0.3 Tc 1 0 0 1 52.00 756.00 Tm (Rishikesh S) Tj ET 0 Tc
-BT 0.07 0.54 0.31 rg /F2 21 Tf 0 Tc 1 0 0 1 168.75 756.00 Tm (.) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 9 Tf 1.1 Tc 1 0 0 1 52.00 741.00 Tm (FOUNDING SOFTWARE ENGINEER) Tj ET 0 Tc
+BT 0.0235 0.4627 0.498 rg /F2 21 Tf 0 Tc 1 0 0 1 168.75 756.00 Tm (.) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 9 Tf 1.1 Tc 1 0 0 1 52.00 741.00 Tm (FOUNDING SOFTWARE ENGINEER) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 9 Tf 0 Tc 1 0 0 1 241.11 741.00 Tm (|  Chennai, India) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 8.7 Tf 0 Tc 1 0 0 1 52.00 727.00 Tm (rishikeshpavithram@gmail.com) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.7 Tf 0 Tc 1 0 0 1 172.98 727.00 Tm (  |  ) Tj ET 0 Tc
@@ -30,97 +52,97 @@ BT 0.47 0.5 0.44 rg /F1 8.7 Tf 0 Tc 1 0 0 1 177.22 716.00 Tm (  |  ) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 8.7 Tf 0 Tc 1 0 0 1 189.16 716.00 Tm (linkedin.com/in/rishikesh-s-0a4a47166) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 8.8 Tf 1.5 Tc 1 0 0 1 52.00 682.00 Tm (SUMMARY) Tj ET 0 Tc
 0.84 0.85 0.82 RG 0.6 w 52.00 677.00 m 560.00 677.00 l S
-0.07 0.54 0.31 RG 1.4 w 52.00 677.00 m 82.00 677.00 l S
+0.0235 0.4627 0.498 RG 1.4 w 52.00 677.00 m 82.00 677.00 l S
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 52.00 666.00 Tm (Software engineer with 3+ years building and shipping production systems end to end, across backend, frontend and) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 52.00 655.10 Tm (infrastructure. Founding engineer at Mando, taking enterprise products from first commit to paying customers. Previously two) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 52.00 644.20 Tm (years on real-time trading systems at Quantitative Brokers, working to hard latency and reliability budgets.) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 8.8 Tf 1.5 Tc 1 0 0 1 52.00 624.30 Tm (TECHNICAL SKILLS) Tj ET 0 Tc
 0.84 0.85 0.82 RG 0.6 w 52.00 619.30 m 560.00 619.30 l S
-0.07 0.54 0.31 RG 1.4 w 52.00 619.30 m 82.00 619.30 l S
-BT 0.055 0.43 0.25 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 608.30 Tm (Languages:) Tj ET 0 Tc
+0.0235 0.4627 0.498 RG 1.4 w 52.00 619.30 m 82.00 619.30 l S
+BT 0.0196 0.3608 0.3882 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 608.30 Tm (Languages:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 608.30 Tm (TypeScript, JavaScript, Python, Go, Java, SQL) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 597.40 Tm (Frontend:) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 597.40 Tm (Frontend:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 597.40 Tm (React, Next.js, Angular, Astro, Tailwind CSS, Three.js) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 586.50 Tm (Backend:) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 586.50 Tm (Backend:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 586.50 Tm (FastAPI, Node.js, NestJS, SQLAlchemy, REST APIs, WebSockets, Stripe) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 575.60 Tm (AI / ML:) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 575.60 Tm (AI / ML:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 575.60 Tm (LLM applications, Retrieval-Augmented Generation \(RAG\), Vector search, pgvector, Model Context) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 564.70 Tm (Protocol \(MCP\)) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 553.80 Tm (Databases:) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 553.80 Tm (Databases:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 553.80 Tm (PostgreSQL, Redis, MongoDB, Alembic) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 542.90 Tm (Cloud & DevOps:) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 542.90 Tm (Cloud & DevOps:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 542.90 Tm (Amazon Web Services \(AWS\), Microsoft Azure, Terraform, Docker, GitHub Actions, CI/CD, Vercel) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 532.00 Tm (Tools:) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 9.2 Tf 0 Tc 1 0 0 1 52.00 532.00 Tm (Tools:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 140.00 532.00 Tm (Git, Playwright, Chrome Extensions, Shell scripting, Jira) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 8.8 Tf 1.5 Tc 1 0 0 1 52.00 512.10 Tm (WORK EXPERIENCE) Tj ET 0 Tc
 0.84 0.85 0.82 RG 0.6 w 52.00 507.10 m 560.00 507.10 l S
-0.07 0.54 0.31 RG 1.4 w 52.00 507.10 m 82.00 507.10 l S
+0.0235 0.4627 0.498 RG 1.4 w 52.00 507.10 m 82.00 507.10 l S
 BT 0.07 0.08 0.06 rg /F2 10.6 Tf 0 Tc 1 0 0 1 52.00 496.10 Tm (Mando) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0.4 Tc 1 0 0 1 478.70 496.10 Tm (Sep 2024 - Present) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 484.60 Tm (Founding Software Engineer) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 484.60 Tm (Founding Software Engineer) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0 Tc 1 0 0 1 529.89 484.60 Tm (Remote) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 475.68 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 475.68 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 473.10 Tm (Built natural language search and a conversational AI interface over Workday's knowledge base) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 464.78 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 464.78 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 462.20 Tm (Shipped a Jira/Zendesk-style service management platform: ticket intake, routing, assignment, resolution) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 453.88 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 453.88 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 451.30 Tm (Built a video call system on Azure Communication Services with a time-zone-aware booking flow for expert sessions) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 442.98 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 442.98 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 440.40 Tm (Integrated Stripe end to end for subscriptions, checkout, invoicing and webhook-driven entitlement) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 432.08 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 432.08 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 429.50 Tm (Built a browser-based video/image editor and a Chrome extension that turns recordings into step-by-step docs) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 10.6 Tf 0 Tc 1 0 0 1 52.00 415.60 Tm (Quantitative Brokers) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0.4 Tc 1 0 0 1 475.43 415.60 Tm (Jul 2022 - Sep 2024) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 404.10 Tm (Software Engineer) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 404.10 Tm (Software Engineer) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0 Tc 1 0 0 1 504.55 404.10 Tm (Chennai, India) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 395.18 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 395.18 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 392.60 Tm (Designed an order monitoring system handling 200 messages/sec of 800-1000 bytes from multiple upstream sources) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 384.28 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 384.28 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 381.70 Tm (Cut application load time from ~40 seconds to under 1 second by moving data loading server-side) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 373.38 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 373.38 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 370.80 Tm (Reduced latency by 20% and CPU usage by 50% on the critical path of the order entry application) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 362.48 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 362.48 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 359.90 Tm (Implemented DV01-based risk calculations for CASH instruments, improving cash stream revenue by 5%) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 10.6 Tf 0 Tc 1 0 0 1 52.00 346.00 Tm (Quantitative Brokers) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0.4 Tc 1 0 0 1 474.48 346.00 Tm (May 2021 - Jul 2021) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 334.50 Tm (Software Development Intern) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 334.50 Tm (Software Development Intern) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0 Tc 1 0 0 1 504.55 334.50 Tm (Chennai, India) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 325.58 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 325.58 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 323.00 Tm (Built a desktop integration prototype with OpenFin, sharing context across four separate applications) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 314.68 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 314.68 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 312.10 Tm (Developed an Angular app plotting financial curves from a live kdb+ database using Highcharts) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.8 Tf 0 Tc 1 0 0 1 52.00 298.20 Tm (Earlier: Android developer at Prescribe \(2021\); software development intern at Workfence Technologies \(2020\).) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 8.8 Tf 1.5 Tc 1 0 0 1 52.00 278.30 Tm (PROJECTS) Tj ET 0 Tc
 0.84 0.85 0.82 RG 0.6 w 52.00 273.30 m 560.00 273.30 l S
-0.07 0.54 0.31 RG 1.4 w 52.00 273.30 m 82.00 273.30 l S
+0.0235 0.4627 0.498 RG 1.4 w 52.00 273.30 m 82.00 273.30 l S
 BT 0.07 0.08 0.06 rg /F2 10 Tf 0 Tc 1 0 0 1 52.00 262.30 Tm (leak - Terminal Subscription Manager) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F1 8.4 Tf 0 Tc 1 0 0 1 237.83 262.30 Tm (github.com/RishikeshSreekumar/leak) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F1 8.4 Tf 0 Tc 1 0 0 1 237.83 262.30 Tm (github.com/RishikeshSreekumar/leak) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F3 8.8 Tf 0 Tc 1 0 0 1 52.00 251.30 Tm (Go, Bubble Tea, SQLite, GitHub Actions) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 242.38 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 242.38 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 239.80 Tm (Built a local-first terminal app that tracks and audits recurring subscriptions, shipped as a single Go binary) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 231.48 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 231.48 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 228.90 Tm (Shipped a Homebrew tap, install script and semver releases: macOS, Linux, Windows on amd64 and arm64) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 10 Tf 0 Tc 1 0 0 1 52.00 215.00 Tm (deadfall - Dead Component Detector \(npm\)) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F1 8.4 Tf 0 Tc 1 0 0 1 263.35 215.00 Tm (npmjs.com/package/deadfall) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F1 8.4 Tf 0 Tc 1 0 0 1 263.35 215.00 Tm (npmjs.com/package/deadfall) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F3 8.8 Tf 0 Tc 1 0 0 1 52.00 204.00 Tm (TypeScript, Node.js, ts-morph) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 195.08 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 195.08 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 192.50 Tm (Published an npm CLI that maps a Next.js codebase into a component usage graph and flags unused components) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 184.18 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 184.18 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 181.60 Tm (Exits non-zero on dead code so it doubles as a CI gate, and generates an interactive HTML report for exploring the graph) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 10 Tf 0 Tc 1 0 0 1 52.00 167.70 Tm (Rubik's Cube Solver) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F3 8.8 Tf 0 Tc 1 0 0 1 52.00 156.70 Tm (Next.js, Three.js, Web Workers, PWA) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 147.78 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 147.78 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 145.20 Tm (Built a browser solver running Kociemba's two-phase algorithm in a Web Worker, with webcam cube scanning) Tj ET 0 Tc
-0.07 0.54 0.31 rg 53.50 136.88 3.00 3.00 re f
+0.0235 0.4627 0.498 rg 53.50 136.88 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 134.30 Tm (Validates cube state and rejects impossible cubes with a specific reason, not a generic failure) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 8.8 Tf 1.5 Tc 1 0 0 1 52.00 111.40 Tm (EDUCATION) Tj ET 0 Tc
 0.84 0.85 0.82 RG 0.6 w 52.00 106.40 m 560.00 106.40 l S
-0.07 0.54 0.31 RG 1.4 w 52.00 106.40 m 82.00 106.40 l S
+0.0235 0.4627 0.498 RG 1.4 w 52.00 106.40 m 82.00 106.40 l S
 BT 0.07 0.08 0.06 rg /F2 10.6 Tf 0 Tc 1 0 0 1 52.00 95.40 Tm (Indian Institute of Technology, Madras) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0.4 Tc 1 0 0 1 509.70 95.40 Tm (2018 - 2022) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 83.90 Tm (B.Tech, Chemical Engineering) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F3 9.4 Tf 0 Tc 1 0 0 1 52.00 83.90 Tm (B.Tech, Chemical Engineering) Tj ET 0 Tc
 BT 0.47 0.5 0.44 rg /F1 8.6 Tf 0 Tc 1 0 0 1 432.51 83.90 Tm (Chennai, India  |  CGPA 8.58 / 10) Tj ET 0 Tc
-BT 0.055 0.43 0.25 rg /F2 8.8 Tf 0 Tc 1 0 0 1 52.00 72.40 Tm (Achievements:) Tj ET 0 Tc
+BT 0.0196 0.3608 0.3882 rg /F2 8.8 Tf 0 Tc 1 0 0 1 52.00 72.40 Tm (Achievements:) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 8.8 Tf 0 Tc 1 0 0 1 140.00 72.40 Tm (All India Rank 2275 in JEE Advanced 2018 \(top 0.2% of ~1.6 million candidates\); All India Rank 5 in KEAM) Tj ET 0 Tc
 BT 0.28 0.3 0.26 rg /F1 8.8 Tf 0 Tc 1 0 0 1 140.00 61.50 Tm (2018.) Tj ET 0 Tc
 endstream
@@ -160,17 +182,17 @@ xref
 0000000214 00000 n 
 0000000319 00000 n 
 0000000377 00000 n 
-0000011464 00000 n 
-0000011624 00000 n 
-0000011796 00000 n 
-0000011958 00000 n 
-0000012134 00000 n 
-0000012303 00000 n 
-0000012464 00000 n 
-0000012659 00000 n 
-0000013332 00000 n 
+0000012269 00000 n 
+0000012429 00000 n 
+0000012601 00000 n 
+0000012763 00000 n 
+0000012939 00000 n 
+0000013108 00000 n 
+0000013269 00000 n 
+0000013464 00000 n 
+0000014137 00000 n 
 trailer
 << /Size 15 /Root 14 0 R /Info 13 0 R >>
 startxref
-13396
+14201
 %%EOF

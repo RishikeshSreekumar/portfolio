@@ -1,0 +1,37 @@
+---
+/* The mark: "Rs" routed as a single constant-width stroke.
+ *
+ * Up the stem, along the arm, around the hook, back down the diagonal to the
+ * waist, out along the leg and straight on into the s — which is a serpentine of
+ * two half-turns. Every bend is a true fillet, every terminal is cut flat, and
+ * the whole mark is one colour.
+ *
+ * Because it is one path in drawing order, `animate` writes the whole thing on
+ * with a single dash offset — stem to the s's terminal, one uninterrupted motion.
+ * The viewBox is the mark's own bounding box, so `size` is the ink height.
+ *
+ * Geometry is mirrored in scripts/generate-icons.mjs and the mark() method in
+ * scripts/generate-resume.mjs — change all three together. */
+interface Props {
+  size?: number;
+  class?: string;
+  /** Write the mark on. Use once per page. */
+  animate?: boolean;
+}
+
+const { size = 18, class: className, animate = false } = Astro.props;
+
+const W = 121.75;
+const H = 100;
+---
+
+<svg
+  class:list={['logo', { 'logo--animate': animate }, className]}
+  width={((size * W) / H).toFixed(2)}
+  height={size}
+  viewBox="0 0 121.75 100"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path class="logo-path" pathLength="1" d="M7.5 92.5L7.5 11.5C7.5 9.291 9.291 7.5 11.5 7.5L45 7.5C50.572 7.498 55.526 11.047 57.316 16.324C59.105 21.601 57.333 27.432 52.91 30.82L38.05 42.2C36.25 43.578 35.119 45.654 34.938 47.914C34.757 50.173 35.542 52.403 37.1 54.05L67.54 86.24C71.317 90.235 76.572 92.499 82.07 92.5L98.5 92.5C107.198 92.5 114.25 85.448 114.25 76.75C114.25 68.052 107.198 61 98.5 61L84 61C78.753 61 74.5 56.747 74.5 51.5C74.5 46.253 78.753 42 84 42L108 42"></path>
+</svg>
