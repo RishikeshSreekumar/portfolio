@@ -4,7 +4,7 @@ Personal site and resume for Rishikesh S, founding software engineer at Mando.
 Astro, zero client-side frameworks, hand-written CSS. The downloadable resume PDF
 is generated at build time from the same data file that renders the page.
 
-**Live:** https://rishikeshsreekumar.github.io/portfolio
+**Live:** https://rishikeshsreekumar.github.io
 
 ---
 
@@ -12,7 +12,7 @@ is generated at build time from the same data file that renders the page.
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321/portfolio
+npm run dev        # http://localhost:4321
 npm run build      # regenerates the resume PDF, then builds to dist/
 npm run preview    # serve the production build
 npm run resume     # regenerate public/Rishikesh-S-Resume.pdf only

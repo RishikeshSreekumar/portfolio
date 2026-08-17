@@ -421,7 +421,7 @@ doc.draw(`${edu.location}  |  ${edu.grade}`, { size: 8.6, align: 'right', color:
 doc.y -= 11.5;
 doc.labelled(
   'Achievements',
-  'All India Rank 2275 in JEE Advanced 2018 (top 0.2% of ~1.6 million candidates); All India Rank 5 in KEAM 2018.',
+  'All India Rank 2275 in JEE Advanced 2018 (155,000 sat it, from 1.1M+ JEE Main candidates); Rank 5 in Kerala, KEAM 2018.',
   { size: 8.8 }
 );
 

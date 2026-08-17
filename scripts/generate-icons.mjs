@@ -157,7 +157,7 @@ function ogCard() {
   <text x="72" y="462" font-family="Menlo" font-size="22" fill="${c.soft}">Mando  ·  ex-Quantitative Brokers  ·  IIT Madras</text>
 
   <text x="72" y="546" font-family="Menlo" font-size="20" fill="${c.mute}"><tspan fill="${accent.base}">&gt;</tspan> ships products end to end — the API, the interface, everything between</text>
-  <text x="${W - 72}" y="590" text-anchor="end" font-family="Menlo" font-size="18" fill="${c.faint}">rishikeshsreekumar.github.io/portfolio</text>
+  <text x="${W - 72}" y="590" text-anchor="end" font-family="Menlo" font-size="18" fill="${c.faint}">rishikeshsreekumar.github.io</text>
 </svg>`;
 }
 
