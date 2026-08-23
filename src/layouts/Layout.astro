@@ -131,8 +131,8 @@ const accentCss = palettes
     </script>
   </head>
 
-  <body id="top" data-resume={resumeUrl}>
-    <div class="aura" id="aura"></div>
+  <body id="top" data-resume={resumeUrl} data-ground-light={GROUND.light} data-ground-dark={GROUND.dark}>
+    <a class="skip" href="#main">Skip to content</a>
 
     <slot />
 
@@ -140,7 +140,7 @@ const accentCss = palettes
     <div class="term-overlay" id="termOverlay" role="dialog" aria-modal="true" aria-label="Interactive terminal">
       <div class="term">
         <div class="term-bar">
-          <span class="d r" id="termClose" title="Close"></span><span class="d y"></span><span class="d g"></span>
+          <button class="d r" id="termClose" title="Close terminal" aria-label="Close terminal"></button><span class="d y"></span><span class="d g"></span>
           <span class="t">rishikesh@portfolio — interactive · type 'help' · esc to close</span>
         </div>
         <div class="term-body" id="termBody">
@@ -148,7 +148,7 @@ const accentCss = palettes
         </div>
         <div class="term-prompt">
           <span class="ps1">rishikesh@portfolio:~$</span>
-          <input class="term-input" id="termInput" autocomplete="off" spellcheck="false" aria-label="Terminal input" />
+          <input class="term-input" id="termInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="120" aria-label="Terminal input" />
         </div>
       </div>
     </div>
@@ -160,7 +160,22 @@ const accentCss = palettes
 
         /* ---------- scroll reveal ---------- */
         var reveals = document.querySelectorAll('.reveal');
+        var pending = Array.prototype.slice.call(reveals);
         function revealAll() { reveals.forEach(function (el) { el.classList.add('in'); }); }
+        /* The observer is the mechanism; this is the guarantee. Anything standing
+           in the viewport is shown whatever the observer did or did not deliver —
+           a backgrounded tab, a restored scroll position, a prerender. */
+        function revealVisible() {
+          for (var i = pending.length - 1; i >= 0; i--) {
+            var el = pending[i];
+            if (el.classList.contains('in')) { pending.splice(i, 1); continue; }
+            var box = el.getBoundingClientRect();
+            if (box.top < window.innerHeight && box.bottom > 0) {
+              el.classList.add('in');
+              pending.splice(i, 1);
+            }
+          }
+        }
         if ('IntersectionObserver' in window) {
           var io = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
@@ -172,12 +187,7 @@ const accentCss = palettes
           }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
           reveals.forEach(function (el) { io.observe(el); });
           // Never let the animation be the reason content is invisible.
-          setTimeout(function () {
-            reveals.forEach(function (el) {
-              var box = el.getBoundingClientRect();
-              if (box.top < window.innerHeight && box.bottom > 0) el.classList.add('in');
-            });
-          }, 1200);
+          setTimeout(revealVisible, 1200);
         } else {
           revealAll();
         }
@@ -190,30 +200,67 @@ const accentCss = palettes
           .filter(Boolean);
         var ticking = false;
 
+        function update() {
+          ticking = false;
+          if (tickTimer) { clearTimeout(tickTimer); tickTimer = 0; }
+          revealVisible();
+
+          var max = document.documentElement.scrollHeight - window.innerHeight;
+          if (progress) progress.style.setProperty('--p', max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+
+          var current = null;
+          for (var i = 0; i < sections.length; i++) {
+            if (sections[i].getBoundingClientRect().top <= 140) current = sections[i].id;
+          }
+          navLinks.forEach(function (a) { a.classList.toggle('active', a.dataset.nav === current); });
+        }
+
+        var tickTimer = 0;
+        function runTick() {
+          if (tickTimer) { clearTimeout(tickTimer); tickTimer = 0; }
+          update();
+        }
         function onScroll() {
+          /* Three delivery regimes, and the handler must survive all of them.
+             Hidden: no frames, and timers are throttled to whole seconds or worse,
+             so run straight away. Occluded but visible: frames stop while timers
+             keep normal resolution, so the timer is the floor that stops a raised
+             flag from latching this off for good. Normal: the frame wins the race
+             and clears the timer. */
+          if (document.hidden) { runTick(); return; }
           if (ticking) return;
           ticking = true;
-          requestAnimationFrame(function () {
-            var max = document.documentElement.scrollHeight - window.innerHeight;
-            if (progress) progress.style.setProperty('--p', max > 0 ? Math.min(window.scrollY / max, 1) : 0);
-
-            var current = null;
-            for (var i = 0; i < sections.length; i++) {
-              if (sections[i].getBoundingClientRect().top <= 140) current = sections[i].id;
-            }
-            navLinks.forEach(function (a) { a.classList.toggle('active', a.dataset.nav === current); });
-            ticking = false;
-          });
+          requestAnimationFrame(runTick);
+          tickTimer = setTimeout(runTick, 250);
         }
         window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        document.addEventListener('visibilitychange', function () { ticking = false; onScroll(); });
         onScroll();
 
         /* ---------- theme ---------- */
         var themeBtn = document.getElementById('themeBtn');
         var themeLocked = document.documentElement.hasAttribute('data-theme-lock');
+        var GROUND = { light: document.body.dataset.groundLight, dark: document.body.dataset.groundDark };
+
+        /* The two <meta name="theme-color"> tags in the head answer the OS query.
+           Once the visitor toggles against the OS they stop being right, so a
+           third, media-less tag is appended — last match wins — and kept in step. */
+        var groundMeta = null;
+        function paintBrowserChrome(next) {
+          if (!GROUND[next]) return;
+          if (!groundMeta) {
+            groundMeta = document.createElement('meta');
+            groundMeta.name = 'theme-color';
+            document.head.appendChild(groundMeta);
+          }
+          groundMeta.setAttribute('content', GROUND[next]);
+        }
+
         function setTheme(next) {
           if (themeLocked) return;
           document.documentElement.setAttribute('data-theme', next);
+          paintBrowserChrome(next);
           try { localStorage.setItem('theme', next); } catch (e) {}
         }
         function toggleTheme() {
@@ -221,42 +268,45 @@ const accentCss = palettes
         }
         if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
+        function storedTheme() { try { return localStorage.getItem('theme'); } catch (e) { return null; } }
+        if (!themeLocked && storedTheme()) paintBrowserChrome(storedTheme());
+
+        /* Nobody has chosen yet: keep following the OS while the tab stays open. */
+        var osDark = window.matchMedia('(prefers-color-scheme: dark)');
+        var onOsChange = function (e) {
+          if (themeLocked || storedTheme()) return;
+          document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        };
+        if (osDark.addEventListener) osDark.addEventListener('change', onOsChange);
+        else if (osDark.addListener) osDark.addListener(onOsChange);
+
         /* ---------- mobile drawer ---------- */
         var menuBtn = document.getElementById('menuBtn');
         var drawer = document.getElementById('drawer');
-        if (menuBtn && drawer) {
-          menuBtn.addEventListener('click', function () {
-            var open = drawer.classList.toggle('open');
-            menuBtn.setAttribute('aria-expanded', String(open));
-            menuBtn.textContent = open ? '×' : '≡';
-          });
-          drawer.addEventListener('click', function (e) {
-            if (e.target.tagName === 'A') {
-              drawer.classList.remove('open');
-              menuBtn.textContent = '≡';
-              menuBtn.setAttribute('aria-expanded', 'false');
-            }
-          });
+        function setDrawer(open) {
+          if (!menuBtn || !drawer) return;
+          drawer.classList.toggle('open', open);
+          menuBtn.setAttribute('aria-expanded', String(open));
+          menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+          menuBtn.textContent = open ? '×' : '≡';
         }
-
-        /* ---------- cursor aura ---------- */
-        var aura = document.getElementById('aura');
-        if (aura && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
-          window.addEventListener('pointermove', function (e) {
-            aura.classList.add('on');
-            aura.style.setProperty('--ax', e.clientX + 'px');
-            aura.style.setProperty('--ay', e.clientY + 'px');
+        function drawerOpen() { return !!drawer && drawer.classList.contains('open'); }
+        if (menuBtn && drawer) {
+          menuBtn.addEventListener('click', function () { setDrawer(!drawerOpen()); });
+          drawer.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') setDrawer(false);
+          });
+          /* an open drawer must not survive a tap outside it, or a resize back to
+             the width where the button that opened it no longer exists */
+          document.addEventListener('click', function (e) {
+            if (!drawerOpen()) return;
+            if (drawer.contains(e.target) || menuBtn.contains(e.target)) return;
+            setDrawer(false);
+          });
+          window.addEventListener('resize', function () {
+            if (drawerOpen() && window.innerWidth > 760) setDrawer(false);
           }, { passive: true });
         }
-
-        /* ---------- card spotlight ---------- */
-        document.querySelectorAll('.spot').forEach(function (card) {
-          card.addEventListener('pointermove', function (e) {
-            var r = card.getBoundingClientRect();
-            card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-            card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-          });
-        });
 
         /* ---------- copy buttons ---------- */
         document.querySelectorAll('.copy-target').forEach(function (btn) {
@@ -266,152 +316,48 @@ const accentCss = palettes
             var original = label ? label.textContent : '';
             function done(ok) {
               if (!label) return;
+              /* hold the width the address occupied, or the row jumps twice */
+              label.style.display = 'inline-block';
+              label.style.minWidth = label.offsetWidth + 'px';
               label.textContent = ok ? 'copied ✓' : 'press ⌘C';
-              setTimeout(function () { label.textContent = original; }, 1600);
+              setTimeout(function () {
+                label.textContent = original;
+                label.style.minWidth = '';
+                label.style.display = '';
+              }, 1600);
             }
+            /* Insecure origins and denied permissions both land here. Telling
+               someone to press ⌘C without selecting anything is not a recovery,
+               so fall back to a real copy, and if even that is refused, leave the
+               value selected so the keystroke we suggest actually does something. */
+            function fallback() {
+              var scratch = document.createElement('textarea');
+              scratch.value = value;
+              scratch.setAttribute('readonly', '');
+              scratch.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+              document.body.appendChild(scratch);
+              scratch.select();
+              var copied = false;
+              try { copied = document.execCommand('copy'); } catch (e) {}
+              if (copied) {
+                document.body.removeChild(scratch);
+                done(true);
+              } else {
+                /* keep it on the page and selected until the user acts */
+                setTimeout(function () {
+                  if (scratch.parentNode) document.body.removeChild(scratch);
+                }, 8000);
+                done(false);
+              }
+            }
+
             if (navigator.clipboard && navigator.clipboard.writeText) {
-              navigator.clipboard.writeText(value).then(function () { done(true); }, function () { done(false); });
+              navigator.clipboard.writeText(value).then(function () { done(true); }, fallback);
             } else {
-              done(false);
+              fallback();
             }
           });
         });
-
-        /* ---------- count-up stats ---------- */
-        var counters = document.querySelectorAll('[data-count]');
-        if ('IntersectionObserver' in window) {
-          var cio = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              if (!entry.isIntersecting) return;
-              cio.unobserve(entry.target);
-              var el = entry.target;
-              var target = parseInt(el.dataset.count, 10) || 0;
-              var prefix = el.dataset.prefix || '';
-              var suffix = el.dataset.suffix || '';
-              if (reduceMotion) return;
-              var start = performance.now();
-              var duration = 900;
-              function frame(now) {
-                var t = Math.min((now - start) / duration, 1);
-                var eased = 1 - Math.pow(1 - t, 3);
-                el.innerHTML = prefix + Math.round(target * eased) + '<span class="unit">' + suffix + '</span>';
-                if (t < 1) requestAnimationFrame(frame);
-              }
-              requestAnimationFrame(frame);
-            });
-          }, { threshold: 0.5 });
-          counters.forEach(function (el) { cio.observe(el); });
-        }
-
-        /* ---------- hero name scramble ---------- */
-        var GLYPHS = '!<>-_\\/[]{}—=+*^?#________';
-        var scrambling = false;
-        function scramble(el, opts) {
-          if (scrambling) return;
-          scrambling = true;
-          opts = opts || {};
-          var maxStart = opts.maxStart == null ? 12 : opts.maxStart;
-          var minEnd = opts.minEnd == null ? 12 : opts.minEnd;
-          var span = opts.span == null ? 24 : opts.span;
-          var chance = opts.chance == null ? 1 : opts.chance;
-          var target = el.dataset.scramble || el.textContent;
-          var frame = 0;
-          var queue = [];
-          for (var i = 0; i < target.length; i++) {
-            if (Math.random() > chance) {
-              queue.push({ to: target[i], start: 0, end: 0 });
-            } else {
-              queue.push({
-                to: target[i],
-                start: Math.floor(Math.random() * maxStart),
-                end: Math.floor(Math.random() * span) + minEnd,
-              });
-            }
-          }
-          function tick() {
-            var output = '';
-            var done = 0;
-            for (var i = 0; i < queue.length; i++) {
-              var q = queue[i];
-              if (frame >= q.end) { done++; output += q.to; }
-              else if (frame >= q.start) { output += '<span style="opacity:.45">' + GLYPHS[Math.floor(Math.random() * GLYPHS.length)] + '</span>'; }
-              else { output += q.to === ' ' ? ' ' : '<span style="opacity:0">' + q.to + '</span>'; }
-            }
-            el.innerHTML = output;
-            frame++;
-            if (done < queue.length) requestAnimationFrame(tick);
-            else { el.textContent = target; scrambling = false; }
-          }
-          tick();
-        }
-        var nameEl = document.querySelector('.scramble');
-        if (nameEl && !reduceMotion) {
-          scramble(nameEl);
-          /* hover is a light shimmer: half the glyphs, a third of the frames */
-          nameEl.addEventListener('mouseenter', function () {
-            scramble(nameEl, { maxStart: 3, minEnd: 4, span: 5, chance: 0.45 });
-          });
-        }
-
-        /* ---------- hero terminal typewriter ---------- */
-        var heroLines = [
-          { t: 'pl', html: 'whoami' },
-          { t: 'out', html: 'Rishikesh S — founding software engineer @ Mando' },
-          { t: 'pl', html: 'cat stack.txt' },
-          { t: 'out', html: '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Go</span> · <span class="k">Terraform</span> · <span class="k">LLMs</span>' },
-          { t: 'pl', html: 'git log --oneline -4' },
-          { t: 'out', html: 'a1f9c2 nl-search over enterprise knowledge base' },
-          { t: 'out', html: '4b70de video calls + booking + stripe billing' },
-          { t: 'out', html: '7d3e0b load time 40s &rarr; &lt;1s' },
-          { t: 'out', html: 'c08a14 latency &minus;20%, cpu &minus;50%' },
-          { t: 'pl', html: 'echo $STATUS' },
-          { t: 'out', html: '<span class="k">open to interesting problems</span> ✓' }
-        ];
-        var heroTerm = document.getElementById('heroTerm');
-
-        function renderHeroInstant() {
-          heroTerm.innerHTML = heroLines.map(function (l) {
-            return '<div class="' + l.t + '">' + l.html + '</div>';
-          }).join('') + '<div class="pl"><span class="term-cursor"></span></div>';
-        }
-
-        function typeHero() {
-          var i = 0;
-          function next() {
-            if (i >= heroLines.length) {
-              var cursor = document.createElement('div');
-              cursor.className = 'pl';
-              cursor.innerHTML = '<span class="term-cursor"></span>';
-              heroTerm.appendChild(cursor);
-              return;
-            }
-            var line = heroLines[i];
-            var div = document.createElement('div');
-            div.className = line.t;
-            heroTerm.appendChild(div);
-            if (line.t === 'pl') {
-              var full = line.html;
-              var j = 0;
-              div.innerHTML = '';
-              (function typeChar() {
-                div.innerHTML = full.slice(0, j) + '<span class="term-cursor"></span>';
-                j++;
-                if (j <= full.length) setTimeout(typeChar, 32);
-                else { div.innerHTML = full; i++; setTimeout(next, 220); }
-              })();
-            } else {
-              div.innerHTML = line.html;
-              i++;
-              setTimeout(next, 150);
-            }
-          }
-          next();
-        }
-
-        if (heroTerm) {
-          if (reduceMotion) renderHeroInstant();
-          else setTimeout(typeHero, 420);
-        }
 
         /* ---------- interactive terminal ---------- */
         var overlay = document.getElementById('termOverlay');
@@ -431,28 +377,43 @@ const accentCss = palettes
           input.focus();
         }
 
+        var termOpener = null;
+
         function openTerm() {
+          if (termOpen()) return;
+          termOpener = document.activeElement;
           overlay.classList.add('open');
           document.body.classList.add('term-open');
           setTimeout(focusInput, 40);
         }
         function closeTerm() {
+          if (!termOpen()) return;
           overlay.classList.remove('open');
           document.body.classList.remove('term-open');
           if (input) input.blur();
+          /* hand the caret back where it came from, not to the top of the page */
+          if (termOpener && document.contains(termOpener) && termOpener.focus) termOpener.focus();
+          termOpener = null;
         }
 
-        if (input) input.addEventListener('blur', function () { setTimeout(focusInput, 0); });
+        /* The caret lives in the input, except when focus is moving to another
+           control inside the dialog — the close button has to be reachable. */
+        if (input) input.addEventListener('blur', function (e) {
+          if (e.relatedTarget && overlay.contains(e.relatedTarget)) return;
+          setTimeout(focusInput, 0);
+        });
         if (overlay) overlay.addEventListener('mouseup', function () { setTimeout(focusInput, 0); });
         window.addEventListener('focus', focusInput);
 
-        ['termOpen', 'termOpen2'].forEach(function (id) {
-          var btn = document.getElementById(id);
-          if (btn) btn.addEventListener('click', openTerm);
-        });
+        var termOpenBtn = document.getElementById('termOpen');
+        if (termOpenBtn) termOpenBtn.addEventListener('click', openTerm);
         var termClose = document.getElementById('termClose');
         if (termClose) termClose.addEventListener('click', closeTerm);
         if (overlay) overlay.addEventListener('click', function (e) { if (e.target === overlay) closeTerm(); });
+
+        function esc(str) {
+          return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
 
         function print(html, cls) {
           var div = document.createElement('div');
@@ -467,8 +428,8 @@ const accentCss = palettes
         var commands = {
           help: function () {
             return 'available commands:\n' +
-              '  <span class="k">about</span>        who I am\n' +
-              '  <span class="k">experience</span>   work history\n' +
+              '  <span class="k">about</span>        how I got here\n' +
+              '  <span class="k">experience</span>   where I have worked\n' +
               '  <span class="k">projects</span>     things I have built\n' +
               '  <span class="k">oss</span>          public repositories\n' +
               '  <span class="k">skills</span>       what I reach for\n' +
@@ -563,7 +524,7 @@ const accentCss = palettes
           if (!cmd) return;
           history.push(cmd);
           historyIndex = history.length;
-          print('<span class="ps1" style="color:#6B746A;">rishikesh@portfolio:~$</span> ' + cmd.replace(/</g, '&lt;'), 'pl-echo');
+          print('<span class="ps1">rishikesh@portfolio:~$</span> ' + esc(cmd), 'pl-echo');
 
           var parts = cmd.split(/\s+/);
           var name = parts[0].toLowerCase();
@@ -572,7 +533,24 @@ const accentCss = palettes
             var target = (parts[1] || '').toLowerCase();
             if (SECTIONS.indexOf(target) >= 0) {
               print('navigating to <span class="k">~/' + target + '</span> …');
-              setTimeout(function () { closeTerm(); window.location.hash = '#' + target; }, 320);
+              setTimeout(function () {
+                closeTerm();
+                var section = document.getElementById(target);
+                if (!section) return;
+                /* Scroll by hand and rewrite the current entry instead of
+                   assigning location.hash, which pushes one. Three goto jumps
+                   should not cost three presses of Back to leave the site.
+                   scroll-padding-top is a CSS-only affordance, so the sticky nav
+                   height is subtracted here. */
+                var NAV = 80;
+                var top = section.getBoundingClientRect().top + window.scrollY - NAV;
+                window.scrollTo({ top: Math.max(top, 0), behavior: reduceMotion ? 'auto' : 'smooth' });
+                /* `history` in this scope is the terminal's own command list, so
+                   the browser's one has to be reached through window. */
+                if (window.history && window.history.replaceState) {
+                  window.history.replaceState(null, '', '#' + target);
+                }
+              }, 320);
             } else {
               print('goto: unknown section. try: ' + SECTIONS.join(', '));
             }
@@ -584,7 +562,7 @@ const accentCss = palettes
             var out = fn();
             if (out !== null) print(out.replace(/\n/g, '<br>'));
           } else {
-            print('command not found: <span class="err">' + name.replace(/</g, '&lt;') + '</span>. type <span class="k">help</span>.');
+            print('command not found: <span class="err">' + esc(name) + '</span>. type <span class="k">help</span>.');
           }
         }
 
@@ -601,9 +579,13 @@ const accentCss = palettes
               if (historyIndex < history.length - 1) { historyIndex++; input.value = history[historyIndex]; }
               else { historyIndex = history.length; input.value = ''; }
             } else if (e.key === 'Tab') {
-              e.preventDefault();
+              /* Tab completes what you have typed; on an empty prompt, or with
+                 Shift held, it stays a Tab so focus can still reach the close
+                 button and leave the dialog. Completion is worth a key, not an
+                 exit. */
               var typed = input.value.trim().toLowerCase();
-              if (!typed) return;
+              if (!typed || e.shiftKey) return;
+              e.preventDefault();
               var matches = COMMAND_NAMES.filter(function (c) { return c.indexOf(typed) === 0; });
               if (matches.length === 1) input.value = matches[0] + ' ';
               else if (matches.length > 1) print(matches.join('  '), 'cmt');
@@ -613,13 +595,14 @@ const accentCss = palettes
 
         /* ---------- global keyboard ---------- */
         document.addEventListener('keydown', function (e) {
-          var typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+          var active = document.activeElement;
+          var typing = !!active && /^(INPUT|TEXTAREA)$/.test(active.tagName);
           if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
-            overlay.classList.contains('open') ? closeTerm() : openTerm();
+            termOpen() ? closeTerm() : openTerm();
             return;
           }
-          if (e.key === 'Escape') { closeTerm(); return; }
+          if (e.key === 'Escape') { closeTerm(); setDrawer(false); return; }
           if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
           if (e.key.toLowerCase() === 't' && !themeLocked) toggleTheme();
         });

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "resume": "node scripts/generate-resume.mjs",
+    "previews": "node scripts/generate-previews.mjs",
     "prebuild": "node scripts/generate-resume.mjs",
     "build": "astro build",
     "preview": "astro preview",

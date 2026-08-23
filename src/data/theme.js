@@ -18,47 +18,47 @@ export const ACCENTS = {
   signal: {
     label: 'Signal green',
     light: { base: '#0F7A46', deep: '#0B5C34', on: '#FFFFFF' },
-    dark: { base: '#2FBF71', deep: '#6FD08C', on: '#0A0C0B' },
+    dark: { base: '#2FBF71', deep: '#6FD08C', on: '#12120F' },
   },
   cobalt: {
     label: 'Cobalt',
     light: { base: '#1B5FD9', deep: '#1449AE', on: '#FFFFFF' },
-    dark: { base: '#5C9DFF', deep: '#93BDFF', on: '#0A0C0B' },
+    dark: { base: '#5C9DFF', deep: '#93BDFF', on: '#12120F' },
   },
   cyan: {
     label: 'Deep cyan',
     light: { base: '#06767F', deep: '#055C63', on: '#FFFFFF' },
-    dark: { base: '#2DD4BF', deep: '#6EE7D7', on: '#0A0C0B' },
+    dark: { base: '#2DD4BF', deep: '#6EE7D7', on: '#12120F' },
   },
   violet: {
     label: 'Violet',
     light: { base: '#5B34D6', deep: '#4626AB', on: '#FFFFFF' },
-    dark: { base: '#A78BFA', deep: '#C4B5FD', on: '#0A0C0B' },
+    dark: { base: '#A78BFA', deep: '#C4B5FD', on: '#12120F' },
   },
   magenta: {
     label: 'Magenta',
     light: { base: '#B32777', deep: '#8E1F5E', on: '#FFFFFF' },
-    dark: { base: '#F472B6', deep: '#F9A8D4', on: '#0A0C0B' },
+    dark: { base: '#F472B6', deep: '#F9A8D4', on: '#12120F' },
   },
   ember: {
     label: 'Ember',
     light: { base: '#C2500C', deep: '#9B400A', on: '#FFFFFF' },
-    dark: { base: '#FF8A4C', deep: '#FFB088', on: '#0A0C0B' },
+    dark: { base: '#FF8A4C', deep: '#FFB088', on: '#12120F' },
   },
   crimson: {
     label: 'Crimson',
     light: { base: '#C42B3F', deep: '#9D2232', on: '#FFFFFF' },
-    dark: { base: '#FF6B7A', deep: '#FF9AA4', on: '#0A0C0B' },
+    dark: { base: '#FF6B7A', deep: '#FF9AA4', on: '#12120F' },
   },
   gold: {
     label: 'Gold',
-    light: { base: '#9A6B00', deep: '#7B5600', on: '#FFFFFF' },
-    dark: { base: '#E3B341', deep: '#EFCC77', on: '#0A0C0B' },
+    light: { base: '#956700', deep: '#785400', on: '#FFFFFF' },
+    dark: { base: '#E3B341', deep: '#EFCC77', on: '#12120F' },
   },
   mono: {
     label: 'Mono (no hue)',
-    light: { base: '#0C0E0B', deep: '#2C332D', on: '#FFFFFF' },
-    dark: { base: '#E9EEE8', deep: '#A8B1A5', on: '#0A0C0B' },
+    light: { base: '#191813', deep: '#4A483F', on: '#FFFFFF' },
+    dark: { base: '#EDEAE1', deep: '#ADA99C', on: '#12120F' },
   },
 };
 
@@ -80,8 +80,8 @@ export const theme = {
 };
 
 /** Page background per side, so generators and <meta theme-color> agree with the CSS. */
-export const GROUND = { light: '#FCFCFB', dark: '#0A0C0B' };
+export const GROUND = { light: '#FBFAF7', dark: '#12120F' };
 /** Body ink per side. */
-export const INK = { light: '#0C0E0B', dark: '#E9EEE8' };
+export const INK = { light: '#191813', dark: '#EDEAE1' };
 
 export const activeAccent = () => ACCENTS[theme.accent] ?? ACCENTS.signal;

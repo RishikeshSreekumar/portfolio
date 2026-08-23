@@ -1,70 +1,76 @@
 ---
-import { personal, stats } from '../data/portfolio';
+import { personal } from '../data/portfolio';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const resumeUrl = `${base}/${personal.resumeFile}`;
+
+/* The decorative shell transcript. Static content, so it lives here rather than
+   in a client script that has to reproduce it a character at a time. */
+const termLines = [
+  { t: 'pl', html: 'whoami' },
+  { t: 'out', html: 'Rishikesh S — founding software engineer @ Mando' },
+  { t: 'pl', html: 'cat stack.txt' },
+  { t: 'out', html: '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Go</span> · <span class="k">Terraform</span> · <span class="k">LLMs</span>' },
+  { t: 'pl', html: 'git log --oneline -4' },
+  { t: 'out', html: 'a1f9c2 nl-search over enterprise knowledge base' },
+  { t: 'out', html: '4b70de video calls + booking + stripe billing' },
+  { t: 'out', html: '7d3e0b load time 40s &rarr; &lt;1s' },
+  { t: 'out', html: 'c08a14 latency &minus;20%, cpu &minus;50%' },
+  { t: 'pl', html: 'echo $STATUS' },
+  { t: 'out', html: '<span class="k">open to interesting problems</span> ✓' },
+];
 ---
 
 <section class="hero">
   <div class="hero-inner">
     <div>
-      <span class="badge"><span class="pulse"></span> {personal.status} · open to interesting problems</span>
+      <span class="badge"><span class="pulse"></span> {personal.status} · open to a good problem</span>
 
-      <h1><span class="scramble" data-scramble="Rishikesh S">Rishikesh&nbsp;S</span><span class="dot">.</span></h1>
+      <h1>Rishikesh&nbsp;S<span class="dot">.</span></h1>
       <p class="role">{personal.role}</p>
 
       <p class="hero-body" set:html={personal.bio}></p>
 
       <div class="hero-actions">
         <a href="#projects" class="btn btn-primary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
-          View my work
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          See what I've built
         </a>
-        <a href={resumeUrl} download class="btn btn-dark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
-          Download resume
-        </a>
-        <button class="btn btn-ghost" id="termOpen2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17l6-5-6-5M12 19h8"/></svg>
-          Open terminal
-        </button>
       </div>
 
       <div class="hero-social">
         <a href={personal.social.github} target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
           GitHub
         </a>
         <a href={personal.social.linkedin} target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.6h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21H9V9Z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.6h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21H9V9Z"/></svg>
           LinkedIn
         </a>
+        <a href={resumeUrl} download>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
+          Resume
+        </a>
         <button data-copy={personal.email} class="copy-target">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
-          <span class="txt">{personal.email}</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
+          <span class="txt" aria-live="polite">{personal.email}</span>
         </button>
       </div>
     </div>
 
-    <div class="term reveal">
+    {/* Decorative, and rendered at rest rather than typed out: the transcript
+        restates the bio and the experience metrics that already sit in the DOM as
+        real text. Announcing eleven prompt lines, each prefixed by an injected
+        `rishikesh@portfolio:~$ `, is noise, not content. In the markup rather
+        than in a script, so it is there on the first paint and stays put. */}
+    <div class="term reveal" aria-hidden="true">
       <div class="term-bar">
         <span class="d r"></span><span class="d y"></span><span class="d g"></span>
         <span class="t">rishikesh@portfolio — zsh</span>
       </div>
-      <div class="term-body" id="heroTerm"></div>
+      <div class="term-body">
+        {termLines.map((line) => <div class={line.t} set:html={line.html} />)}
+      </div>
     </div>
   </div>
 </section>
-
-<div class="stat-strip">
-  <div class="stat-inner">
-    {stats.map((stat) => (
-      <div class="stat reveal">
-        <div class="v" data-count={stat.value} data-prefix={stat.prefix ?? ''} data-suffix={stat.suffix ?? ''}>
-          {stat.prefix ?? ''}{stat.value}<span class="unit">{stat.suffix ?? ''}</span>
-        </div>
-        <div class="l">{stat.label}</div>
-      </div>
-    ))}
-  </div>
-</div>

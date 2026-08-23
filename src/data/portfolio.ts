@@ -43,9 +43,18 @@ export interface Project {
   highlight?: string;
   install?: string;
   tags: string[];
+  /** Host shown in the preview frame's address bar, e.g. `marvel.rishikeshs.dev`. */
+  domain?: string;
   liveUrl?: string;
   liveLabel?: string;
   githubUrl?: string;
+  /** Committed capture under `public/previews/`; absent means a drawn frame. */
+  preview?: string;
+  /** Drawn terminal output, for the CLIs that have no page to photograph. */
+  terminal?: { cmd?: string; out?: string; note?: string; dim?: boolean }[];
+  previewAlt?: string;
+  /** The project's own colour, used only to tint its preview frame on hover. */
+  accent?: string;
   featured: boolean;
 }
 

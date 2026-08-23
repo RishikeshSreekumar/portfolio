@@ -13,7 +13,7 @@ endobj
 << /Type /Pages /Count 1 /Kids [12 0 R] >>
 endobj
 5 0 obj
-<< /Length 11918 >>
+<< /Length 11916 >>
 stream
 0.9414 0.9678 0.9699 rg 0.00 700.00 612.00 92.00 re f
 0.0235 0.4627 0.498 rg 0.00 788.60 612.00 3.40 re f
@@ -131,7 +131,7 @@ BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 181.60 Tm (Published an npm CL
 0.0235 0.4627 0.498 rg 53.50 173.28 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 170.70 Tm (Exits non-zero on dead code so it doubles as a CI gate, and generates an interactive HTML report for exploring the graph) Tj ET 0 Tc
 BT 0.07 0.08 0.06 rg /F2 10 Tf 0 Tc 1 0 0 1 52.00 156.80 Tm (Rubik's Cube Solver) Tj ET 0 Tc
-BT 0.47 0.5 0.44 rg /F3 8.8 Tf 0 Tc 1 0 0 1 52.00 145.80 Tm (Next.js, Three.js, Web Workers, PWA) Tj ET 0 Tc
+BT 0.47 0.5 0.44 rg /F3 8.8 Tf 0 Tc 1 0 0 1 52.00 145.80 Tm (React, Three.js, Web Workers, PWA) Tj ET 0 Tc
 0.0235 0.4627 0.498 rg 53.50 136.88 3.00 3.00 re f
 BT 0.28 0.3 0.26 rg /F1 9.2 Tf 0 Tc 1 0 0 1 64.00 134.30 Tm (Built a browser solver running Kociemba's two-phase algorithm in a Web Worker, with webcam cube scanning) Tj ET 0 Tc
 0.0235 0.4627 0.498 rg 53.50 125.98 3.00 3.00 re f
@@ -183,17 +183,17 @@ xref
 0000000214 00000 n 
 0000000319 00000 n 
 0000000377 00000 n 
-0000012348 00000 n 
-0000012508 00000 n 
-0000012656 00000 n 
-0000012818 00000 n 
-0000012994 00000 n 
-0000013163 00000 n 
-0000013324 00000 n 
-0000013519 00000 n 
-0000014192 00000 n 
+0000012346 00000 n 
+0000012506 00000 n 
+0000012654 00000 n 
+0000012816 00000 n 
+0000012992 00000 n 
+0000013161 00000 n 
+0000013322 00000 n 
+0000013517 00000 n 
+0000014190 00000 n 
 trailer
 << /Size 15 /Root 14 0 R /Info 13 0 R >>
 startxref
-14256
+14254
 %%EOF

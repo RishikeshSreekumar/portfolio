@@ -118,15 +118,16 @@ function ico(images) {
  * ------------------------------------------------------------------ */
 
 /* The card follows the site's own mode, so a light-only site does not hand out a
- * dark preview. Supporting greys are the site's ink-soft / ink-mute / grid on the
+ * dark preview. Supporting greys are the site's ink-soft / ink-mute on the
  * matching side.
  *
- * Menlo, not the site's JetBrains Mono: this is rasterised locally, so it can only
- * use fonts that are certain to be installed. Mono throughout keeps it on message
- * anyway — the card should read like the terminal the site opens with. */
+ * Georgia for the name, Helvetica for the rest: rasterised locally, so it can
+ * only use fonts certain to be installed, and these are the closest stand-ins
+ * for the site's Newsreader and Inter. The ruled ground is gone here for the
+ * same reason it is gone from the page. */
 const CARD = {
-  light: { ground: GROUND.light, ink: INK.light, soft: '#44483F', mute: '#8B8F84', faint: '#A9AEA3', grid: 'rgba(12,14,11,0.05)' },
-  dark: { ground: GROUND.dark, ink: INK.dark, soft: '#A8B1A5', mute: '#6D766C', faint: '#4A524A', grid: 'rgba(233,238,232,0.035)' },
+  light: { ground: GROUND.light, ink: INK.light, soft: '#4A483F', mute: '#75736A', faint: '#9B988D' },
+  dark: { ground: GROUND.dark, ink: INK.dark, soft: '#ADA99C', mute: '#8C897F', faint: '#5A5850' },
 };
 
 function ogCard() {
@@ -135,29 +136,25 @@ function ogCard() {
   const accent = activeAccent()[side];
   const W = 1200;
   const H = 630;
-  const grid = [];
-  for (let x = 0; x <= W; x += 40) grid.push(`M${x} 0V${H}`);
-  for (let y = 0; y <= H; y += 40) grid.push(`M0 ${y}H${W}`);
 
   const markH = 92;
   const markW = (markH * MARK_W) / MARK_H;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="${c.ground}"/>
-  <path d="${grid.join('')}" stroke="${c.grid}" stroke-width="1" fill="none"/>
   <rect x="0" y="0" width="${W}" height="5" fill="${accent.base}"/>
 
   ${mark({ ink: c.ink, accent: accent.base }, { x: 72, y: 66, w: markW.toFixed(1), h: markH })}
-  <text x="${(72 + markW + 26).toFixed(0)}" y="127" font-family="Menlo" font-size="26" fill="${c.mute}">rishikesh.s</text>
+  <text x="${(72 + markW + 26).toFixed(0)}" y="127" font-family="Helvetica" font-size="25" fill="${c.mute}">rishikesh.s</text>
 
-  <text x="72" y="340" font-family="Menlo" font-weight="bold" font-size="78" fill="${c.ink}">Rishikesh S<tspan fill="${accent.base}">.</tspan></text>
-  <rect x="72" y="372" width="108" height="4" fill="${accent.base}"/>
+  <text x="72" y="340" font-family="Georgia" font-size="86" fill="${c.ink}">Rishikesh S<tspan fill="${accent.base}">.</tspan></text>
+  <rect x="72" y="376" width="108" height="3" fill="${accent.base}"/>
 
-  <text x="72" y="424" font-family="Menlo" font-weight="bold" font-size="22" letter-spacing="2.4" fill="${accent.deep}">FOUNDING SOFTWARE ENGINEER</text>
-  <text x="72" y="462" font-family="Menlo" font-size="22" fill="${c.soft}">Mando  ·  ex-Quantitative Brokers  ·  IIT Madras</text>
+  <text x="72" y="428" font-family="Helvetica" font-size="24" fill="${accent.deep}">Founding Software Engineer</text>
+  <text x="72" y="466" font-family="Helvetica" font-size="22" fill="${c.soft}">Mando  ·  ex-Quantitative Brokers  ·  IIT Madras</text>
 
-  <text x="72" y="546" font-family="Menlo" font-size="20" fill="${c.mute}"><tspan fill="${accent.base}">&gt;</tspan> ships products end to end — the API, the interface, everything between</text>
-  <text x="${W - 72}" y="590" text-anchor="end" font-family="Menlo" font-size="18" fill="${c.faint}">rishikeshs.dev</text>
+  <text x="72" y="548" font-family="Helvetica" font-size="20" fill="${c.mute}">Ships products end to end — the API, the interface, everything between</text>
+  <text x="${W - 72}" y="590" text-anchor="end" font-family="Helvetica" font-size="18" fill="${c.faint}">rishikeshs.dev</text>
 </svg>`;
 }
 
