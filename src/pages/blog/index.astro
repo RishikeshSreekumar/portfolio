@@ -1,0 +1,22 @@
+---
+/* The blog moved to its own subdomain; this stub keeps old links alive.
+ * A meta refresh is all a static host can offer, plus a canonical so
+ * search engines transfer the page rather than indexing the stub. */
+const blogOrigin = Astro.site ? `${Astro.site.protocol}//blog.${Astro.site.host}` : 'https://blog.rishikeshs.dev';
+const target = `${blogOrigin}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting…</title>
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <p>The blog now lives at <a href={target}>blog.rishikeshs.dev</a>.</p>
+  </body>
+</html>

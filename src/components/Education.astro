@@ -1,30 +1,34 @@
 ---
 import { education, achievements } from '../data/portfolio';
+
+const edu = education[0];
+const facts = [
+  `${edu.period} · B.Tech · ${edu.location}`,
+  edu.grade,
+  ...achievements.map((a) => a.split(' (')[0]),
+];
 ---
 
 <section class="section" id="education">
   <div class="section-inner">
     <div class="section-head reveal">
-      <span class="mlabel">Education</span>
-      <h2 class="section-title">Before the software</h2>
+      <span class="mlabel"><span class="n">04</span> / Education</span>
+      <div class="head-row">
+        <h2 class="section-title">Before the software</h2>
+      </div>
     </div>
-    {education.map((edu) => (
-      <div class="edu-card reveal">
-        <div class="xp-when">
-          {edu.period}
-          <span class="dur">B.Tech</span>
-          <span class="loc">{edu.location}</span>
-        </div>
-        <div>
-          <div class="edu-deg">{edu.degree.replace(/^B\.Tech,?\s*/i, '')}</div>
-          <div class="edu-school">{edu.institution}</div>
-          <p class="edu-note">{edu.highlights[1] ?? edu.highlights[0]}</p>
-          <div class="edu-meta">
-            <span class="tag">{edu.grade}</span>
-            {achievements.map((a) => <span class="tag">{a.split(' (')[0]}</span>)}
-          </div>
+
+    <div class="edu-grid reveal">
+      <div>
+        <div class="edu-deg">{edu.degree.replace(/^B\.Tech,?\s*/i, '')}</div>
+        <div class="edu-school">{edu.institution}</div>
+      </div>
+      <div>
+        <p class="edu-note">{edu.highlights[1] ?? edu.highlights[0]}</p>
+        <div class="edu-facts">
+          {facts.map((fact) => <div>{fact}</div>)}
         </div>
       </div>
-    ))}
+    </div>
   </div>
 </section>

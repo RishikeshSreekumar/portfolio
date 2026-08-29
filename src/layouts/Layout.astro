@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import { personal } from '../data/portfolio';
 import { ACCENTS, theme, GROUND } from '../data/theme.js';
-import AccentLab from '../components/AccentLab.astro';
 
 interface Props {
   title: string;
@@ -20,6 +19,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 /* Follows `site` in astro.config.mjs — one place to change the domain. */
 const siteUrl = Astro.site ? Astro.site.origin : 'https://rishikeshs.dev';
 const canonicalUrl = `${siteUrl}${base}`;
+/* the blog lives on its own subdomain of the same domain */
+const blogUrl = Astro.site ? `${Astro.site.protocol}//blog.${Astro.site.host}/` : 'https://blog.rishikeshs.dev/';
 const ogImageUrl = `${siteUrl}${base}${ogImage}`;
 const resumeUrl = `${base}/${personal.resumeFile}`;
 
@@ -40,20 +41,12 @@ const jsonLd = {
  * markup, the pre-paint script has nothing to resolve, and the toggle is gone. */
 const locked = theme.mode === 'light' || theme.mode === 'dark' ? theme.mode : null;
 
-/* Accent palettes as CSS. In dev every palette ships so the lab panel can flip
- * between them live; a build carries only the one the site is set to. */
-const palettes = import.meta.env.DEV
-  ? Object.entries(ACCENTS)
-  : [[theme.accent, ACCENTS[theme.accent] ?? ACCENTS.signal]];
-
-const accentCss = palettes
-  .map(
-    ([name, a]) =>
-      `:root[data-accent="${name}"]{` +
-      `--a-l:${a.light.base};--a-l-2:${a.light.deep};--a-l-on:${a.light.on};` +
-      `--a-d:${a.dark.base};--a-d-2:${a.dark.deep};--a-d-on:${a.dark.on};}`
-  )
-  .join('');
+/* The active accent palette as CSS — only the one the site is set to ships. */
+const a = ACCENTS[theme.accent] ?? ACCENTS.signal;
+const accentCss =
+  `:root[data-accent="${theme.accent}"]{` +
+  `--a-l:${a.light.base};--a-l-2:${a.light.deep};--a-l-on:${a.light.on};` +
+  `--a-d:${a.dark.base};--a-d-2:${a.dark.deep};--a-d-on:${a.dark.on};}`;
 ---
 
 <!doctype html>
@@ -131,7 +124,7 @@ const accentCss = palettes
     </script>
   </head>
 
-  <body id="top" data-resume={resumeUrl} data-ground-light={GROUND.light} data-ground-dark={GROUND.dark}>
+  <body id="top" data-resume={resumeUrl} data-home={`${base}/`} data-blog={blogUrl} data-ground-light={GROUND.light} data-ground-dark={GROUND.dark}>
     <a class="skip" href="#main">Skip to content</a>
 
     <slot />
@@ -309,18 +302,47 @@ const accentCss = palettes
         }
 
         /* ---------- copy buttons ---------- */
+        /* One shared live region for the buttons that have no text of their own
+           to change. Created once rather than per button, so a screen reader
+           hears one announcement instead of a dozen silent landmarks. */
+        var announcer = null;
+        function say(message) {
+          if (!announcer) {
+            announcer = document.createElement('div');
+            announcer.setAttribute('role', 'status');
+            announcer.setAttribute('aria-live', 'polite');
+            announcer.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;';
+            document.body.appendChild(announcer);
+          }
+          announcer.textContent = '';
+          setTimeout(function () { announcer.textContent = message; }, 30);
+        }
+
         document.querySelectorAll('.copy-target').forEach(function (btn) {
           btn.addEventListener('click', function () {
             var value = btn.dataset.copy || '';
             var label = btn.querySelector('.txt');
             var original = label ? label.textContent : '';
+            var originalTitle = btn.getAttribute('title') || '';
+            /* Two states, one place. A button that draws the action instead of
+               spelling it swaps its glyph and says so through `title` and a
+               live region; one that still carries a word swaps the word. Either
+               way the button keeps the width it had, so a row of them cannot
+               shuffle under the pointer that is still on one of them. */
             function done(ok) {
-              if (!label) return;
-              /* hold the width the address occupied, or the row jumps twice */
-              label.style.display = 'inline-block';
-              label.style.minWidth = label.offsetWidth + 'px';
-              label.textContent = ok ? 'copied ✓' : 'press ⌘C';
+              btn.classList.add(ok ? 'ok' : 'fail');
+              if (originalTitle) btn.setAttribute('title', ok ? 'Copied' : 'Press ⌘C to copy');
+              if (label) {
+                label.style.display = 'inline-block';
+                label.style.minWidth = label.offsetWidth + 'px';
+                label.textContent = ok ? 'copied ✓' : 'press ⌘C';
+              } else {
+                say(ok ? 'Copied' : 'Copy failed — press Command C');
+              }
               setTimeout(function () {
+                btn.classList.remove('ok', 'fail');
+                if (originalTitle) btn.setAttribute('title', originalTitle);
+                if (!label) return;
                 label.textContent = original;
                 label.style.minWidth = '';
                 label.style.display = '';
@@ -423,7 +445,7 @@ const accentCss = palettes
           body.scrollTop = body.scrollHeight;
         }
 
-        var SECTIONS = ['about', 'experience', 'projects', 'education', 'open-source', 'skills', 'contact'];
+        var SECTIONS = ['about', 'experience', 'projects', 'education', 'open-source', 'skills', 'contact', 'blog'];
 
         var commands = {
           help: function () {
@@ -469,11 +491,14 @@ const accentCss = palettes
               '<span class="cmt"># github.com/RishikeshSreekumar</span>';
           },
           skills: function () {
-            return 'languages  TypeScript, Python, Go, SQL\n' +
-              'frontend   React, Next.js, Astro, Tailwind\n' +
-              'backend    FastAPI, Node.js, Stripe\n' +
-              'data       PostgreSQL, pgvector, Redis\n' +
-              'infra      Terraform, Docker, AWS, Azure, GitHub Actions';
+            /* Same seven groups the skills section uses; keep them in step. */
+            return 'languages   TypeScript, Python, Go, SQL, Java\n' +
+              'interfaces  React, Next.js, Astro, SvelteKit, Angular, Tailwind\n' +
+              'services    FastAPI, Node.js, .NET, WebSockets, Stripe\n' +
+              'ai          LLM apps, RAG, vector search, MCP\n' +
+              'data        PostgreSQL, pgvector, Redis, SQLite\n' +
+              'ship & run  Terraform, Docker, AWS, Azure, GitHub Actions\n' +
+              'runtime     Chrome extensions, Web Audio, Web Workers, Playwright';
           },
           stack: function () {
             return '<span class="k">Next.js</span> · <span class="k">FastAPI</span> · <span class="k">PostgreSQL</span> · <span class="k">Go</span> · <span class="k">Terraform</span> · <span class="k">Stripe</span> · <span class="k">LLMs</span>';
@@ -531,12 +556,21 @@ const accentCss = palettes
 
           if (name === 'goto') {
             var target = (parts[1] || '').toLowerCase();
+            /* the blog is its own site on a subdomain, not a section here */
+            if (target === 'blog') {
+              print('navigating to <span class="k">blog.rishikeshs.dev</span> …');
+              setTimeout(function () {
+                window.location.href = document.body.dataset.blog || '/blog/';
+              }, 320);
+              return;
+            }
             if (SECTIONS.indexOf(target) >= 0) {
               print('navigating to <span class="k">~/' + target + '</span> …');
               setTimeout(function () {
                 closeTerm();
                 var section = document.getElementById(target);
-                if (!section) return;
+                /* on a page without the sections — the blog — travel home */
+                if (!section) { window.location.href = (document.body.dataset.home || '/') + '#' + target; return; }
                 /* Scroll by hand and rewrite the current entry instead of
                    assigning location.hash, which pushes one. Three goto jumps
                    should not cost three presses of Back to leave the site.
@@ -608,6 +642,5 @@ const accentCss = palettes
         });
       })();
     </script>
-    {import.meta.env.DEV && <AccentLab />}
   </body>
 </html>

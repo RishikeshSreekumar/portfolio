@@ -8,8 +8,10 @@ const resumeUrl = `${base}/${personal.resumeFile}`;
 <section class="section" id="contact">
   <div class="section-inner">
     <div class="section-head reveal">
-      <span class="mlabel">Contact</span>
-      <h2 class="section-title">Say hello</h2>
+      <span class="mlabel"><span class="n">07</span> / Contact</span>
+      <div class="head-row">
+        <h2 class="section-title">Say hello</h2>
+      </div>
     </div>
 
     <div class="contact-grid">
@@ -23,7 +25,10 @@ const resumeUrl = `${base}/${personal.resumeFile}`;
           <span class="k">email</span>
           <span class="v ac">
             <a href={`mailto:${personal.email}`}>{personal.email}</a>
-            <button class="copy-btn copy-target" data-copy={personal.email}><span class="txt" aria-live="polite">copy</span></button>
+            <button class="icon-btn copy-target" data-copy={personal.email} type="button" title={`Copy ${personal.email}`} aria-label={`Copy email address ${personal.email}`}>
+              <svg class="i-copy" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+              <svg class="i-ok" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+            </button>
           </span>
         </div>
         <div class="info-row"><span class="k">location</span><span class="v">{personal.location}</span></div>
@@ -34,7 +39,12 @@ const resumeUrl = `${base}/${personal.resumeFile}`;
         </div>
         <div class="info-row">
           <span class="k">resume</span>
-          <span class="v ac"><a href={resumeUrl} download>Download PDF ↓</a></span>
+          <span class="v ac">
+            <a class="dl" href={resumeUrl} download title="Download the resume as a PDF" aria-label="Download the resume as a PDF">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11M7.5 10 12 14.5 16.5 10M4.5 20h15"/></svg>
+              PDF
+            </a>
+          </span>
         </div>
 
         <div class="contact-socials">
@@ -60,6 +70,7 @@ const resumeUrl = `${base}/${personal.resumeFile}`;
       </div>
 
       <div class="form-panel reveal" style="--d:80ms">
+        <div class="flabel">Compose a message</div>
         <form class="contact-form" id="contact-form" data-to={personal.email}>
           <div class="field">
             <label for="n">Your name</label>
@@ -73,10 +84,7 @@ const resumeUrl = `${base}/${personal.resumeFile}`;
             <label for="m">Message</label>
             <textarea id="m" name="message" rows="5" required placeholder="What are you building?"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
-            Compose email
-          </button>
+          <button type="submit" class="btn btn-primary">Compose email →</button>
           <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>

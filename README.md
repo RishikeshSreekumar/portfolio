@@ -49,13 +49,11 @@ scripts/
   flash. It follows the OS by default, remembers your choice, and `t` toggles it.
 - **⌘K** opens an interactive terminal with history, tab-completion and a `goto`
   command that scrolls the page.
-- **Colour and mode** live in `src/data/theme.js`. `accent` picks one of nine
+- **Colour and mode** live in `src/data/theme.js`. `accent` picks one of ten
   palettes; `mode` is `auto` (OS + toggle), or `light`/`dark` to pin the site to one
   side — pinning drops the toggle button, the OS query and the stored preference.
   Every palette clears WCAG AA on both grounds; `node scripts/check-contrast.mjs`
-  proves it and exits non-zero if you add one that doesn't. In `npm run dev` a
-  floating **accent lab** (bottom right) flips palette and mode live on the real
-  page; it is behind `import.meta.env.DEV` and never reaches a build. Changing the
+  proves it and exits non-zero if you add one that doesn't. Changing the
   accent also changes the icons, share card and resume — re-run
   `node scripts/generate-icons.mjs` and `npm run resume`.
 - **The logo** is a prompt-caret R: the bowl points right like a shell `>`, and the
@@ -74,8 +72,40 @@ scripts/
 - **Reduced motion** is honoured throughout; the reveal animation can never be the
   reason content is invisible.
 
+## The blog
+
+The blog is a **second Astro site in the same repo**, served at
+`blog.rishikeshs.dev` with none of the portfolio chrome — its own masthead, its
+own footer that links back to the portfolio, and posts at the root of the
+subdomain (`/bezier-curves/`, not `/blog/bezier-curves/`).
+
+- `astro.blog.mjs` is its config: `srcDir: src/blog`, `outDir: dist-blog`,
+  `site: https://blog.rishikeshs.dev`. The main build never sees `src/blog/pages`
+  and the blog build never sees `src/pages`.
+- It shares the design system by plain imports: `theme.js`, `global.css`,
+  `blog.css`, `Logo.astro` and the post list in `src/data/blog.js`.
+- `src/blog/layouts/BlogLayout.astro` is the blog's shell; posts are pages in
+  `src/blog/pages/`. A new post = one page there + one entry in `blog.js`.
+- `npm run dev:blog` / `npm run build:blog` develop and build it.
+- Old `/blog/...` URLs on the portfolio are redirect stubs
+  (`src/pages/blog/`), generated from the same post list.
+
 ## Deploy
 
-`.github/workflows/deploy.yml` builds on every push to `main` and publishes `dist/`
-to GitHub Pages. `npm run build` runs `prebuild`, so the PDF in the deployed site is
-always regenerated from current content.
+Deployment is **Vercel, two projects, one repo** — one project per domain:
+
+| Project   | Build command        | Output dir  | Domain               |
+| --------- | -------------------- | ----------- | -------------------- |
+| portfolio | `npm run build`      | `dist`      | `rishikeshs.dev`     |
+| blog      | `npm run build:blog` | `dist-blog` | `blog.rishikeshs.dev` |
+
+Both projects import the same GitHub repo; the only per-project settings are the
+overridden build command and output directory (framework preset: Astro). Every
+push to `main` deploys both.
+
+`vercel.json` (shared by both projects, scoped by host) turns the old
+`rishikeshs.dev/blog/...` URLs into real 308 redirects to the subdomain; the
+static stubs in `src/pages/blog/` remain as a host-agnostic fallback.
+
+`.github/workflows/deploy.yml` is the older GitHub Pages deploy (with
+`public/CNAME`); it can be deleted once the domain points at Vercel.

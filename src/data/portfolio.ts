@@ -39,21 +39,22 @@ export interface Project {
   id: string;
   title: string;
   tagline?: string;
+  /** Year the thing was finished, shown beside its status in the card's rule. */
+  year?: string;
+  /** Where it stands today: `live`, `on npm`, `released`, `private repo`. */
+  status?: string;
   description: string;
+  /** The three or four decisions that make the project the shape it is. */
+  facts?: string[];
   highlight?: string;
   install?: string;
   tags: string[];
-  /** Host shown in the preview frame's address bar, e.g. `marvel.rishikeshs.dev`. */
+  /** Host shown as the live link's label, e.g. `marvel.rishikeshs.dev`. */
   domain?: string;
   liveUrl?: string;
   liveLabel?: string;
   githubUrl?: string;
-  /** Committed capture under `public/previews/`; absent means a drawn frame. */
-  preview?: string;
-  /** Drawn terminal output, for the CLIs that have no page to photograph. */
-  terminal?: { cmd?: string; out?: string; note?: string; dim?: boolean }[];
-  previewAlt?: string;
-  /** The project's own colour, used only to tint its preview frame on hover. */
+  /** The project's own colour, used only to mark the card's edge. */
   accent?: string;
   featured: boolean;
 }
@@ -62,24 +63,33 @@ export interface OpenSourceItem {
   name: string;
   repo: string;
   lang: string;
+  year?: string;
   description: string;
+  /** The pieces it is actually made of — "Go" alone says too little. */
+  stack?: string[];
   url: string;
   liveUrl?: string;
 }
 
 export type SkillCategory =
   | 'Languages'
-  | 'Frontend'
-  | 'Backend'
-  | 'AI/ML'
+  | 'Interfaces'
+  | 'Services & APIs'
+  | 'AI in production'
   | 'Data'
-  | 'Infrastructure'
-  | 'Tools';
+  | 'Ship & run'
+  | 'Browser & runtime';
 
 export interface Skill {
   name: string;
   category: SkillCategory;
   url?: string;
+}
+
+/** A skill group and the line that says how it is used here. */
+export interface SkillGroup {
+  name: SkillCategory;
+  note: string;
 }
 
 export interface Experience {
@@ -98,6 +108,9 @@ export const stats = content.stats as Stat[];
 export const projects = content.projects as Project[];
 export const openSource = content.openSource as OpenSourceItem[];
 export const skills = content.skills as Skill[];
+export const skillGroups = content.skillGroups as SkillGroup[];
+/** Technology → group, for pills that appear outside the skills section. */
+export const techCategory = content.techCategory as Record<string, SkillCategory>;
 export const experience = content.experience as Experience[];
 export const education = content.education as Education[];
 export const achievements = content.achievements as string[];

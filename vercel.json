@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/blog",
+      "has": [{ "type": "host", "value": "rishikeshs.dev" }],
+      "destination": "https://blog.rishikeshs.dev/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "has": [{ "type": "host", "value": "rishikeshs.dev" }],
+      "destination": "https://blog.rishikeshs.dev/:path*",
+      "permanent": true
+    }
+  ]
+}

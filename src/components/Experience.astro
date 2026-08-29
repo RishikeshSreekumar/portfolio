@@ -1,41 +1,37 @@
 ---
 import { experience } from '../data/portfolio';
+import Pill from './Pill.astro';
 ---
 
 <section class="section" id="experience">
   <div class="section-inner">
     <div class="section-head reveal">
-      <span class="mlabel">Experience</span>
-      <h2 class="section-title">Where I’ve worked</h2>
-      <p class="desc">Same habit in every one of them: take the thing end to end, and leave a number behind.</p>
+      <span class="mlabel"><span class="n">02</span> / Experience</span>
+      <div class="head-row">
+        <h2 class="section-title">Where I’ve worked</h2>
+        <p class="desc">Same habit in every one of them: take the thing end to end, and leave a number behind.</p>
+      </div>
     </div>
-    <div class="xp">
-      {experience.map((exp, i) => {
-        const present = /present|now/i.test(exp.period);
-        return (
-          <article class="xp-item reveal" style={`--d:${Math.min(i, 3) * 60}ms`}>
-            <div class="xp-when">
-              {present ? (
-                <Fragment><span class="now">Present</span><span class="dur">{exp.period}</span></Fragment>
-              ) : (
-                exp.period
-              )}
-              <span class="loc">{exp.location}</span>
-            </div>
-            <div>
-              <h3 class="xp-role">{exp.role}</h3>
-              <div class="xp-co">{exp.company}</div>
-              <p class="xp-summary">{exp.description}</p>
-              <ul class="xp-list">
-                {exp.highlights.map((h) => <li>{h}</li>)}
-              </ul>
-              <div class="tags">
-                {exp.tags.map((tag) => <span class="tag">{tag}</span>)}
-              </div>
-            </div>
-          </article>
-        );
-      })}
-    </div>
+
+    {experience.map((exp, i) => (
+      <article class="xp-item reveal" style={`--d:${Math.min(i, 3) * 60}ms`}>
+        <div>
+          <div class="xp-when">
+            <span class="when">{exp.period}</span>
+            <span class="sep">/</span>
+            <span>{exp.location}</span>
+          </div>
+          <h3 class="xp-role">{exp.role}</h3>
+          <div class="xp-co">{exp.company}</div>
+          <p class="xp-summary">{exp.description}</p>
+          <div class="tags">
+            {exp.tags.map((tag) => <Pill label={tag} />)}
+          </div>
+        </div>
+        <ul class="xp-list">
+          {exp.highlights.map((h) => <li>{h}</li>)}
+        </ul>
+      </article>
+    ))}
   </div>
 </section>

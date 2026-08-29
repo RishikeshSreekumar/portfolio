@@ -5,24 +5,38 @@ const side = [
   { k: 'role', v: 'Founding Engineer', ac: true },
   { k: 'company', v: 'Mando', ac: false },
   { k: 'education', v: 'IIT Madras', ac: false },
-  { k: 'degree', v: 'Chemical Engg.', ac: false },
   { k: 'focus', v: 'AI · Full-stack', ac: false },
   { k: 'location', v: personal.location, ac: false },
-  { k: 'status', v: 'Open to talk', ac: true },
 ];
+
+/* Two prose columns rather than one long measure: at 1280px a single column of
+   17px runs past 100 characters, which is a line nobody tracks to the end of.
+   Split on length rather than on count, so three paragraphs of unequal size do
+   not leave one column half empty next to a full one. */
+const paras = personal.aboutParagraphs;
+const total = paras.reduce((sum, p) => sum + p.length, 0);
+let run = 0;
+let cut = 1;
+let best = Infinity;
+paras.slice(0, -1).forEach((para, i) => {
+  run += para.length;
+  const gap = Math.abs(run - (total - run));
+  if (gap < best) { best = gap; cut = i + 1; }
+});
+const columns = [paras.slice(0, cut), paras.slice(cut)];
 ---
 
 <section class="section" id="about">
   <div class="section-inner">
     <div class="section-head reveal">
-      <span class="mlabel">About</span>
-      <h2 class="section-title">How I got here</h2>
-    </div>
-    <div class="about-grid">
-      <div class="about-prose reveal">
-        {personal.aboutParagraphs.map((para) => <p set:html={para} />)}
+      <span class="mlabel"><span class="n">01</span> / About</span>
+      <div class="head-row">
+        <h2 class="section-title">How I got here</h2>
       </div>
-      <aside class="about-side reveal" style="--d:80ms">
+    </div>
+
+    <div class="about-grid">
+      <aside class="about-side reveal">
         {side.map((row) => (
           <div class="row">
             <span class="k">{row.k}</span>
@@ -30,6 +44,11 @@ const side = [
           </div>
         ))}
       </aside>
+      {columns.map((column, i) => (
+        <div class="about-prose reveal" style={`--d:${(i + 1) * 60}ms`}>
+          {column.map((para) => <p set:html={para} />)}
+        </div>
+      ))}
     </div>
   </div>
 </section>

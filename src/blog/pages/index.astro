@@ -1,0 +1,36 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { posts, formatDate } from '../../data/blog.js';
+---
+
+<BlogLayout
+  title="Notes on how things work · Rishikesh S"
+  description="Notes by Rishikesh S on the machinery behind everyday software, written down while learning it, with interactive demonstrations."
+>
+  <main id="main">
+    <section class="blog-index">
+      <header class="blog-head">
+        <h1>Notes on how things work</h1>
+        <p class="desc">
+          Things I learn while building software, written down before I forget
+          them. No newsletter, no pop-ups. The whole page is the article.
+        </p>
+      </header>
+
+      <ul class="blog-list">
+        {posts.map((post) => (
+          <li class="blog-item">
+            <a href={`/${post.slug}/`}>
+              <span class="when">{formatDate(post.date)}</span>
+              <div>
+                <h3>{post.title}</h3>
+                <p>{post.summary}</p>
+                <div class="min">{post.minutes} min read</div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+</BlogLayout>

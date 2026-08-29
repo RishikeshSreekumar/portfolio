@@ -78,7 +78,7 @@ on the order-entry critical path).
   output, must stay one page. ATS-parseable is a hard requirement.
 - **Theme:** resolves before first paint via inline `<head>` script — no flash.
   Follows the OS by default, remembers the choice, `t` toggles it. Colour identity
-  lives in `src/data/theme.js`: nine accent palettes, each with its own light and
+  lives in `src/data/theme.js`: ten accent palettes, each with its own light and
   dark values (`base` / `deep` / `on`).
 - **The logo** is a prompt-caret R — the bowl points right like a shell `>`, the leg
   carries the accent. Its geometry lives in three places that must stay in step:
@@ -99,7 +99,7 @@ on the order-entry critical path).
 - First-person, specific, understated voice on the page; metric-led past tense in
   the PDF. No inflation, no superlatives about himself.
 - Accent + mode are configurable by design; the site must stay correct across all
-  nine palettes and both grounds, not tuned to one.
+  ten palettes and both grounds, not tuned to one.
 
 ## Evidence on Hand
 
@@ -133,7 +133,7 @@ pricing, awards, follower or download counts, employer endorsements.
 4. **Credible in sixty seconds, rewarding in ten minutes.** A recruiter must get
    role, years and resume immediately; a technical reader must find depth if they
    keep going.
-5. **Correct across every configuration.** Nine accents × light/dark × reduced
+5. **Correct across every configuration.** Ten accents × light/dark × reduced
    motion × the PDF. A change is not done until it holds in all of them.
 
 ## Accessibility & Inclusion

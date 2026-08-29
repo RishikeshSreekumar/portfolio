@@ -38,9 +38,11 @@ export const MARK_VIEWBOX = '0 0 121.75 100';
 export const MARK_W = 121.75;
 export const MARK_H = 100;
 export const MARK_WEIGHT = 15;
-/** One routed stroke, stem foot to the s's flat terminal. Arcs pre-flattened to cubics. */
+/** One routed stroke, stem foot to the s's flat terminal. The s's two half-turns
+ * are semicircles on one 12.625 radius, each flattened to a pair of quarter cubics
+ * so the mark transfers to the PDF one operator at a time. */
 export const MARK_PATH =
-  'M7.5 92.5L7.5 11.5C7.5 9.291 9.291 7.5 11.5 7.5L45 7.5C50.572 7.498 55.526 11.047 57.316 16.324C59.105 21.601 57.333 27.432 52.91 30.82L38.05 42.2C36.25 43.578 35.119 45.654 34.938 47.914C34.757 50.173 35.542 52.403 37.1 54.05L67.54 86.24C71.317 90.235 76.572 92.499 82.07 92.5L98.5 92.5C107.198 92.5 114.25 85.448 114.25 76.75C114.25 68.052 107.198 61 98.5 61L84 61C78.753 61 74.5 56.747 74.5 51.5C74.5 46.253 78.753 42 84 42L108 42';
+  'M7.5 92.5L7.5 11.5C7.5 9.291 9.291 7.5 11.5 7.5L45 7.5C50.572 7.498 55.526 11.047 57.316 16.324C59.105 21.601 57.333 27.432 52.91 30.82L38.05 42.2C36.25 43.578 35.119 45.654 34.938 47.914C34.757 50.173 35.542 52.403 37.1 54.05L67.54 86.24C71.317 90.235 76.572 92.499 82.07 92.5L98.5 92.5C105.473 92.5 111.125 86.848 111.125 79.875C111.125 72.902 105.473 67.25 98.5 67.25L84 67.25C77.027 67.25 71.375 61.598 71.375 54.625C71.375 47.652 77.027 42 84 42L108 42';
 
 const LIGHT = { ink: INK.light, accent: activeAccent().light.base, bg: GROUND.light };
 const DARK = { ink: INK.dark, accent: activeAccent().dark.base, bg: GROUND.dark };
@@ -121,10 +123,11 @@ function ico(images) {
  * dark preview. Supporting greys are the site's ink-soft / ink-mute on the
  * matching side.
  *
- * Georgia for the name, Helvetica for the rest: rasterised locally, so it can
- * only use fonts certain to be installed, and these are the closest stand-ins
- * for the site's Newsreader and Inter. The ruled ground is gone here for the
- * same reason it is gone from the page. */
+ * Helvetica throughout — bold and tightly tracked for the name: rasterised
+ * locally, so it can only use fonts certain to be installed, and that is the
+ * closest stand-in for the site's Bricolage Grotesque and Public Sans. A serif
+ * here would promise a page that no longer exists. The ruled ground is gone for
+ * the same reason it is gone from the page. */
 const CARD = {
   light: { ground: GROUND.light, ink: INK.light, soft: '#4A483F', mute: '#75736A', faint: '#9B988D' },
   dark: { ground: GROUND.dark, ink: INK.dark, soft: '#ADA99C', mute: '#8C897F', faint: '#5A5850' },
@@ -147,7 +150,7 @@ function ogCard() {
   ${mark({ ink: c.ink, accent: accent.base }, { x: 72, y: 66, w: markW.toFixed(1), h: markH })}
   <text x="${(72 + markW + 26).toFixed(0)}" y="127" font-family="Helvetica" font-size="25" fill="${c.mute}">rishikesh.s</text>
 
-  <text x="72" y="340" font-family="Georgia" font-size="86" fill="${c.ink}">Rishikesh S<tspan fill="${accent.base}">.</tspan></text>
+  <text x="72" y="340" font-family="Helvetica" font-weight="bold" letter-spacing="-3.4" font-size="88" fill="${c.ink}">Rishikesh S<tspan fill="${accent.base}">.</tspan></text>
   <rect x="72" y="376" width="108" height="3" fill="${accent.base}"/>
 
   <text x="72" y="428" font-family="Helvetica" font-size="24" fill="${accent.deep}">Founding Software Engineer</text>

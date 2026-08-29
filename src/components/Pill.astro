@@ -1,0 +1,25 @@
+---
+/**
+ * One technology, as a pill.
+ *
+ * Every technology on the page — project tags, the open-source shelf, the
+ * skills grid, the tags under each job — goes through here, so "Go" looks the
+ * same wherever it appears. The dot is keyed to the group the technology
+ * belongs to, which is what makes a mixed row (a language, a framework and a
+ * piece of infrastructure sitting together) legible without a heading over it.
+ * A technology nothing maps carries a neutral dot rather than a wrong colour.
+ */
+import { techCategory } from '../data/portfolio';
+
+interface Props {
+  label: string;
+  href?: string;
+}
+
+const { label, href } = Astro.props;
+const cat = techCategory[label];
+const Tag = href ? 'a' : 'span';
+const extra = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<Tag class:list={['tag', href && 'tag-link']} data-cat={cat} {...extra}><i aria-hidden="true"></i>{label}</Tag>

@@ -1,0 +1,29 @@
+---
+/* One redirect stub per post that used to live at /blog/<slug>/. Driven by
+ * the same list the blog itself renders, so a new post gets its stub for
+ * free and a removed one loses it. */
+import { posts } from '../../data/blog.js';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const blogOrigin = Astro.site ? `${Astro.site.protocol}//blog.${Astro.site.host}` : 'https://blog.rishikeshs.dev';
+const target = `${blogOrigin}/${slug}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting…</title>
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <p>This post now lives at <a href={target}>{target}</a>.</p>
+  </body>
+</html>

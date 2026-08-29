@@ -4,6 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "dev:blog": "astro dev --config astro.blog.mjs",
+    "build:blog": "astro build --config astro.blog.mjs",
     "resume": "node scripts/generate-resume.mjs",
     "previews": "node scripts/generate-previews.mjs",
     "prebuild": "node scripts/generate-resume.mjs",

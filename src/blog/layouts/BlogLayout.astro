@@ -1,0 +1,194 @@
+---
+import '../../styles/global.css';
+import '../../styles/blog.css';
+import { ACCENTS, theme, GROUND } from '../../data/theme.js';
+import Logo from '../../components/Logo.astro';
+
+/* The blog's own shell. Same paper, same ink, same accent — but none of the
+ * portfolio chrome: no section nav, no terminal, no scroll spy. A masthead
+ * that names the place, the article, and a footer that points back to the
+ * portfolio. This is deliberately a separate layout rather than a mode of
+ * Layout.astro, so the two sites can drift apart without either one growing
+ * conditionals. */
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage = '/og-image.png' } = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.origin : 'https://blog.rishikeshs.dev';
+/* the portfolio is this domain minus the subdomain */
+const portfolioUrl = siteUrl.replace('://blog.', '://');
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const ogImageUrl = `${siteUrl}${ogImage}`;
+
+/* Theme mode, same contract as the portfolio's Layout. */
+const locked = theme.mode === 'light' || theme.mode === 'dark' ? theme.mode : null;
+
+const a = ACCENTS[theme.accent] ?? ACCENTS.signal;
+const accentCss =
+  `:root[data-accent="${theme.accent}"]{` +
+  `--a-l:${a.light.base};--a-l-2:${a.light.deep};--a-l-on:${a.light.on};` +
+  `--a-d:${a.dark.base};--a-d-2:${a.dark.deep};--a-d-on:${a.dark.on};}`;
+---
+
+<!doctype html>
+<html
+  lang="en"
+  data-accent={theme.accent}
+  data-theme={locked ?? undefined}
+  data-theme-lock={locked ? '' : undefined}
+>
+  <head>
+    <style is:inline set:html={accentCss}></style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Rishikesh S" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    {
+      locked ? (
+        <meta name="theme-color" content={GROUND[locked]} />
+      ) : (
+        <>
+          <meta name="theme-color" content={GROUND.light} media="(prefers-color-scheme: light)" />
+          <meta name="theme-color" content={GROUND.dark} media="(prefers-color-scheme: dark)" />
+        </>
+      )
+    }
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="Rishikesh S · Notes" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- theme, resolved before first paint; a no-op when the mode is pinned -->
+    <script is:inline>
+      (function () {
+        if (document.documentElement.hasAttribute('data-theme-lock')) return;
+        try {
+          var saved = localStorage.getItem('theme');
+          var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', saved || system);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body id="top">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="mast">
+      <div class="mast-inner">
+        <a href="/" class="brand" aria-label="Notes, home"><Logo size={18} /> rishikesh.s <span class="mast-sep">/</span> notes</a>
+        {
+          !locked && (
+            <button class="icon-btn" id="themeBtn" aria-label="Toggle colour theme" title="Toggle theme (t)">
+              <svg aria-hidden="true" class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+              <svg aria-hidden="true" class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+            </button>
+          )
+        }
+      </div>
+    </header>
+
+    <slot />
+
+    <footer class="blog-foot">
+      <div class="blog-foot-inner">
+        <span class="foot-kicker">more about me</span>
+        <p class="foot-about">
+          I'm Rishikesh, a founding software engineer at Mando, writing from
+          Chennai. My work, projects and how to reach me all live on
+          <a href={portfolioUrl}>the portfolio</a>.
+        </p>
+        <a href={portfolioUrl} class="brand foot-brand" aria-label="Rishikesh S, portfolio"><Logo size={15} /> rishikeshs.dev&nbsp;↗</a>
+      </div>
+    </footer>
+
+    {
+      !locked && (
+        <script is:inline>
+          (function () {
+            var themeBtn = document.getElementById('themeBtn');
+            function setTheme(next) {
+              document.documentElement.setAttribute('data-theme', next);
+              try { localStorage.setItem('theme', next); } catch (e) {}
+            }
+            function toggleTheme() {
+              setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+            }
+            if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+            var osDark = window.matchMedia('(prefers-color-scheme: dark)');
+            var onOsChange = function (e) {
+              var saved = null;
+              try { saved = localStorage.getItem('theme'); } catch (err) {}
+              if (!saved) document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            };
+            if (osDark.addEventListener) osDark.addEventListener('change', onOsChange);
+            document.addEventListener('keydown', function (e) {
+              var active = document.activeElement;
+              if (active && /^(INPUT|TEXTAREA)$/.test(active.tagName)) return;
+              if (e.metaKey || e.ctrlKey || e.altKey) return;
+              if (e.key.toLowerCase() === 't') toggleTheme();
+            });
+          })();
+        </script>
+      )
+    }
+  </body>
+</html>
+
+<style is:global>
+  /* Masthead and footer for the blog shell. The classes live here rather than
+     in blog.css because they belong to this layout, not to the prose.
+
+     One 720px measure runs through the whole site — masthead, content and
+     footer share it, so their left edges always line up. The footer is pinned
+     to the bottom of short pages by the flex column, never by padding. */
+  body { display: flex; flex-direction: column; min-height: 100svh; }
+  body > main { flex: 1; }
+
+  .mast { border-bottom: 1px solid var(--line); background: var(--bg); }
+  .mast-inner {
+    max-width: 720px; margin: 0 auto; padding: 18px var(--gut);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .mast-sep { color: var(--ink-dim); font-weight: 400; margin: 0 1px; }
+
+  .blog-foot { border-top: 1px solid var(--line); }
+  .blog-foot-inner { max-width: 720px; margin: 0 auto; padding: 30px var(--gut) 40px; }
+  .foot-kicker {
+    display: block;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 12px;
+  }
+  .foot-about {
+    margin: 0 0 18px; font-size: 15px; line-height: 1.7; color: var(--ink-mute);
+    max-width: 56ch; text-wrap: pretty;
+  }
+  .foot-about a { color: var(--ink); border-bottom: 1px solid var(--line-2); transition: color .2s, border-color .2s; }
+  .foot-about a:hover { color: var(--accent); border-color: var(--accent); }
+  .foot-brand { font-family: var(--mono); font-weight: 400; font-size: 12.5px; color: var(--ink-faint); }
+  .foot-brand:hover { color: var(--accent); }
+</style>

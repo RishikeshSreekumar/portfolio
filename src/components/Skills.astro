@@ -1,36 +1,36 @@
 ---
-import { skills } from '../data/portfolio';
+import { skills, skillGroups } from '../data/portfolio';
+import Pill from './Pill.astro';
 
-const order = ['Languages', 'Frontend', 'Backend', 'AI/ML', 'Data', 'Infrastructure', 'Tools'];
-const categories = order.filter((c) => skills.some((s) => s.category === c));
+/**
+ * Grouped by the job the thing does, not by what kind of thing it is.
+ * "Frontend / Backend / Tools" is a taxonomy of technologies; these are the
+ * seven places work actually lands. Each group carries one line saying how it
+ * gets used here, which is the part a list of names cannot say.
+ */
+const groups = skillGroups.filter((g) => skills.some((s) => s.category === g.name));
 ---
 
 <section class="section" id="skills">
   <div class="section-inner">
     <div class="section-head reveal">
-      <span class="mlabel">Skills</span>
-      <h2 class="section-title">What I reach for</h2>
-      <p class="desc">No proficiency bars — nobody believes them anyway. If it’s here, I’ve shipped something with it and can talk through the parts that went wrong.</p>
+      <span class="mlabel"><span class="n">06</span> / Skills</span>
+      <div class="head-row">
+        <h2 class="section-title">What I reach for</h2>
+        <p class="desc">No proficiency bars — nobody believes them anyway. If it’s here, I’ve shipped something with it and can talk through the parts that went wrong.</p>
+      </div>
     </div>
 
-    <div class="skills-grid">
-      {categories.map((category, i) => (
-        <div class="skill-group reveal" style={`--d:${(i % 3) * 60}ms`}>
-          <div class="gname">{category}</div>
-          <div class="skill-chips">
-            {skills.filter((s) => s.category === category).map((s) => (
-              s.url ? (
-                <a class="chip chip-link" href={s.url} target="_blank" rel="noopener noreferrer">
-                  {s.name}
-                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
-                </a>
-              ) : (
-                <span class="chip">{s.name}</span>
-              )
-            ))}
-          </div>
+    {groups.map((group, i) => (
+      <div class="skill-row reveal" style={`--d:${Math.min(i, 3) * 50}ms`}>
+        <div class="gname">{group.name}</div>
+        <p class="gnote">{group.note}</p>
+        <div class="skill-chips">
+          {skills.filter((s) => s.category === group.name).map((s) => (
+            <Pill label={s.name} href={s.url} />
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
   </div>
 </section>

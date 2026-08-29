@@ -42,7 +42,7 @@ export const ACCENTS = {
   },
   ember: {
     label: 'Ember',
-    light: { base: '#C2500C', deep: '#9B400A', on: '#FFFFFF' },
+    light: { base: '#B84A0A', deep: '#9B400A', on: '#FFFFFF' },
     dark: { base: '#FF8A4C', deep: '#FFB088', on: '#12120F' },
   },
   crimson: {
@@ -52,8 +52,13 @@ export const ACCENTS = {
   },
   gold: {
     label: 'Gold',
-    light: { base: '#956700', deep: '#785400', on: '#FFFFFF' },
+    light: { base: '#8B5F00', deep: '#785400', on: '#FFFFFF' },
     dark: { base: '#E3B341', deep: '#EFCC77', on: '#12120F' },
+  },
+  oxford: {
+    label: 'Oxford blue',
+    light: { base: '#1F4B99', deep: '#16386F', on: '#FFFFFF' },
+    dark: { base: '#7FA9EE', deep: '#A9C6F7', on: '#12120F' },
   },
   mono: {
     label: 'Mono (no hue)',
@@ -64,7 +69,7 @@ export const ACCENTS = {
 
 export const theme = {
   /** Which palette above the site ships with. */
-  accent: 'cyan',
+  accent: 'oxford',
 
   /**
    * 'auto'  — follow the OS, remember the visitor's toggle, show the toggle button.
@@ -72,16 +77,16 @@ export const theme = {
    * 'dark'  — dark only, same deal.
    *
    * Pinned to light. The dark half of every palette is still defined above and the
-   * dark blocks are still in global.css: the dev accent lab previews them, and the
-   * icon generator uses the dark values for the app tile. Flipping this back to
-   * 'auto' restores the toggle with nothing else to change.
+   * dark blocks are still in global.css: the icon generator uses the dark values
+   * for the app tile. Flipping this back to 'auto' restores the toggle with
+   * nothing else to change.
    */
   mode: 'light',
 };
 
 /** Page background per side, so generators and <meta theme-color> agree with the CSS. */
-export const GROUND = { light: '#FBFAF7', dark: '#12120F' };
+export const GROUND = { light: '#F6F3EC', dark: '#12120F' };
 /** Body ink per side. */
-export const INK = { light: '#191813', dark: '#EDEAE1' };
+export const INK = { light: '#17160F', dark: '#EDEAE1' };
 
 export const activeAccent = () => ACCENTS[theme.accent] ?? ACCENTS.signal;

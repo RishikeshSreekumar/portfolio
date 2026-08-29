@@ -1,5 +1,12 @@
 # build output
 dist/
+dist-blog/
+
+# vercel project link
+.vercel/
+
+# review-tool artifacts
+.impeccable/
 # generated types
 .astro/
 
