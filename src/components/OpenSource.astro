@@ -1,5 +1,9 @@
 ---
-import { openSource, personal } from '../data/portfolio';
+import { openSource } from '../data/portfolio';
+
+/* Six here, the rest on /projects. A shelf that runs past one screen stops
+ * reading as a shelf. */
+const shelf = openSource.slice(0, 6);
 
 const langColor: Record<string, string> = {
   Go: '#00ADD8',
@@ -28,7 +32,7 @@ const langColor: Record<string, string> = {
         it does not also need an arrow flying in to announce that a link is a
         link. */}
     <div class="oss-grid">
-      {openSource.map((item, i) => (
+      {shelf.map((item, i) => (
         <a class="oss reveal" href={item.liveUrl ?? item.url} target="_blank" rel="noopener noreferrer" style={`--d:${(i % 3) * 60}ms`}>
           <div class="head">
             <span class="nm">{item.name}</span>
@@ -45,7 +49,7 @@ const langColor: Record<string, string> = {
     </div>
 
     <div class="oss-more reveal">
-      <a href={personal.social.github} target="_blank" rel="noopener noreferrer">The rest of it on GitHub →</a>
+      <a href="/projects">Every repo, with what each one is &rarr;</a>
     </div>
   </div>
 </section>

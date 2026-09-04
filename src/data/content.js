@@ -163,6 +163,54 @@ export const achievements = [
  */
 export const projects = [
   {
+    id: "jumpkey",
+    title: "JumpKey — Command Palette for URLs",
+    tagline: "Type `pr 1421`. Land on the pull request.",
+    year: "2026",
+    status: "Chrome extension",
+    description:
+      "Half the URLs anyone opens in a day are one template with one thing changed. JumpKey makes each template a keyword you type: `pr 1421` opens pull request 1421 on the repo you live in, `jira ENG 482` opens ENG-482, `dash october 2026` opens the dashboard filtered to that month, `yt sourdough starter` runs the search. Launcher or address bar, no bookmark to hunt for. Commands live in your own browser storage, exportable and importable as JSON.",
+    facts: [
+      "⌘⇧K launcher, or `jk` in the address bar",
+      "`jira ENG 482` → /browse/ENG-482 — args fill in order",
+      "path args keep `/`, query and hash args encoded",
+      "commands stay in chrome.storage.local — no server",
+    ],
+    highlight:
+      "The engine is browser-independent: template parsing, invocation parsing, matching and validation sit in `src/core/` with no `chrome` import anywhere — a rule ESLint enforces — so the same code runs under the omnibox, the popup and the tests.",
+    tags: ["TypeScript", "React", "Chrome Extensions", "Vite"],
+    downloadUrl: "/downloads/jumpkey-0.0.1-chrome.zip",
+    downloadLabel: "Download v0.0.1 (.zip)",
+    downloadNote:
+      "Unzip, open chrome://extensions, enable Developer mode, then Load unpacked and pick the folder.",
+    accent: "#4C8DFF",
+    featured: true,
+  },
+  {
+    id: "mailcleaner",
+    title: "mailcleaner — Mailbox Observability",
+    tagline: "See who fills your inbox. Act in bulk, safely.",
+    year: "2026",
+    status: "released",
+    description:
+      "A local dashboard that builds a metadata-only SQLite index of a mailbox, shows which senders and lists are actually filling it, and lets you archive, trash or label in bulk. Works with Gmail, Outlook, Proton via Bridge, Fastmail, iCloud and any IMAP server, with as many accounts side by side as you like. Terminal UI and a browser UI over the same index.",
+    facts: [
+      "headers only — no bodies, no attachments",
+      "no permanent delete anywhere in the code",
+      "every bulk action previews a sample first",
+      "one index, one credential, one history per account",
+    ],
+    highlight:
+      "The safety model is the product. Trash means the provider's own Trash — never `EXPUNGE`, never `\\Deleted` — and where a server lacks IMAP `MOVE`, archive and trash are refused rather than emulated with copy-then-delete, because that is a delete.",
+    tags: ["Python", "Textual", "SQLite", "IMAP", "OAuth"],
+    liveUrl: "https://github.com/RishikeshSreekumar/gmail_cleaner/releases/latest",
+    liveLabel: "Releases",
+    githubUrl: "https://github.com/RishikeshSreekumar/gmail_cleaner",
+    install: "curl -fsSL https://raw.githubusercontent.com/RishikeshSreekumar/gmail_cleaner/main/install.sh | sh",
+    accent: "#D97706",
+    featured: true,
+  },
+  {
     id: "leak",
     title: "leak — Terminal Subscription Manager",
     tagline: "Mark. Sweep. Save.",
@@ -314,6 +362,27 @@ export const projects = [
  */
 export const openSource = [
   {
+    name: "Marvel Nexus",
+    repo: "marvel_nexus",
+    lang: "Astro",
+    year: "2024",
+    description:
+      "MCU chronology as a story-dependency graph: 95 titles, cycle validation at startup, watched-state in the URL. Astro shell, React island.",
+    stack: ["Astro", "React", "Graph traversal"],
+    url: "https://github.com/RishikeshSreekumar/marvel_nexus",
+    liveUrl: "https://marvel-nexus-livid.vercel.app",
+  },
+  {
+    name: "svg-reconstruction",
+    repo: "svg-reconstruction",
+    lang: "TypeScript",
+    year: "2026",
+    description:
+      "Recovers editable primitives, strokes and constraints from flattened SVG path soup — 1516 numbers of bezier data back to three circles, a rounded rect and the constraints between them. Zero runtime dependencies; its own parser, fitting and offsetting.",
+    stack: ["TypeScript", "Geometry fitting", "Constraint solving"],
+    url: "https://github.com/RishikeshSreekumar/svg-reconstruction",
+  },
+  {
     name: "The Chilli Scale",
     repo: "chilli",
     lang: "SVG",
@@ -323,6 +392,37 @@ export const openSource = [
     stack: ["SVG", "Scroll animation", "Generative geometry"],
     url: "https://chilli.rishikeshs.dev",
     liveUrl: "https://chilli.rishikeshs.dev",
+  },
+  {
+    name: "Strawberry",
+    repo: "strawberry",
+    lang: "TypeScript",
+    year: "2026",
+    description:
+      "An interactive calculus-first math learning platform: a Next.js modular monolith with relational structure, JSONB lesson blocks, an in-app admin CMS and versioned publishing.",
+    stack: ["Next.js", "Drizzle ORM", "Neon Postgres", "KaTeX"],
+    url: "https://github.com/RishikeshSreekumar/strawberry",
+    liveUrl: "https://strawberry-murex.vercel.app",
+  },
+  {
+    name: "Tea Atlas",
+    repo: "teaaa",
+    lang: "JavaScript",
+    year: "2026",
+    description:
+      "45 teas across seven families — where each grows, how it is processed, what is in it and how to brew it. Filters live in the URL, search ranks by where it matched, and up to four teas compare side by side.",
+    stack: ["React", "Vite", "Tailwind"],
+    url: "https://github.com/RishikeshSreekumar/teaaa",
+  },
+  {
+    name: "Flow Lab",
+    repo: "traffic_simulation",
+    lang: "TypeScript",
+    year: "2026",
+    description:
+      "An essay with a working traffic-signal simulation inside it: five junctions around Panagal Park, four control plans over OpenStreetMap geometry, paired A/B playback and a batch mode that runs ten seeds per controller and reports the uncertainty.",
+    stack: ["TypeScript", "Discrete-event sim", "Python parity suite"],
+    url: "https://github.com/RishikeshSreekumar/traffic_simulation",
   },
   {
     name: "weather-cast",
@@ -343,17 +443,6 @@ export const openSource = [
       "Offline Chrome extension that romanizes non-Latin YouTube Music lyrics — Tamil, Devanagari, Hangul, kana — one script run at a time, so a failing engine degrades only its own run.",
     stack: ["TypeScript", "Chrome Extensions", "Unicode"],
     url: "https://github.com/RishikeshSreekumar/youtube_music_lyrics",
-  },
-  {
-    name: "Marvel Nexus",
-    repo: "marvel_nexus",
-    lang: "Astro",
-    year: "2024",
-    description:
-      "MCU chronology as a story-dependency graph: 95 titles, cycle validation at startup, watched-state in the URL. Astro shell, React island.",
-    stack: ["Astro", "React", "Graph traversal"],
-    url: "https://github.com/RishikeshSreekumar/marvel_nexus",
-    liveUrl: "https://marvel-nexus-livid.vercel.app",
   },
   {
     name: "Lift Simulation",

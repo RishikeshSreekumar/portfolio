@@ -2,7 +2,9 @@
 import { projects } from '../data/portfolio';
 import Pill from './Pill.astro';
 
-const featured = projects.filter((p) => p.featured);
+/* Six on the homepage. The full shelf — every project and every public repo,
+ * with the artifacts attached — lives at /projects. */
+const featured = projects.filter((p) => p.featured).slice(0, 6);
 
 function splitTitle(title: string) {
   const parts = title.split(/\s+—\s+/);
@@ -31,7 +33,7 @@ function splitTitle(title: string) {
       <div class="head-row">
         <h2 class="section-title">Things I’ve built</h2>
         <p class="desc">
-          Mostly tools I wanted to exist and couldn’t find. Two of them you can install right now, in one command.
+          Mostly tools I wanted to exist and couldn’t find. Three of them you can install right now, in one command.
         </p>
       </div>
     </div>
@@ -103,13 +105,22 @@ function splitTitle(title: string) {
               {project.githubUrl && (
                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">Source ↗</a>
               )}
-              {!project.liveUrl && !project.githubUrl && (
+              {project.downloadUrl && (
+                <a href={project.downloadUrl} download title={project.downloadNote}>
+                  {project.downloadLabel ?? 'Download'} ↓
+                </a>
+              )}
+              {!project.liveUrl && !project.githubUrl && !project.downloadUrl && (
                 <span class="muted">private repo — happy to walk through it</span>
               )}
             </div>
           </article>
         );
       })}
+    </div>
+
+    <div class="oss-more reveal">
+      <a href="/projects">Every project, with its link or its build &rarr;</a>
     </div>
   </div>
 </section>

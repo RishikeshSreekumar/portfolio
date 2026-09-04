@@ -54,6 +54,11 @@ export interface Project {
   liveUrl?: string;
   liveLabel?: string;
   githubUrl?: string;
+  /** A built artifact served from `public/` — used where there is no store page. */
+  downloadUrl?: string;
+  downloadLabel?: string;
+  /** What to do with the file once it has landed. */
+  downloadNote?: string;
   /** The project's own colour, used only to mark the card's edge. */
   accent?: string;
   featured: boolean;

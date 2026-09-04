@@ -1,0 +1,172 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Pill from '../components/Pill.astro';
+import { projects, openSource, personal } from '../data/portfolio';
+
+/**
+ * The full shelf.
+ *
+ * The homepage carries six projects and six repos because a homepage has to
+ * end. This page is the other half of that bargain: everything, in one flat
+ * list, with the link or the file attached to each one. Deliberately plain —
+ * rows, not cards; one line of description, the pieces it is made of, and the
+ * ways in. Anyone who reached this page is looking for a specific thing, not
+ * for a layout.
+ */
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+/* A repo that already has a full project card is not listed twice: the shelf
+ * entry for it is dropped here rather than removed from the data, because the
+ * homepage still wants it. */
+const claimed = new Set(
+  projects
+    .map((p) => p.githubUrl?.split('/').pop())
+    .filter(Boolean),
+);
+
+/** Both lists, normalised to the same row shape, so one loop renders them. */
+const rows = [
+  ...projects.map((p) => ({
+    name: p.title,
+    tagline: p.tagline,
+    when: [p.year, p.status].filter(Boolean).join(' · '),
+    description: p.description,
+    tags: p.tags,
+    accent: p.accent,
+    install: p.install,
+    links: [
+      p.liveUrl && { href: p.liveUrl, label: `${p.liveLabel ?? p.domain ?? 'Live'} ↗`, external: true },
+      p.githubUrl && { href: p.githubUrl, label: 'Source ↗', external: true },
+      p.downloadUrl && { href: p.downloadUrl, label: `${p.downloadLabel ?? 'Download'} ↓`, download: true },
+    ].filter(Boolean),
+    note: p.downloadNote,
+  })),
+  ...openSource.filter((o) => !claimed.has(o.repo)).map((o) => ({
+    name: o.name,
+    tagline: undefined,
+    when: [o.year, o.lang].filter(Boolean).join(' · '),
+    description: o.description,
+    tags: o.stack ?? [],
+    accent: undefined,
+    install: undefined,
+    links: [
+      o.liveUrl && { href: o.liveUrl, label: 'Live ↗', external: true },
+      { href: o.url, label: 'Source ↗', external: true },
+    ].filter(Boolean),
+    note: undefined,
+  })),
+];
+---
+
+<Layout
+  title="Projects — Rishikesh S"
+  description="Everything I've built and can point at: tools, apps and extensions, each with its source, its live URL or its downloadable build."
+>
+  <Navbar />
+  <main id="main">
+    <section class="section">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <span class="mlabel"><span class="n">/</span> Projects</span>
+          <div class="head-row">
+            <h2 class="section-title">Everything, with a way in</h2>
+            <p class="desc">
+              {rows.length} things — tools, apps and extensions. Each row links to the source, the live site,
+              or the build you can install.
+            </p>
+          </div>
+        </div>
+
+        <ol class="cat">
+          {rows.map((row, i) => (
+            <li class="cat-row reveal" style={`--proj:${row.accent ?? 'var(--accent)'};--d:${(i % 3) * 50}ms`}>
+              <div class="cat-head">
+                <h3>{row.name}</h3>
+                {row.when && <span class="cat-when">{row.when}</span>}
+              </div>
+              {row.tagline && <p class="cat-tagline">{row.tagline}</p>}
+              <p class="cat-desc">{row.description}</p>
+
+              {row.install && (
+                <div class="proj-install">
+                  <span class="sig">$</span>
+                  <code>{row.install}</code>
+                  <button
+                    class="icon-btn copy-target"
+                    data-copy={row.install}
+                    type="button"
+                    title={`Copy: ${row.install}`}
+                    aria-label={`Copy install command: ${row.install}`}
+                  >
+                    <svg class="i-copy" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+                    <svg class="i-ok" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+                  </button>
+                </div>
+              )}
+
+              {row.tags.length > 0 && (
+                <div class="tags">
+                  {row.tags.map((tag) => <Pill label={tag} />)}
+                </div>
+              )}
+
+              <div class="proj-links">
+                {row.links.map((link) => (
+                  link.download
+                    ? <a href={`${base}${link.href}`} download>{link.label}</a>
+                    : <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+                ))}
+                {row.links.length === 0 && (
+                  <span class="muted">private repo — happy to walk through it</span>
+                )}
+              </div>
+
+              {/* The file lands in Downloads and then the reader has to know what
+                  to do with it. Saying so here costs one line and saves a search. */}
+              {row.note && <p class="cat-note">{row.note}</p>}
+            </li>
+          ))}
+        </ol>
+
+        <div class="oss-more reveal">
+          <a href={personal.social.github} target="_blank" rel="noopener noreferrer">The rest of it on GitHub &rarr;</a>
+          <span class="sep">·</span>
+          <a href={`${base}/`}>Back home &rarr;</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  /* Rows, not cards. The project's own colour marks the left edge — the same
+     job it does on the homepage, at a scale where twelve cards would be noise. */
+  .cat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .cat-row {
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--proj, var(--accent));
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color .3s var(--ease);
+  }
+  .cat-row:hover { border-color: var(--line-2); border-left-color: var(--proj, var(--accent)); }
+  .cat-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .cat-head h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 19px; letter-spacing: -0.02em; }
+  .cat-when { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint); white-space: nowrap; }
+  .cat-tagline { margin: 0; font-size: 14px; color: var(--ink-faint); font-style: italic; }
+  .cat-desc { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--ink-body); text-wrap: pretty; }
+  .cat-note { margin: 0; font-family: var(--mono); font-size: 11.5px; line-height: 1.6; color: var(--ink-faint); }
+  .oss-more .sep { margin: 0 10px; color: var(--ink-faint); }
+
+  @media (max-width: 640px) {
+    .cat-row { padding: 18px 16px; }
+  }
+</style>
