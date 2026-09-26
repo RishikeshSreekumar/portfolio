@@ -10,9 +10,9 @@ export const posts = [
     slug: 'bezier-curves',
     title: 'Bézier curves from first principles',
     summary:
-      'I finally sat down to understand the curves behind fonts, the pen tool and CSS easing. Turns out it is one repeated lerp. With draggable demos.',
+      'Notes from building an SVG tool: what the numbers after C in a path actually mean, why fonts and CSS easing are the same curve, and why it is all one repeated lerp. With draggable playgrounds.',
     date: '2026-08-29',
-    minutes: 12,
+    minutes: 15,
   },
 ];
 

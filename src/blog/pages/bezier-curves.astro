@@ -19,56 +19,63 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
         </div>
         <h1 class="post-title">Bézier curves from first principles</h1>
         <p class="post-standfirst">
-          Every glyph in this sentence, every icon in your toolbar and the way
-          this page's animations speed up and slow down all come from one small
-          idea, applied twice. I finally sat down to understand it properly.
-          These are my notes, built up from a straight line, with demos you can
-          drag.
+          I've been writing a tool that takes SVGs apart and rebuilds them,
+          which means I spend my evenings staring at path data. Path data is
+          mostly Bézier curves, and I realised I'd been nodding along to that
+          name for years without knowing what the numbers meant. These are the
+          notes I took while fixing that. The demos are draggable.
         </p>
       </header>
 
       <div class="post-body">
         <p>
-          A bit of history first, because I enjoyed it. In 1962 Pierre Bézier
-          was an engineer at Renault with a problem: car bodies were designed
-          as physical clay models, and there was no good way to describe their
-          surfaces to the milling machines that had to cut them. The curves he
-          popularised were actually worked out a few years earlier by Paul de
-          Casteljau at Citroën, who wasn't allowed to publish. The idea in both
-          places was the same. Pin a curve down with a handful of points, and
-          it can be reproduced exactly, anywhere, at any scale.
+          The line that started all this looks something like:
+        </p>
+        <pre><code>&lt;path d="<span class="k">M</span> 12 3 <span class="k">C</span> 5 9 4 16 12 21" /&gt;</code></pre>
+        <p>
+          My parser had to eat thousands of these, and for the first week I
+          treated the six numbers after <code>C</code> as noise the browser
+          understood and I didn't. That worked right up until I needed to
+          split a path in half, and then it very much didn't. So I went and
+          learned the thing properly, and the annoying part is that it's
+          <em>easy</em>. The whole construction needs one operation, applied
+          repeatedly, and it's an operation I already used every day.
         </p>
         <p>
-          Sixty years later the same family of curves is the backbone of
-          computer graphics. Fonts, SVG icons, Illustrator's pen tool, CSS
-          animation easing, robot motion planning. I knew the name for years
-          without knowing how they actually work, and it turns out the
-          construction is genuinely simple. The only prerequisite is knowing
-          how to walk along a straight line.
+          Some history first, because I fell down that hole too. In 1962
+          Pierre Bézier was an engineer at Renault with a problem: car bodies
+          were designed as physical clay models, and there was no good way to
+          describe their surfaces to the milling machines that had to cut
+          them. The curves he popularised were actually worked out a few years
+          earlier by Paul de Casteljau at Citroën, who wasn't allowed to
+          publish. Same idea in both places: pin a curve down with a handful
+          of points, and it can be reproduced exactly, anywhere, at any
+          scale. Sixty years later that idea is load-bearing for fonts, SVG,
+          the pen tool, CSS easing, and apparently my side project.
         </p>
 
         <h2 id="lerp">Start with a line</h2>
         <p>
           Take two points, <strong>A</strong> and <strong>B</strong>, and a
           number <code>t</code> between 0 and 1. <em>Linear interpolation</em>
-          (lerp, to its friends) gives you the point that is a fraction
-          <code>t</code> of the way from A to B:
+          (lerp) gives you the point that is a fraction <code>t</code> of the
+          way from A to B:
         </p>
         <pre class="math">lerp(A, B, t) = (1 − t) · A  +  t · B</pre>
         <p>
-          At <code>t = 0</code> you're standing on A, at <code>t = 1</code>
-          you're on B, at <code>t = 0.5</code> you're exactly halfway. Sweep
-          <code>t</code> from 0 to 1 and you trace the whole segment. That's
-          the entire toolbox. A straight line traced this way is technically
-          already a Bézier curve, a degree-1 one with control points A and B.
-          Everything that follows is just lerp applied to the results of other
-          lerps, which honestly surprised me when it clicked.
+          At <code>t = 0</code> you're on A, at <code>t = 1</code> you're on
+          B, at <code>t = 0.5</code> you're halfway. Sweep <code>t</code> from
+          0 to 1 and you trace the segment. I'd written this function a
+          hundred times for animations without ever suspecting it was the
+          entire toolbox. A straight line traced this way is technically
+          already a Bézier curve — degree 1, control points A and B —
+          everything below is lerps feeding into other lerps.
         </p>
 
         <h2 id="de-casteljau">De Casteljau's algorithm</h2>
         <p>
           Now take <strong>three</strong> points: P₀, P₁ and P₂. For a given
-          <code>t</code>, do this:
+          <code>t</code>:
         </p>
         <ul>
           <li>Lerp from P₀ to P₁, call the result Q₀.</li>
@@ -76,11 +83,11 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
           <li>Lerp from Q₀ to Q₁. That point is on the curve.</li>
         </ul>
         <p>
-          Sweep <code>t</code> from 0 to 1 and that final point sweeps out a
-          smooth arc: a <strong>quadratic Bézier curve</strong>. The recursive
-          walk is called De Casteljau's algorithm. Try it below. Drag the
-          points, scrub <code>t</code>, and watch the two-stage construction
-          happen:
+          Sweep <code>t</code> and that final point traces a smooth arc: a
+          <strong>quadratic Bézier</strong>. The recursive walk is De
+          Casteljau's algorithm, and honestly, reading it in prose did
+          nothing for me. Watching it move did. Drag the points, scrub
+          <code>t</code>:
         </p>
 
         <figure class="demo" id="d1">
@@ -101,21 +108,24 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
         </figure>
 
         <p>
-          The thing that made this click for me is what the amber line is
-          doing: at every <code>t</code> it is <em>tangent</em> to the curve.
-          The construction doesn't just give you points, it gives you
-          directions for free. That's why the same machinery can drive font
-          rendering and also steer a CNC cutter along a path.
+          The detail that got me: the amber line isn't just scaffolding. At
+          every <code>t</code> it is <em>tangent</em> to the curve. The
+          construction hands you directions for free, which mattered to me
+          later — anything that wants to offset a path, or aim a dash along
+          it, needs those tangents.
         </p>
 
         <h2 id="cubic">One more level: the cubic</h2>
         <p>
-          Nothing stops you at three points. With four control points you lerp
-          three times to get three points, lerp those to get two, and lerp once
-          more to land on the curve. That's a <strong>cubic Bézier</strong>,
-          and it's the workhorse of the whole field. It's the cheapest curve
-          that can hold an inflection (an S-bend), and you get independent
-          control over the direction the curve leaves each endpoint.
+          Nothing stops you at three points. With four, you lerp three times
+          to get three points, lerp those to get two, and lerp once more to
+          land on the curve. That's a <strong>cubic Bézier</strong> — and
+          those four points are exactly what an SVG <code>C</code> command
+          carries. The current position is P₀; the six numbers are P₁, P₂,
+          P₃. The line my parser choked on was four points all along. Cubics
+          dominate because they're the cheapest curve that can hold an S-bend,
+          and you get independent control over how the curve leaves each
+          endpoint.
         </p>
 
         <figure class="demo" id="d2">
@@ -138,34 +148,32 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
         </figure>
 
         <p>
-          Unrolling the recursion gives the closed form. For the cubic, collect
-          the terms and each control point ends up weighted by a polynomial in
+          Unrolling the recursion gives a closed form. Collect the terms and
+          each control point ends up weighted by a polynomial in
           <code>t</code>:
         </p>
         <pre class="math">B(t) = (1−t)³ P₀  +  3(1−t)²t P₁  +  3(1−t)t² P₂  +  t³ P₃</pre>
         <p>
-          Those weights, <code>(1−t)³, 3(1−t)²t, 3(1−t)t², t³</code>, are the
-          <strong>Bernstein basis polynomials</strong>, and two things about
-          them are worth staring at. They are the terms of the binomial
-          expansion of <code>((1−t) + t)³</code>, so at every <code>t</code>
-          they sum to exactly 1: the curve point is always a weighted average
-          of the control points. And each weight peaks at a different
-          <code>t</code>, which is the precise sense in which P₁ "pulls" the
-          early part of the curve and P₂ the late part. The curve passes
-          through its endpoints (<code>B(0) = P₀</code>,
-          <code>B(1) = P₃</code>) but only <em>approaches</em> the middle
-          control points. It never touches them.
+          Those weights are the <strong>Bernstein basis polynomials</strong>.
+          They're the terms of the binomial expansion of
+          <code>((1−t) + t)³</code>, so at every <code>t</code> they sum to
+          exactly 1 — the curve point is always a weighted average of the
+          control points. Each weight peaks at a different <code>t</code>,
+          which is the precise sense in which P₁ "pulls" the early part of the
+          curve and P₂ the late part. The curve passes through its endpoints
+          but only <em>approaches</em> the middle control points; it never
+          touches them. I sampled a lot of curves before believing that.
         </p>
         <p>
-          The derivative falls straight out of the algebra, and it's another
-          Bézier curve, one degree lower:
+          The derivative falls out of the algebra, and it's another Bézier
+          curve, one degree lower:
         </p>
         <pre class="math">B′(t) = 3(1−t)² (P₁−P₀)  +  6(1−t)t (P₂−P₁)  +  3t² (P₃−P₂)</pre>
         <p>
           At <code>t = 0</code> that collapses to <code>3(P₁−P₀)</code>: the
-          curve leaves P₀ aimed directly at P₁. So a pen tool's "handles" are a
-          literal picture of the derivative at each anchor. I'd been dragging
-          them for years without knowing that.
+          curve leaves P₀ aimed directly at P₁. Which means a pen tool's
+          handles are a literal picture of the derivative at each anchor. I'd
+          been dragging them for years without knowing that.
         </p>
 
         <h2 id="properties">Why these curves won</h2>
@@ -184,8 +192,9 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
           <li>
             <strong>Convex hull.</strong> Because the Bernstein weights are
             non-negative and sum to 1, the curve can never escape the convex
-            hull of its control points. A renderer can trivially bound a curve,
-            cull it, or test it for intersection without evaluating anything.
+            hull of its control points. My app leans on this constantly: you can
+            bound, cull, or intersection-test a curve without evaluating a
+            single point of it.
           </li>
           <li>
             <strong>Affine invariance.</strong> Rotate, scale or skew the
@@ -196,13 +205,11 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
           <li>
             <strong>Variation diminishing.</strong> The curve wiggles no more
             than its control polygon does: a line crosses the curve at most as
-            many times as it crosses the polygon. No surprise oscillations,
-            which is what makes the curves feel predictable under the cursor.
+            many times as it crosses the polygon. No surprise oscillations.
           </li>
           <li>
-            <strong>Cheap to evaluate, cheap to split.</strong> A handful of
-            lerps per point, in fixed or floating point, no trigonometry
-            anywhere.
+            <strong>Cheap.</strong> A handful of lerps per point, in fixed or
+            floating point, no trigonometry anywhere.
           </li>
         </ul>
 
@@ -210,10 +217,10 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
         <p>
           <strong>Fonts.</strong> A glyph outline is a loop of Bézier segments.
           TrueType (<code>.ttf</code>) uses quadratics, picked in the late '80s
-          because they're cheaper to rasterise, while PostScript and
-          CFF/OpenType outlines use cubics. When this page loaded, your browser
-          took the curve descriptions out of three font files and flattened
-          several thousand of them into the pixels you're reading right now.
+          because they're cheaper to rasterise; PostScript and CFF/OpenType
+          outlines use cubics. When this page loaded, your browser took the
+          curve descriptions out of three font files and flattened several
+          thousand of them into the pixels you're reading right now.
         </p>
         <p>
           <strong>Vector graphics.</strong> SVG's path syntax exposes the
@@ -225,9 +232,13 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
 &lt;path d="<span class="k">M</span> 70 300  <span class="k">Q</span> 320 60   570 300" /&gt;
 &lt;path d="<span class="k">M</span> 70 300  <span class="k">C</span> 180 70   460 70   570 300" /&gt;</code></pre>
         <p>
-          Every pen tool, whether it's in Illustrator, Figma, Inkscape or
-          Glyphs, is an editor for exactly these commands. When you drag a
-          handle and the curve follows, you are moving P₁ in figure 2.
+          There are also two shorthand commands I only met while writing the
+          parser: <code>S</code> and <code>T</code>. They omit the first
+          control point and have the renderer <em>reflect</em> the previous
+          segment's last one through the current anchor. That reflection is
+          smoothness, encoded in the syntax itself — the file format is
+          quietly enforcing that handles stay collinear across the joint.
+          More on why that matters at the end.
         </p>
         <p>
           <strong>Animation easing.</strong> CSS's
@@ -278,20 +289,24 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
         <h2 id="rendering">How a curve becomes pixels</h2>
         <p>
           A GPU rasteriser wants straight lines, so at some point every Bézier
-          on your screen gets <em>flattened</em> into a polyline. The naive way
-          is to sample a fixed number of <code>t</code> values, but that wastes
-          segments on the straight-ish parts and starves the tight bends. The
-          standard answer uses a property of De Casteljau's construction that I
-          did not see coming: the intermediate points from figure 2 don't just
-          locate one point, <strong>they split the curve into two smaller
-          Béziers</strong> whose control points hug the curve more tightly than
-          the original four.
+          on your screen gets <em>flattened</em> into a polyline. My first
+          attempt sampled a fixed number of <code>t</code> values, and it looked
+          fine until it didn't: segments wasted on the straight-ish parts, the
+          tight bends visibly faceted. The standard answer uses a property of De
+          Casteljau's construction I did not see coming: the intermediate points
+          from figure 2 don't just locate one point, <strong>they are the
+          control points of the two halves of the curve</strong>, split at
+          <code>t</code>, and they hug the curve more tightly than the original
+          four.
         </p>
         <p>
           So the renderer recurses: if a curve's control points are within
           tolerance of a straight line, emit a segment; otherwise split at
           <code>t = ½</code> and repeat. Flat regions terminate early, bends
-          subdivide deeper, and the error is bounded everywhere:
+          subdivide deeper, and the error is bounded everywhere. This same
+          split, at an arbitrary <code>t</code>, is also how you cut a curve in
+          two exactly — the problem that sent me down this entire rabbit hole
+          answers itself as a side effect of the rendering algorithm.
         </p>
 
         <figure class="demo" id="d4">
@@ -313,16 +328,17 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
 
         <h2 id="limits">What they can't do</h2>
         <p>
-          Two honest limitations, and what the field does about them.
+          Two limitations I ran into, and what the field does about them.
         </p>
         <p>
           <strong>No polynomial curve is a circle.</strong> A cubic can only
-          approximate an arc. The classic trick pins a cubic to a quarter
-          circle and asks how long the handles should be; the answer is
+          approximate an arc, which surprised me — circles feel like the easy
+          case. The classic trick pins a cubic to a quarter circle and asks how
+          long the handles should be; the answer is
           <code>k ≈ 0.5523 · r</code>, a number quietly hard-coded into nearly
           every graphics library that offers rounded corners. The error over a
-          quarter circle is about 0.02% of the radius. Invisible at any screen
-          size, which is why nobody minds.
+          quarter circle is about 0.02% of the radius, invisible at any screen
+          size.
         </p>
 
         <figure class="demo">
@@ -337,18 +353,71 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
         </figure>
 
         <p>
-          <strong>One curve doesn't scale to complex shapes.</strong> You could
-          raise the degree to ten or eleven control points, but high-degree
-          Béziers are miserable: moving any single point bends the
-          <em>entire</em> curve, and the shape drifts ever further from its
-          control polygon. So practice goes the other way: keep the pieces cubic
-          and <strong>chain them</strong>. As long as each joint's incoming and
-          outgoing handles are collinear, the seam is invisible. That is
-          exactly what a pen tool's "smooth point" enforces, and why breaking
-          the handles gives you a corner. A chain of Béziers is a
-          <em>spline</em>. Add per-point weights so arcs come out exact and you
-          get NURBS, the standard in CAD, and a direct descendant of what
-          Bézier and de Casteljau built for car bodies.
+          <strong>One curve doesn't scale to complex shapes.</strong> My first
+          instinct was: more control points. De Casteljau doesn't care about
+          degree, so why not ten? The playground below will show you why not.
+          Add points and try to steer the thing — every point you move bends
+          the <em>entire</em> curve, and the shape drifts further and further
+          from its control polygon. Around degree 6 it stops feeling like
+          steering and starts feeling like negotiating.
+        </p>
+
+        <figure class="demo" id="d6">
+          <div class="demo-panel">
+            <svg viewBox="0 0 640 360" aria-label="Playground for Bézier curves of arbitrary degree. Add or remove control points and drag them; the full De Casteljau construction pyramid is drawn for the current value of t."></svg>
+            <div class="demo-controls">
+              <label>t
+                <input type="range" class="demo-range" min="0" max="1" step="0.005" value="0.45" aria-label="Parameter t" />
+              </label>
+              <span class="readout" data-readout style="min-width:14ch">degree 4 · t = .45</span>
+              <span class="spacer"></span>
+              <button class="demo-btn" data-del aria-label="Remove a control point">− point</button>
+              <button class="demo-btn" data-add aria-label="Add a control point">+ point</button>
+            </div>
+          </div>
+          <figcaption>
+            <b>Fig. 6</b> · the whole De Casteljau pyramid, at any degree up to
+            7. Each amber layer is one round of lerps. Add points and notice
+            how little the curve respects them.
+          </figcaption>
+        </figure>
+
+        <p>
+          So practice goes the other way: keep the pieces cubic and
+          <strong>chain them</strong>. As long as each joint's incoming and
+          outgoing handles are collinear, the seam is invisible — that's the
+          reflection rule from the <code>S</code> command, and it's what a pen
+          tool's "smooth point" enforces. Break the handles and you get a
+          corner. A chain of Béziers is a <em>spline</em>. This last playground
+          is the one I actually wanted while debugging: a pen-tool spline that
+          prints its own path data as you drag, so you can watch the geometry
+          and the <code>d</code> string move together.
+        </p>
+
+        <figure class="demo" id="d7">
+          <div class="demo-panel">
+            <svg viewBox="0 0 640 360" aria-label="Playground for a two-segment cubic spline. Drag the three anchors and four handles; smooth joints keep opposite handles collinear. The SVG path data updates live."></svg>
+            <div class="pathout" data-pathout aria-label="Live SVG path data for the spline above"></div>
+            <div class="demo-controls">
+              <button class="demo-btn" data-smooth aria-pressed="true">smooth joint</button>
+              <span class="spacer"></span>
+              <button class="demo-btn" data-copy>copy d</button>
+            </div>
+          </div>
+          <figcaption>
+            <b>Fig. 7</b> · two cubics sharing the middle anchor. With
+            <b>smooth joint</b> on, dragging one middle handle reflects the
+            other, exactly like a pen tool — and exactly like the <b>S</b>
+            command. Turn it off and drag one to make a corner. The
+            <b>d</b> string below the canvas is live; paste it into any SVG.
+          </figcaption>
+        </figure>
+
+        <p>
+          Add per-point weights to a spline so arcs come out exact and you get
+          NURBS, the standard in CAD and a direct descendant of what Bézier and
+          de Casteljau built for car bodies. That's where I stopped reading;
+          the app doesn't need it. Yet.
         </p>
 
         <h2 id="further">Further reading</h2>
@@ -379,7 +448,7 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
   </main>
 
   <script>
-    /* All four figures share one tiny toolkit: lerp, De Casteljau, an SVG
+    /* All seven figures share one tiny toolkit: lerp, De Casteljau, an SVG
        builder, and one drag/keyboard controller for handles. No libraries —
        the page stays as dependency-free as the site it lives on. */
 
@@ -468,13 +537,13 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
       });
 
       position();
-      return { position, hit };
+      return { position, hit, g };
     }
 
     const inBox = ([x, y]) => [Math.min(616, Math.max(24, x)), Math.min(336, Math.max(24, y))];
     const fmt = (t) => 't = ' + t.toFixed(3);
     const polyPoints = (pts) => pts.map((p) => p.join(',')).join(' ');
-    const labelFor = ['P₀', 'P₁', 'P₂', 'P₃'];
+    const labelFor = ['P₀', 'P₁', 'P₂', 'P₃', 'P₄', 'P₅', 'P₆', 'P₇'];
 
     /* ---------- figures 1 & 2: the construction ---------- */
     function constructionFigure(id, pts, showConsDefault) {
@@ -737,6 +806,183 @@ const post = posts.find((p) => p.slug === 'bezier-curves');
       t1.textContent = 'k·r';
       const t2 = el(svg, 'text', { class: 'glabel', x: cx + (k * r) / 2, y: cy - r - 12, 'text-anchor': 'middle' });
       t2.textContent = 'k·r';
+    })();
+
+    /* ---------- figure 6: any-degree playground ---------- */
+    (function degreeFigure() {
+      const fig = document.getElementById('d6');
+      const svg = fig.querySelector('svg');
+      const range = fig.querySelector('input[type="range"]');
+      const readout = fig.querySelector('[data-readout]');
+      const addBtn = fig.querySelector('[data-add]');
+      const delBtn = fig.querySelector('[data-del]');
+      let t = parseFloat(range.value);
+      let pts = [[70, 300], [140, 80], [320, 260], [500, 80], [570, 300]];
+
+      /* Point count changes rebuild the svg from scratch — simpler than
+         growing and shrinking a pool of nodes, and it happens on a click,
+         never mid-drag. */
+      function rebuild() {
+        svg.textContent = '';
+        const poly = el(svg, 'polyline', { class: 'poly' });
+        const faint = el(svg, 'path', { class: 'curve-faint' });
+        const traced = el(svg, 'path', { class: 'curve' });
+        const cons = el(svg, 'g', {});
+        const onCurve = el(svg, 'circle', { class: 'on-curve', r: 5.5 });
+        const labels = pts.map((_, i) => {
+          const n = el(svg, 'text', { class: 'glabel', 'text-anchor': 'middle' });
+          n.textContent = labelFor[i];
+          return n;
+        });
+
+        function render() {
+          poly.setAttribute('points', polyPoints(pts));
+          faint.setAttribute('d', curvePath(pts, 0, 1, 72));
+          traced.setAttribute('d', curvePath(pts, 0, t, 72));
+
+          /* the full pyramid: every intermediate level, fading with depth */
+          cons.textContent = '';
+          let level = pts;
+          for (let depth = 0; level.length > 2; depth++) {
+            level = step(level, t);
+            const op = Math.max(0.25, 1 - depth * 0.18);
+            el(cons, 'polyline', { class: 'cons', points: polyPoints(level), opacity: op });
+            for (const p of level) el(cons, 'circle', { class: 'cons-dot', r: 3.5, cx: p[0], cy: p[1], opacity: op });
+          }
+
+          const b = bezierPoint(pts, t);
+          onCurve.setAttribute('cx', b[0]);
+          onCurve.setAttribute('cy', b[1]);
+          labels.forEach((n, i) => {
+            n.setAttribute('x', pts[i][0]);
+            n.setAttribute('y', pts[i][1] < 180 ? pts[i][1] - 16 : pts[i][1] + 26);
+          });
+          readout.textContent = `degree ${pts.length - 1} · t = ${t.toFixed(2).replace(/^0\./, '.')}`;
+          delBtn.disabled = pts.length <= 3;
+          addBtn.disabled = pts.length >= 8;
+        }
+
+        pts.forEach((_, i) =>
+          makeHandle(svg, `Control point ${labelFor[i]}`, () => pts[i], (v) => (pts[i] = v), inBox, render)
+        );
+        render();
+        return render;
+      }
+
+      let render = rebuild();
+
+      range.addEventListener('input', () => {
+        t = parseFloat(range.value);
+        render();
+      });
+      addBtn.addEventListener('click', () => {
+        if (pts.length >= 8) return;
+        /* drop the new point near the end of the polygon, nudged upward so
+           it never lands exactly on the segment it splits */
+        const n = pts.length;
+        const mid = lerp(pts[n - 2], pts[n - 1], 0.5);
+        pts.splice(n - 1, 0, inBox([mid[0], mid[1] - 70]));
+        render = rebuild();
+      });
+      delBtn.addEventListener('click', () => {
+        if (pts.length <= 3) return;
+        pts.splice(pts.length - 2, 1);
+        render = rebuild();
+      });
+    })();
+
+    /* ---------- figure 7: spline playground with live path data ---------- */
+    (function splineFigure() {
+      const fig = document.getElementById('d7');
+      const svg = fig.querySelector('svg');
+      const pathout = fig.querySelector('[data-pathout]');
+      const smoothBtn = fig.querySelector('[data-smooth]');
+      const copyBtn = fig.querySelector('[data-copy]');
+
+      /* two cubic segments sharing the middle anchor, pen-tool style:
+         A[i] are anchors, OUT[i] leaves A[i], IN[i] arrives at A[i] */
+      const A = [[70, 280], [320, 140], [570, 280]];
+      const OUT = [[160, 160], [430, 70], null];
+      const IN = [null, [210, 70], [480, 160]];
+      let smooth = true;
+
+      const arms = el(svg, 'g', {});
+      const curve = el(svg, 'path', { class: 'curve' });
+      const anchorDots = A.map(() => el(svg, 'circle', { class: 'on-curve', r: 4.5 }));
+
+      const rnd = (p) => Math.round(p[0]) + ' ' + Math.round(p[1]);
+      function dString() {
+        return `M ${rnd(A[0])} C ${rnd(OUT[0])}, ${rnd(IN[1])}, ${rnd(A[1])} C ${rnd(OUT[1])}, ${rnd(IN[2])}, ${rnd(A[2])}`;
+      }
+
+      function render() {
+        curve.setAttribute('d', dString());
+        arms.textContent = '';
+        for (let i = 0; i < A.length; i++) {
+          if (OUT[i]) el(arms, 'polyline', { class: 'poly', points: polyPoints([A[i], OUT[i]]) });
+          if (IN[i]) el(arms, 'polyline', { class: 'poly', points: polyPoints([A[i], IN[i]]) });
+          anchorDots[i].setAttribute('cx', A[i][0]);
+          anchorDots[i].setAttribute('cy', A[i][1]);
+        }
+        pathout.textContent = 'd="' + dString() + '"';
+        handles.forEach((h) => h.position());
+      }
+
+      /* the pen-tool rule: with a smooth joint, the opposite handle keeps
+         its own length but takes the reflected direction */
+      function reflect(i, moved, other) {
+        if (!smooth || !moved[i] || !other[i]) return;
+        const [ax, ay] = A[i];
+        const [dx, dy] = [moved[i][0] - ax, moved[i][1] - ay];
+        const len = Math.hypot(dx, dy) || 1;
+        const keep = Math.hypot(other[i][0] - ax, other[i][1] - ay);
+        other[i] = [ax - (dx / len) * keep, ay - (dy / len) * keep];
+      }
+
+      const handles = [];
+      A.forEach((_, i) => {
+        handles.push(makeHandle(svg, `Anchor ${i + 1}`, () => A[i], (v) => {
+          const [dx, dy] = [v[0] - A[i][0], v[1] - A[i][1]];
+          A[i] = v;
+          /* an anchor carries its handles with it */
+          if (OUT[i]) OUT[i] = [OUT[i][0] + dx, OUT[i][1] + dy];
+          if (IN[i]) IN[i] = [IN[i][0] + dx, IN[i][1] + dy];
+        }, inBox, render));
+      });
+      [0, 1].forEach((i) => {
+        handles.push(makeHandle(svg, `Outgoing handle of anchor ${i + 1}`, () => OUT[i], (v) => {
+          OUT[i] = v;
+          reflect(i, OUT, IN);
+        }, inBox, render));
+      });
+      [1, 2].forEach((i) => {
+        handles.push(makeHandle(svg, `Incoming handle of anchor ${i + 1}`, () => IN[i], (v) => {
+          IN[i] = v;
+          reflect(i, IN, OUT);
+        }, inBox, render));
+      });
+
+      smoothBtn.addEventListener('click', () => {
+        smooth = !smooth;
+        smoothBtn.setAttribute('aria-pressed', String(smooth));
+        if (smooth) {
+          /* snapping back to smooth re-aligns the joint immediately */
+          reflect(1, OUT, IN);
+          render();
+        }
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(dString());
+          copyBtn.textContent = 'copied';
+          setTimeout(() => (copyBtn.textContent = 'copy d'), 1200);
+        } catch {
+          /* clipboard can be blocked; the string is visible to select anyway */
+        }
+      });
+
+      render();
     })();
   </script>
 </BlogLayout>
