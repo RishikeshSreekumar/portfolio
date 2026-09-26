@@ -1,9 +1,9 @@
 /**
- * Single source of truth for the site AND the generated PDF resume.
+ * Single source of truth for the site. The resume PDF is built separately from
+ * resume/Rishikesh-S-Resume.tex (see resume/README.md).
  *
- * Plain JS (not TS) so `scripts/generate-resume.mjs` can import it directly
- * under plain Node, while `portfolio.ts` re-exports it with types for Astro.
- * Edit here — the site and the resume both follow.
+ * Plain JS (not TS) so scripts can import it directly under plain Node, while
+ * `portfolio.ts` re-exports it with types for Astro.
  */
 
 export const personal = {
@@ -51,13 +51,6 @@ export const experience = [
       "Built the service management platform underneath it — ticket intake, routing, expert assignment, resolution — plus a Chrome extension that records a workflow once and writes the step-by-step documentation from it",
       "Made the product buyable: Stripe subscriptions, checkout, invoicing and webhook-driven entitlement, which turned a demo into the company's first paid tier",
       "Run the whole stack myself — Next.js and Tailwind on the front, FastAPI and PostgreSQL behind it, Terraform for every environment — with no handoffs between layers to lose things in",
-    ],
-    resumeHighlights: [
-      "Built natural language search over Workday's knowledge base: retrieval, ranking and cited answers",
-      "Shipped expert sessions end to end: time-zone-aware booking, Azure video, recording, media editor",
-      "Built the ticketing platform - intake, routing, assignment, resolution - and a workflow-to-docs extension",
-      "Integrated Stripe end to end - subscriptions, checkout, invoicing, entitlement - for the first paid tier",
-      "First engineer: five product surfaces from first commit in under two years, solo across the full stack",
     ],
     tags: [
       "Next.js",
@@ -574,53 +567,4 @@ export const techCategory = {
   "Pitch detection": "Browser & runtime",
   PWA: "Browser & runtime",
   "Computer vision": "Browser & runtime",
-};
-
-/**
- * Resume-only content. Written in third-person-implied resume voice, ASCII only,
- * single column — see scripts/generate-resume.mjs.
- */
-export const resume = {
-  summary:
-    "Software engineer with 4+ years building and shipping production systems end to end, across backend, frontend and infrastructure. Founding engineer at Mando: five product surfaces from first commit in under two years, through to the company's first paid tier. Previously two years on real-time trading systems at Quantitative Brokers, working to hard latency and reliability budgets.",
-  skillGroups: [
-    { label: "Languages", items: ["TypeScript", "JavaScript", "Python", "Go", "Java", "SQL"] },
-    { label: "Frontend", items: ["React", "Next.js", "Angular", "Astro", "Tailwind CSS", "Three.js"] },
-    { label: "Backend", items: ["FastAPI", "Node.js", "NestJS", "SQLAlchemy", "REST APIs", "WebSockets", "Stripe"] },
-    { label: "AI / ML", items: ["LLM applications", "Retrieval-Augmented Generation (RAG)", "Vector search", "pgvector", "Model Context Protocol (MCP)"] },
-    { label: "Databases", items: ["PostgreSQL", "Redis", "MongoDB", "Alembic"] },
-    { label: "Cloud & DevOps", items: ["Amazon Web Services (AWS)", "Microsoft Azure", "Terraform", "Docker", "GitHub Actions", "CI/CD", "Vercel"] },
-    { label: "Tools", items: ["Git", "Playwright", "Chrome Extensions", "Shell scripting", "Jira"] },
-  ],
-  earlier:
-    "Earlier: Android developer at Prescribe (2021); software development intern at Workfence Technologies (2020).",
-  projects: [
-    {
-      name: "leak - Terminal Subscription Manager",
-      link: "github.com/RishikeshSreekumar/leak",
-      stack: "Go, Bubble Tea, SQLite, GitHub Actions",
-      bullets: [
-        "Built a local-first terminal app that tracks and audits recurring subscriptions, shipped as a single Go binary",
-        "Shipped a Homebrew tap, install script and semver releases: macOS, Linux, Windows on amd64 and arm64",
-      ],
-    },
-    {
-      name: "deadfall - Dead Component Detector (npm)",
-      link: "npmjs.com/package/deadfall",
-      stack: "TypeScript, Node.js, ts-morph",
-      bullets: [
-        "Published an npm CLI that maps a Next.js codebase into a component usage graph and flags unused components",
-        "Exits non-zero on dead code so it doubles as a CI gate, and generates an interactive HTML report for exploring the graph",
-      ],
-    },
-    {
-      name: "Rubik's Cube Solver",
-      link: "",
-      stack: "React, Three.js, Web Workers, PWA",
-      bullets: [
-        "Built a browser solver running Kociemba's two-phase algorithm in a Web Worker, with webcam cube scanning",
-        "Validates cube state and rejects impossible cubes with a specific reason, not a generic failure",
-      ],
-    },
-  ],
 };

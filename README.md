@@ -13,9 +13,9 @@ is generated at build time from the same data file that renders the page.
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # regenerates the resume PDF, then builds to dist/
+npm run build      # builds to dist/
 npm run preview    # serve the production build
-npm run resume     # regenerate public/Rishikesh-S-Resume.pdf only
+npm run resume     # rebuild the resume PDFs from LaTeX (needs TeX Live)
 ```
 
 Node 20+.
@@ -30,7 +30,7 @@ All of it — page and PDF — lives in `src/data/content.js`. See
 ```
 src/
 ├── data/
-│   ├── content.js       single source of truth (site + resume)
+│   ├── content.js       single source of truth for the site
 │   ├── theme.js         accent palettes + light/dark mode
 │   └── portfolio.ts     typed facade over content.js
 ├── layouts/Layout.astro head, theme bootstrap, ⌘K terminal, all page behaviour
@@ -39,7 +39,6 @@ src/
 ├── pages/index.astro    the single page
 └── styles/global.css    design tokens, light + dark, every component
 scripts/
-├── generate-resume.mjs  dependency-free ATS-friendly PDF writer
 └── generate-icons.mjs   favicon, touch icons, avatar and OG card from one mark
 ```
 
@@ -54,18 +53,17 @@ scripts/
   side — pinning drops the toggle button, the OS query and the stored preference.
   Every palette clears WCAG AA on both grounds; `node scripts/check-contrast.mjs`
   proves it and exits non-zero if you add one that doesn't. Changing the
-  accent also changes the icons, share card and resume — re-run
-  `node scripts/generate-icons.mjs` and `npm run resume`.
+  accent also changes the icons and share card — re-run
+  `node scripts/generate-icons.mjs`.
 - **The logo** is a prompt-caret R: the bowl points right like a shell `>`, and the
-  leg carries the accent. Its geometry lives in three places that must stay in step
-  — `src/components/Logo.astro` (the site), `scripts/generate-icons.mjs` (every
-  raster) and the `mark()` method in `scripts/generate-resume.mjs` (the PDF). Run
+  leg carries the accent. Its geometry lives in two places that must stay in step
+  — `src/components/Logo.astro` (the site) and `scripts/generate-icons.mjs` (every
+  raster). Run
   `node scripts/generate-icons.mjs` after changing it; that needs `rsvg-convert`
   (`brew install librsvg`), which is why the outputs are committed rather than
   built in CI.
-- **The resume PDF** is written byte by byte in `scripts/generate-resume.mjs`:
-  single column, real text, base-14 Helvetica, ASCII-normalised, deterministic
-  output. No dependencies and no headless browser in CI.
+- **The resume PDF** is built from LaTeX in `resume/` (`npm run resume`, needs
+  TeX Live) and committed to `public/`; see `resume/README.md`.
 - **No client JS framework.** The only JavaScript is one inline script in the
   layout and a small handler for the contact form, which composes a `mailto:` in
   your own client rather than posting to a third-party endpoint.

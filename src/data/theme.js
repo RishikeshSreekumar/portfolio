@@ -1,11 +1,11 @@
 /**
  * Accent palettes and theme mode — the one place the site's colour identity is set.
  *
- * Plain JS (not TS) so the icon and resume generators can import it under plain
- * Node, the same arrangement `content.js` uses. Changing `theme` below changes the
- * site, the favicon, the app icons, the share card and the resume PDF together;
- * re-run `node scripts/generate-icons.mjs` and `npm run resume` to rebuild the
- * files that are committed rather than compiled.
+ * Plain JS (not TS) so the icon generator can import it under plain Node, the
+ * same arrangement `content.js` uses. Changing `theme` below changes the site,
+ * the favicon, the app icons and the share card together; re-run
+ * `node scripts/generate-icons.mjs` to rebuild the files that are committed
+ * rather than compiled.
  *
  * Every palette carries its own light and dark values. `base` is the accent,
  * `deep` is the hover/secondary step, and `on` is text drawn on top of `base`.

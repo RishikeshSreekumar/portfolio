@@ -68,28 +68,24 @@ on the order-entry critical path).
 - **Stack:** Astro 5, Tailwind v4 via `@tailwindcss/vite`, hand-written CSS in
   `src/styles/global.css`. No client-side JS framework — the only JavaScript is one
   inline script in `Layout.astro` plus a small contact-form handler.
-- **Single source of truth:** `src/data/content.js` feeds both the page (via the
-  typed facade `src/data/portfolio.ts`) and the PDF (via
-  `scripts/generate-resume.mjs`). No second copy of the CV.
+- **Single source of truth:** `src/data/content.js` feeds the page via the typed
+  facade `src/data/portfolio.ts`.
 - **Two voices, deliberately:** the site speaks first person; the resume does not.
-  Data carries `highlights` (page) and `resumeHighlights` (PDF) separately.
-- **Resume PDF:** written byte by byte, dependency-free, no headless browser.
-  Single column, real text, base-14 Helvetica, ASCII-normalised, deterministic
-  output, must stay one page. ATS-parseable is a hard requirement.
+- **Resume PDF:** built from LaTeX in `resume/` (TeX Live, not available in CI), so
+  the PDF in `public/` is committed. Single column, real text, embedded fonts.
+  ATS-parseable is a hard requirement.
 - **Theme:** resolves before first paint via inline `<head>` script — no flash.
   Follows the OS by default, remembers the choice, `t` toggles it. Colour identity
   lives in `src/data/theme.js`: ten accent palettes, each with its own light and
   dark values (`base` / `deep` / `on`).
 - **The logo** is a prompt-caret R — the bowl points right like a shell `>`, the leg
-  carries the accent. Its geometry lives in three places that must stay in step:
-  `src/components/Logo.astro`, `scripts/generate-icons.mjs`, and the `mark()` method
-  in `scripts/generate-resume.mjs`. Icon regeneration needs `rsvg-convert`, which is
+  carries the accent. Its geometry lives in two places that must stay in step:
+  `src/components/Logo.astro` and `scripts/generate-icons.mjs`. Icon regeneration needs `rsvg-convert`, which is
   why raster outputs are committed rather than built in CI.
 - **Contact** composes a `mailto:` in the visitor's own client. No third-party
   endpoint, no form backend.
 - **Deploy:** GitHub Pages via `.github/workflows/deploy.yml` on every push to
-  `main`. `prebuild` regenerates the PDF, so the deployed resume always matches
-  current content. Static output only — no server runtime available.
+  `main`. Static output only — no server runtime available.
 - Node 20+.
 
 ## Brand Commitments

@@ -104,7 +104,6 @@ export interface Experience {
   location: string;
   description: string;
   highlights: string[];
-  resumeHighlights?: string[];
   tags: string[];
 }
 
