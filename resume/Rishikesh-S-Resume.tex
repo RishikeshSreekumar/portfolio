@@ -1,25 +1,21 @@
 %-------------------------------------------------------------------------------
 % Rishikesh S — Founding Engineer resume
+% Layout follows Jake Gutierrez's "Jake's Resume" template (Overleaf), rebuilt on
+% base LaTeX so it compiles on a minimal TeX install and keeps PDF tagging.
 % Single column, no tables/graphics, standard fonts: parses cleanly in ATS.
-% Compile: pdflatex Rishikesh-S-Resume.tex  (or upload to Overleaf)
+% Compile: ./build.sh  (or pdflatex Rishikesh-S-Resume.tex)
 %-------------------------------------------------------------------------------
 % Tagged, accessible PDF output (LaTeX PDF management, TeX Live 2024+). Adds the
 % structure tree for assistive technology. Requires a recent TeX Live release.
 % PDF/UA conformance requires separate validation; tagging alone is insufficient.
 \DocumentMetadata{lang=en-IN,pdfstandard=ua-2,testphase=latest}
 
-% One-page variant runs at 10pt, master at 11pt.
-\ifdefined\onepage\documentclass[letterpaper,10pt]{article}\else\documentclass[letterpaper,11pt]{article}\fi
+\documentclass[letterpaper,11pt]{article}
 
+% Latin Modern: the Computer Modern look of Jake's template, as scalable T1
+% Type 1 fonts so text extracts cleanly and every glyph is embedded.
 \usepackage[T1]{fontenc}
-% Helvetica-class sans: TeX Gyre Heros if present, then URW Helvetica, else
-% Latin Modern Sans. All three are standard, fully embedded and ATS-safe.
-\IfFileExists{tgheros.sty}{%
-  \usepackage{tgheros}%
-}{%
-  \IfFileExists{phvr8a.tfm}{\usepackage{helvet}}{\usepackage{lmodern}}%
-}
-\renewcommand{\familydefault}{\sfdefault}
+\usepackage{lmodern}
 
 % Variant switch. Build the one-page version with:
 %   pdflatex "\def\onepage{}\input{Rishikesh-S-Resume.tex}"
@@ -27,23 +23,26 @@
 \newif\ifonepage\onepagefalse
 \ifdefined\onepage\onepagetrue\fi
 \newcommand{\masteronly}[1]{\ifonepage\else#1\fi}
+
+% Jake's half-inch page for the one-page version. The master has two pages to
+% spend, so it buys back some margin and leading for easier skimming.
 \ifonepage
-  \usepackage[letterpaper,top=0.45in,bottom=0.45in,left=0.5in,right=0.5in]{geometry}
+  \usepackage[letterpaper,top=0.5in,bottom=0.5in,left=0.5in,right=0.5in]{geometry}
 \else
-  % The master has two pages to spend, so it buys back margin and leading:
-  % long lines and 10pt-tight leading are what made the old one hard to skim.
-  \usepackage[letterpaper,top=0.6in,bottom=0.6in,left=0.75in,right=0.75in]{geometry}
-  \linespread{1.04}
+  \usepackage[letterpaper,top=0.6in,bottom=0.6in,left=0.7in,right=0.7in]{geometry}
+  \linespread{1.1}
 \fi
-% Vertical rhythm. Every gap is stretchable glue: with \flushbottom (set below)
-% each page's spare space is shared out between entries,
-% sections and bullets, so no page ends in a block of white.
+
+% Vertical rhythm. Base gaps match Jake's tight spacing; the small stretch lets
+% \flushbottom (set below) share out any leftover space so each page ends at
+% the bottom margin instead of in a block of white.
 \newskip\entrygap\newskip\bulletgap\newskip\sectiongap
 \ifonepage
-  \entrygap=5pt plus 3pt\relax \bulletgap=1pt plus 1pt\relax \sectiongap=6pt plus 4pt\relax
+  \entrygap=3pt plus 3pt\relax \bulletgap=0pt plus 1pt\relax \sectiongap=5pt plus 4pt\relax
 \else
-  \entrygap=7pt plus 6pt\relax \bulletgap=2pt plus 1.5pt\relax \sectiongap=10pt plus 6pt\relax
+  \entrygap=8pt plus 3pt\relax \bulletgap=2pt plus 1pt\relax \sectiongap=11pt plus 4pt\relax
 \fi
+
 \usepackage{hyperref}
 \hypersetup{
   hidelinks,
@@ -60,13 +59,12 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 % The master runs to two pages, so page 2 carries a continuation line: it reads
-% as a deliberate second page rather than an accidental overflow, and it keeps
-% the name attached to the content if the pages are separated.
+% as a deliberate second page, and keeps the name attached if pages separate.
 \masteronly{%
-  \fancyhead[L]{\small Rishikesh S \textbar{} Founding Software Engineer}%
+  \fancyhead[L]{\small\scshape Rishikesh S}%
   \fancyhead[R]{\small Page \thepage}%
   \setlength{\headheight}{14pt}%
-  \setlength{\headsep}{12pt}%
+  \setlength{\headsep}{8pt}%
 }
 
 % Never strand a heading, a role title or a first bullet on its own.
@@ -78,54 +76,43 @@
 \flushbottom
 \raggedright
 \setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{0in}
 
 %-------------------------------------------------------------------------------
 % Helpers - base LaTeX only, so this compiles on a minimal TeX install too.
 %-------------------------------------------------------------------------------
-% Section heading: bold mixed case plus a hairline rule. One weight signal and
-% one divider, not bold + small caps + a heavy rule all at once.
-% Built on \@startsection rather than a plain bold line so the phase-III tagging
-% code still emits H1 structure elements (and hyperref still gets bookmarks);
-% a hand-rolled heading would leave the UA-2 PDF with a flat structure tree.
+% Jake's section heading: large small caps over a full-width rule.
+% Built on \@startsection rather than a plain line so the tagging code still
+% emits H1 structure elements (and hyperref still gets bookmarks); a
+% hand-rolled heading would leave the UA-2 PDF with a flat structure tree.
 \makeatletter
 \setcounter{secnumdepth}{0}
-\newcommand{\resume@sectiontitle}[1]{#1\par\nobreak\vspace{2pt}\hrule height 0.4pt}
+\newcommand{\resume@sectiontitle}[1]{#1\par\nobreak\vspace{1pt}\hrule height 0.4pt}
 \renewcommand{\section}{%
   \needlines{6}%
   \@startsection{section}{1}{\z@}%
-    {\sectiongap}{4pt}%
-    {\large\bfseries\resume@sectiontitle}%
+    {\sectiongap}{3pt}%
+    {\large\scshape\resume@sectiontitle}%
 }
 \makeatother
 
-% Tighter itemize without enumitem.
-\newenvironment{tightitems}[1][0.18in]{%
+% Tight bullet list without enumitem.
+\newenvironment{tightitems}{%
   \begin{list}{\textbullet}{%
-    \setlength{\leftmargin}{#1}%
+    \setlength{\leftmargin}{0.3in}%
     \setlength{\labelwidth}{0.1in}%
     \setlength{\labelsep}{0.08in}%
     \setlength{\itemsep}{\bulletgap}%
     \setlength{\parsep}{0pt}%
-    \setlength{\topsep}{2pt}%
+    \setlength{\topsep}{1pt}%
     \setlength{\partopsep}{0pt}%
     \setlength{\listparindent}{0pt}%
   }%
 }{\end{list}}
 
-% Skills list: no bullet, flush left.
-\newenvironment{plainitems}{%
-  \begin{list}{}{%
-    \setlength{\leftmargin}{0in}%
-    \setlength{\labelwidth}{0in}%
-    \setlength{\labelsep}{0in}%
-    \setlength{\itemsep}{\bulletgap}%
-    \setlength{\parsep}{0pt}%
-    \setlength{\topsep}{2pt}%
-    \setlength{\partopsep}{0pt}%
-  }%
-}{\end{list}}
-
 \newcommand{\resumeItem}[1]{\item{\small #1}}
+\newcommand{\resumeItemListStart}{\begin{tightitems}}
+\newcommand{\resumeItemListEnd}{\end{tightitems}}
 
 % needspace, hand-rolled to keep the preamble dependency-free. Reserves #1 lines
 % and moves the whole block to the next page if they are not there, so a role or
@@ -137,34 +124,38 @@
   \endgroup%
 }
 
-% A role or project header is glued to whatever follows it: \nopagebreak[4]
-% kills the break LaTeX would otherwise take at the list's \topsep glue, which
-% is what split "Workfence Technologies / Remote" from its own bullets.
-% Every entry uses the same two-line shape: bold name with dates (or link) on the
-% right, then an italic qualifier (company, stack) with location on the right.
-\newcommand{\resumeHeading}[4]{%
+% Headers are glued to whatever follows them: \nopagebreak[4] kills the break
+% LaTeX would otherwise take at the list's \topsep glue.
+% Jake's two-line subheading: bold organisation with location on the right,
+% then the role (or degree) in italics with dates on the right.
+\newcommand{\resumeSubheading}[4]{%
   \needlines{4}%
   \vspace{\entrygap}%
-  \textbf{#1} \hfill {\small #2}\\[1pt]%
-  {\small\itshape #3} \hfill {\small #4}\par\nopagebreak[4]%
+  \hspace*{0.15in}\textbf{#1} \hfill #2\\%
+  \hspace*{0.15in}{\small\itshape #3} \hfill {\small\itshape #4}\par\nopagebreak[4]%
 }
 
-% Project header: bold name and right-aligned link, then the stack in italics.
+% A further role at the same organisation (Jake's sub-subheading).
+\newcommand{\resumeSubRole}[2]{%
+  \needlines{3}%
+  \vspace{\entrygap}%
+  \hspace*{0.15in}{\small\itshape #1} \hfill {\small\itshape #2}\par\nopagebreak[4]%
+}
+
+% Jake's one-line project heading: bold name | italic stack, link on the right.
 \newcommand{\resumeProject}[3]{%
-  \needlines{4}%
+  \needlines{3}%
   \vspace{\entrygap}%
-  \textbf{#1} \hfill {\small #3}\\[1pt]%
-  {\small\itshape #2}\par\nopagebreak[4]%
+  \hspace*{0.15in}{\small\textbf{#1} \textbar{} \textit{#2}} \hfill {\small #3}\par\nopagebreak[4]%
 }
 
-% One-line role for the one-page version's internships: bold title, italic
-% company, a short description and the dates on the right.
+% One-line role for the one-page version's earlier internships.
 \newcommand{\resumeCompactRole}[4]{%
-  {\small\textbf{#1}, \textit{#2} --- #3 \hfill #4}\par%
+  \hspace*{0.15in}{\small\textbf{#1}, \textit{#2} --- #3 \hfill \textit{#4}}\par%
 }
 
-\newcommand{\resumeItemListStart}{\begin{tightitems}}
-\newcommand{\resumeItemListEnd}{\end{tightitems}}
+% Underlined contact link, as in Jake's header.
+\newcommand{\contact}[2]{\href{#1}{\underline{#2}}}
 
 \begin{document}
 % Page 1 leads with the name block, so it needs no running header.
@@ -174,97 +165,98 @@
 % Header
 %-------------------------------------------------------------------------------
 \begin{center}
-  {\huge \textbf{Rishikesh S}}\\[4pt]
-  {\normalsize Founding Software Engineer \textbar{} Full-Stack Systems, Applied AI \& Cloud Infrastructure}\\[5pt]
+  {\Huge\scshape Rishikesh S}\\[3pt]
   \small
   % The website copy (built with \nophone) leaves the phone number out.
   Chennai, India \textbar{} \ifdefined\nophone\else +91 90729 08874 \textbar{} \fi
-  \href{mailto:rishikeshpavithram@gmail.com}{rishikeshpavithram@gmail.com}\\[2pt]
-  \href{https://www.linkedin.com/in/rishikesh-s-0a4a47166/}{linkedin.com/in/rishikesh-s-0a4a47166} \textbar{}
-  \href{https://github.com/RishikeshSreekumar}{github.com/RishikeshSreekumar} \textbar{}
-  \href{https://rishikeshs.dev}{rishikeshs.dev}
+  \contact{mailto:rishikeshpavithram@gmail.com}{rishikeshpavithram@gmail.com}\\[1pt]
+  \contact{https://www.linkedin.com/in/rishikesh-s-0a4a47166/}{linkedin.com/in/rishikesh-s-0a4a47166} \textbar{}
+  \contact{https://github.com/RishikeshSreekumar}{github.com/RishikeshSreekumar} \textbar{}
+  \contact{https://rishikeshs.dev}{rishikeshs.dev}
 \end{center}
-\vspace{-6pt}
+\vspace{-8pt}
 
 %-------------------------------------------------------------------------------
 \section{Summary}
 {\small
 \ifonepage
-Full-stack software engineer with \textbf{4+ years} shipping production systems end to end. Founding engineer at Mando, an AI platform for Workday customers, taking \textbf{five product surfaces} from first commit to the company's \textbf{first paid tier} in under two years. Previously built real-time trading systems at Quantitative Brokers under strict latency budgets.
+Full-stack engineer with \textbf{4+ years} in production. Sole founding engineer at Mando, taking \textbf{five AI products} for Workday customers from first commit to \textbf{first paid tier}; before that, low-latency trading systems at Quantitative Brokers.
 \else
-Full-stack software engineer with \textbf{4+ years} shipping production systems across backend, frontend and infrastructure. Founding engineer at Mando, an AI platform for Workday customers: took \textbf{five product surfaces} from first commit to the company's \textbf{first paid tier} in under two years as sole engineer. Previously built real-time trading systems at Quantitative Brokers under strict latency and reliability budgets.
+Full-stack engineer with \textbf{4+ years} shipping production systems across the stack. Founding engineer at Mando, an AI platform for Workday customers, taking \textbf{five product surfaces} from first commit to its \textbf{first paid tier} in under two years as sole engineer. Previously built low-latency trading systems at Quantitative Brokers.
 \fi
 \par}
 
 %-------------------------------------------------------------------------------
-\section{Work Experience}
+\section{Experience}
 
-\resumeHeading{Founding Software Engineer}{Sep 2024 -- Present}{Mando}{Remote}
+\resumeSubheading{Mando}{Remote}{Founding Software Engineer}{Sep 2024 -- Present}
 \resumeItemListStart
   % TODO (metrics): add one defensible figure per bullet where available, e.g. queries/day,
   % answer latency, number of paying customers, sessions booked, deploy frequency.
-  \resumeItem{Engineered \textbf{conversational search} over Workday's knowledge base, owning retrieval, ranking and \textbf{cited answer generation (RAG)}, so users get a verifiable answer, not a list of documents.}
-  \resumeItem{Shipped the \textbf{expert consultation product} end to end: time-zone-aware booking, live video and recording on Azure Communication Services, and a browser-based editor for trimming and annotating footage.}
-  \resumeItem{Built the \textbf{service-management platform} behind it (ticket intake, routing, expert assignment, resolution) and a \textbf{Chrome extension} that records a workflow once and generates step-by-step documentation from it.}
+  \resumeItem{Architected the stack as sole engineer: \textbf{Next.js} and \textbf{FastAPI} on \textbf{PostgreSQL}, all environments in \textbf{Terraform}.}
+  \resumeItem{Engineered \textbf{conversational search} over Workday's knowledge base, owning retrieval, ranking and cited answer generation (\textbf{RAG}), so users get a verifiable answer instead of a list of documents.}
+  \resumeItem{Shipped an \textbf{expert consultation product} end to end: time-zone-aware booking, live video and recording on Azure Communication Services, and a browser-based editor for trimming and annotating footage.}
+  \resumeItem{Built the \textbf{service-management platform} behind it (ticket intake, routing, expert assignment, resolution) and a \textbf{Chrome extension} that records a workflow once and generates step-by-step documentation.}
   \resumeItem{Launched Mando's \textbf{first paid tier} by integrating Stripe subscriptions, checkout, invoicing and entitlements.}
-  \resumeItem{Architected the full stack as sole engineer: \textbf{Next.js} and \textbf{FastAPI} on \textbf{PostgreSQL}, with development, staging and production environments defined in \textbf{Terraform}.}
 \resumeItemListEnd
 
-\resumeHeading{Software Engineer}{Jul 2022 -- Sep 2024}{Quantitative Brokers}{Chennai, India}
+\resumeSubheading{Quantitative Brokers}{Chennai, India}{Software Engineer}{Jul 2022 -- Sep 2024}
 \resumeItemListStart
   \resumeItem{Designed a \textbf{real-time order monitoring system} processing \textbf{200 messages/sec} from multiple upstream sources into live aggregates and market data ladders for trading analysts.}
   \resumeItem{Cut risk control load time by \textbf{over 97\%} (40\,s to under 1\,s) by moving data loading server-side and paginating.}
-  \resumeItem{Reduced critical-path latency by \textbf{20\%} and CPU usage by \textbf{50\%} in a C\# WPF order entry app consuming Bloomberg market data.}
+  \resumeItem{Reduced critical-path latency by \textbf{20\%} and CPU usage by \textbf{50\%} in a C\# WPF order entry app on Bloomberg data.}
   % TODO (metrics): confirm the revenue attribution with the desk before reinstating a figure here.
   \resumeItem{Implemented \textbf{DV01} risk calculations for cash instruments, enabling the desk to expand its cash trading stream.}
   \masteronly{\resumeItem{Developed capture-and-replay tooling that reproduces production trading incidents from recorded message flow.}}
 \resumeItemListEnd
-
 \ifonepage
 \vspace{\entrygap}
-\resumeCompactRole{Software Development Intern}{Quantitative Brokers}{OpenFin interop; Angular curve plotting over kdb+}{May 2021 -- Jul 2021}
-\resumeCompactRole{Android Developer}{Prescribe}{Firebase-backed patient intake app}{Feb 2021 -- May 2021}
-\resumeCompactRole{Software Development Intern}{Workfence Technologies}{Geofencing attendance system for 100,000 users}{May 2020 -- Jul 2020}
+\resumeCompactRole{Software Development Intern}{Quantitative Brokers}{OpenFin interop, kdb+ curve plotting}{May 2021 -- Jul 2021}
+\resumeCompactRole{Android Developer}{Prescribe}{Firebase patient intake app}{Feb 2021 -- May 2021}
+\resumeCompactRole{Software Development Intern}{Workfence}{Geofencing for 100,000 users}{May 2020 -- Jul 2020}
 \else
-\resumeHeading{Software Development Intern}{May 2021 -- Jul 2021}{Quantitative Brokers}{Chennai, India}
+\resumeSubRole{Software Development Intern}{May 2021 -- Jul 2021}
 \resumeItemListStart
-  \resumeItem{Prototyped \textbf{OpenFin} interop across four trading applications and an Angular app plotting financial curves from a live \textbf{kdb+} database; both later shipped.}
+  \resumeItem{Prototyped \textbf{OpenFin} interop across four trading apps and an Angular curve plotter over \textbf{kdb+}; both shipped.}
 \resumeItemListEnd
 
-\resumeHeading{Android Developer}{Feb 2021 -- May 2021}{Prescribe}{Remote}
+\resumeSubheading{Prescribe}{Remote}{Android Developer}{Feb 2021 -- May 2021}
 \resumeItemListStart
   \resumeItem{Developed a \textbf{Firebase}-backed Android app for patient intake and feedback, with a custom notification system and analytics on every step of the flow.}
 \resumeItemListEnd
 
-\resumeHeading{Software Development Intern}{May 2020 -- Jul 2020}{Workfence Technologies}{Remote}
+\resumeSubheading{Workfence Technologies}{Remote}{Software Development Intern}{May 2020 -- Jul 2020}
 \resumeItemListStart
-  \resumeItem{Built a \textbf{geofencing attendance system} and a data visualisation interface designed to scale from 1,000 to \textbf{100,000 users}, plus a social-distancing Android app paired with distance-measuring hardware.}
+  \resumeItem{Built a \textbf{geofencing attendance system} and data visualisation interface designed to scale from 1,000 to \textbf{100,000 users}, plus a social-distancing Android app paired with distance-measuring hardware.}
 \resumeItemListEnd
 \fi
 
 %-------------------------------------------------------------------------------
 \section{Projects}
 
-\resumeProject{leak --- Terminal Subscription Manager}{Go, Bubble Tea, SQLite, GitHub Actions}{\href{https://github.com/RishikeshSreekumar/leak}{github.com/RishikeshSreekumar/leak}}
+\resumeProject{leak}{Go, Bubble Tea, SQLite, GitHub Actions}{\contact{https://github.com/RishikeshSreekumar/leak}{github.com/RishikeshSreekumar/leak}}
 \resumeItemListStart
-  \resumeItem{Built a \textbf{local-first terminal app} that tracks and audits recurring subscriptions as a \textbf{single static Go binary}.}
-  \masteronly{\resumeItem{Released versioned binaries for \textbf{six targets} (macOS, Linux and Windows on amd64 and arm64) through a Homebrew tap and install script, with CI on every push.}}
+  \resumeItem{Built a \textbf{local-first terminal app} that tracks and audits recurring subscriptions, shipped as a \textbf{single static Go binary}\ifonepage.\else{} for \textbf{six OS/arch targets} through a Homebrew tap and CI releases.\fi}
 \resumeItemListEnd
 
-\resumeProject{deadfall --- Dead Component Detector}{TypeScript, Node.js, ts-morph, npm}{\href{https://www.npmjs.com/package/deadfall}{npmjs.com/package/deadfall}}
+\resumeProject{deadfall}{TypeScript, Node.js, ts-morph}{\contact{https://www.npmjs.com/package/deadfall}{npmjs.com/package/deadfall}}
 \resumeItemListStart
-  \resumeItem{Published an \textbf{npm CLI} that maps a Next.js app's component usage graph and flags components nothing renders.}
+  \ifonepage
+  \resumeItem{Published an \textbf{npm CLI} that maps a Next.js app's component graph to flag dead components, doubling as a \textbf{CI gate}.}
+  \else
+  \resumeItem{Published an \textbf{npm CLI} that maps a Next.js app's component graph and flags components nothing renders.}
+  \fi
   \masteronly{\resumeItem{Exits non-zero when dead components are found, so it doubles as a \textbf{CI gate}, and generates an interactive HTML report for exploring the import graph.}}
 \resumeItemListEnd
 
 \masteronly{%
-\resumeProject{mailcleaner --- Mailbox Cleanup Tool}{Python, Textual, SQLite, IMAP, OAuth}{\href{https://github.com/RishikeshSreekumar/gmail_cleaner}{github.com/RishikeshSreekumar/gmail\_cleaner}}
+\resumeProject{mailcleaner}{Python, Textual, SQLite, IMAP, OAuth}{\contact{https://github.com/RishikeshSreekumar/gmail_cleaner}{github.com/RishikeshSreekumar/gmail\_cleaner}}
 \resumeItemListStart
   \resumeItem{Developed a \textbf{metadata-only} mailbox index across Gmail, Outlook, Fastmail, iCloud and any IMAP server, with terminal and browser UIs for bulk archive, trash and label actions.}
   \resumeItem{Designed a \textbf{no-permanent-delete} safety model: every bulk action previews a sample first, and archive and trash are refused on servers without IMAP MOVE rather than emulated.}
 \resumeItemListEnd
 
-\resumeProject{Bansuri --- Learn the Flute}{SvelteKit, TypeScript, Web Audio API}{\href{https://flute.rishikeshs.dev}{flute.rishikeshs.dev}}
+\resumeProject{Bansuri}{SvelteKit, TypeScript, Web Audio API}{\contact{https://flute.rishikeshs.dev}{flute.rishikeshs.dev}}
 \resumeItemListStart
   \resumeItem{Created a flute learning app with \textbf{57 lessons} across 11 units and 8 practice tools, including \textbf{real-time pitch and drift detection} with all audio processed in the browser.}
   \resumeItem{Prerendered every lesson as a linkable, indexable URL, each opening its practice tool as a preset link.}
@@ -280,27 +272,28 @@ Full-stack software engineer with \textbf{4+ years} shipping production systems 
 %-------------------------------------------------------------------------------
 \section{Technical Skills}
 {\small
-\begin{plainitems}
-  \item \textbf{Languages:} TypeScript, JavaScript, Python, Go, C\#, Java, SQL
-  \item \textbf{Frontend:} React, Next.js, Angular, SvelteKit, Astro, Tailwind CSS, Three.js, WPF
-  \item \textbf{Backend:} FastAPI, SQLAlchemy, Node.js, NestJS, .NET, REST APIs, WebSockets, Stripe
-  \item \textbf{Applied AI:} LLMs, Retrieval-Augmented Generation (RAG), vector search, pgvector\masteronly{, Model Context Protocol (MCP)}
-  \item \textbf{Databases:} PostgreSQL, Redis, SQLite, kdb+
-  \item \textbf{Cloud \& DevOps:} Amazon Web Services (AWS), Microsoft Azure, Terraform, Docker, GitHub Actions, CI/CD, Vercel
-  \masteronly{\item \textbf{Tools:} Git, Playwright, Alembic, Chrome Extensions, Web Workers, shell scripting}
-\end{plainitems}
+\leftskip=0.15in
+\textbf{Languages:} TypeScript, JavaScript, Python, Go, C\#, Java, SQL\\
+\textbf{Frontend:} React, Next.js, Angular, SvelteKit, Astro, Tailwind CSS, Three.js, WPF\\
+\textbf{Backend:} FastAPI, SQLAlchemy, Node.js, NestJS, .NET, REST APIs, WebSockets, Stripe\\
+\textbf{Applied AI:} LLMs, Retrieval-Augmented Generation (RAG), \ifonepage vector search, pgvector\else pgvector, Model Context Protocol (MCP)\fi\\
+\textbf{Databases:} PostgreSQL, Redis, SQLite, kdb+\\
+\textbf{Cloud \& DevOps:} Amazon Web Services (AWS), Azure, Terraform, Docker, GitHub Actions, CI/CD, Vercel%
+\masteronly{\\\textbf{Tools:} Git, Playwright, Alembic, Chrome Extensions, Web Workers, shell scripting}
 \par}
 
 %-------------------------------------------------------------------------------
 \section{Education}
-\resumeHeading{Indian Institute of Technology Madras}{2018 -- 2022}{Bachelor of Technology (B.Tech.), Chemical Engineering \textbar{} CGPA: 8.58/10}{Chennai, India}
+\resumeSubheading{Indian Institute of Technology Madras}{Chennai, India}{Bachelor of Technology (B.Tech.), Chemical Engineering \textbar{} CGPA: 8.58/10}{2018 -- 2022}
 \masteronly{%
 \resumeItemListStart
   \resumeItem{\textbf{All India Rank 2,275} in JEE Advanced 2018; \textbf{State Rank 5} in KEAM 2018 (Kerala engineering entrance).}
 \resumeItemListEnd
 }
 
-% Break with no \vfil so \flushbottom stretches the last page too; \end{document}
-% would otherwise pad it from below and leave the spare space in one block.
+% One-page: break with no \vfil so \flushbottom shares the few spare points
+% between gaps. Master: the second page is partly filled by design, so its
+% spare space goes to the foot rather than prising the entries apart.
+\masteronly{\vfill}
 \pagebreak
 \end{document}
